@@ -24,11 +24,11 @@
         </v-toolbar>
 
         <v-row justify="center" class="ml-10">
-          <v-col cols="4" class="pt-0" v-for="(item, i) in periods" :key="i">
+          <v-col cols="4" class="pt-0" v-for="item in periods" :key="item">
             <v-checkbox
               v-model="period"
-              :label="item"
-              :color="colors[i]"
+              :label="`${item}교시`"
+              :color="colors[item-1]"
               :value="item"
               hide-details
             >
@@ -76,7 +76,7 @@ export default {
     place: '',
     period: [],
     places: ['전산실', '학습 준비물실'],
-    periods: ['1교시', '2교시', '3교시', '4교시', '5교시', '6교시'],
+    periods: [1, 2, 3, 4, 5, 6],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   }),
 
