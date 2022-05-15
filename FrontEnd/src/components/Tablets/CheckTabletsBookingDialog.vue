@@ -22,13 +22,13 @@
         </v-card-actions>
 
         <v-card
-          v-for="list in bookedLists"
+          v-for="list in bookedTabletsLists"
           :key="list.period"
           flat
           class="my-0 py-0"
         >
           <v-card-subtitle class="py-3 black--text">
-            {{ list.period }}</v-card-subtitle
+            {{ list.period }}교시</v-card-subtitle
           >
           <v-row
             v-for="place in list.place"
@@ -38,7 +38,7 @@
           >
             <v-col cols="3" class="ml-2 indigo--text">
               {{ place.name }} + {{ place.left }}대
-              </v-col>
+            </v-col>
             <v-col>
               <v-card-text class="pa-0">
                 <v-chip-group column>
@@ -52,13 +52,13 @@
                     <v-avatar left>
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
                     </v-avatar>
-                    {{ item.class }} ({{ item.quantity }}대)
+                    {{ item.borrower }} ({{ item.quantity }}대)
                   </v-chip>
                 </v-chip-group>
               </v-card-text>
             </v-col>
           </v-row>
-        <v-divider class="my-3"></v-divider>
+          <v-divider class="my-3"></v-divider>
         </v-card>
       </v-card>
     </v-dialog>
@@ -74,53 +74,14 @@ import BookTabletsDialog from '@/components/Tablets/BookTabletsDialog.vue'
 export default {
   components: { BookTabletsDialog },
 
-  props: { selectedDate: String },
+  props: {
+    selectedDate: String,
+    bookedTabletsLists: Array
+  },
 
   data: () => ({
-    place: '',
-    period: [],
-    colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green'],
-    place1BookedLists: [],
-    place2BookedLists: [],
-    bookedLists: [
-      {
-        period: '1교시',
-        place: [
-          {name: '전산실', left: '0', classes: [{ class: '4-7', quantity: '30' }, { class: '6-4', quantity: '30' }]},
-          {name: '준비물실', left: '30', classes: [{ class: '5-7', quantity: '30' }, { class: '6-1', quantity: '30' }, { class: '6-1', quantity: '30' }]}
-        ]
-      },
-      {
-        period: '2교시',
-        place: [
-          {name: '전산실', left: '0', classes: [{ class: '4-7', quantity: '30' }, { class: '6-4', quantity: '30' }]},
-          {name: '준비물실', left: '30', classes: [{ class: '5-7', quantity: '30' }, { class: '6-1', quantity: '30' }]}
-        ]
-      }, {
-        period: '3교시',
-        place: [
-          {name: '전산실', left: '0', classes: [{ class: '4-7', quantity: '30' }, { class: '6-4', quantity: '30' }]},
-          {name: '준비물실', left: '30', classes: [{ class: '5-7', quantity: '30' }, { class: '6-1', quantity: '30' }]}
-        ]
-      }, {
-        period: '4교시',
-        place: [
-          {name: '전산실', left: '0', classes: [{ class: '4-7', quantity: '30' }, { class: '6-4', quantity: '30' }]},
-          {name: '준비물실', left: '30', classes: [{ class: '5-7', quantity: '30' }, { class: '6-1', quantity: '30' }]}
-        ]
-      }, {
-        period: '5교시',
-        place: [
-          {name: '전산실', left: '0', classes: [{ class: '4-7', quantity: '30' }, { class: '6-4', quantity: '30' }]},
-          {name: '준비물실', left: '30', classes: [{ class: '5-7', quantity: '30' }, { class: '6-1', quantity: '30' }]}
-        ]
-      }, {
-        period: '6교시',
-        place: [
-          {name: '전산실', left: '0', classes: [{ class: '4-7', quantity: '30' }, { class: '6-4', quantity: '30' }]},
-          {name: '준비물실', left: '30', classes: [{ class: '5-7', quantity: '30' }, { class: '6-1', quantity: '30' }]}
-        ]
-      } ]
+    periods: [1, 2, 3, 4, 5, 6],
+    colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green']
   }),
 
   computed: {

@@ -44,34 +44,37 @@
             :weekdays="weekday"
             color="primary"
             type="month"
-            @click:date="bookTablets"
+            @click:date="checkTabletsBooking"
           ></v-calendar>
         </v-sheet>
 
       </v-col>
     </v-row>
-    <checkTabletsBookingDialog :selectedDate="focus" />
+    <checkTabletsBookingDialog :selectedDate="focus" :bookedTabletsLists="bookedTabletsLists" />
   </div>
 </template>
 
 <script>
 import checkTabletsBookingDialog from '@/components/Tablets/CheckTabletsBookingDialog.vue'
 import { mapState } from 'vuex'
+import api from '@/api/modules/tablets'
 
 export default {
   components: { checkTabletsBookingDialog },
 
   data: () => ({
     focus: '',
-    weekday: [1, 2, 3, 4, 5, 6, 0]
+    weekday: [1, 2, 3, 4, 5, 6, 0],
+    bookedTabletsLists: []
   }),
 
   computed: {
     ...mapState('bookStore', ['dialog'])
   },
   methods: {
-    bookTablets ({ date }) {
+    checkTabletsBooking ({ date }) {
       this.focus = date
+      api.getBookedTabletsListByDate(this, date)
       this.dialog.checkTabletsBooking = true
     },
     setToday () {
