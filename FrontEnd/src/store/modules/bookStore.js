@@ -6,7 +6,8 @@ const bookStore = {
       checkComputerRoomsBooking: false,
       bookTablets: false,
       bookComputerRooms: false
-    }
+    },
+    bookedTabletsLists: []
   },
   mutations: {
   },

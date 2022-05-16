@@ -95,6 +95,7 @@ export default {
       const postData = {
         date: this.selectedDate,
         period: this.period,
+        place: this.place,
         borrower: this.borrower,
         quantity: this.quantity
       }

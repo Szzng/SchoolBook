@@ -1,15 +1,15 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
+import bookStore from '../../store/modules/bookStore'
 
 export default {
-  getBookedTabletsListByDate (component, date) {
+  getBookedTabletsListByDate (date) {
     console.log('getBookedTabletsListByDate()...')
     myAxios
       .get(Urls.bookedTabletsByDate(date))
       .then(response => {
         console.log('getBookedTabletsListByDate GET response', response)
-        component.bookedTabletsLists = response.data
-        // component.dialog.checkTabletsBooking = true
+        bookStore.state.bookedTabletsLists = response.data
       })
       .catch(error => {
         console.log('getBookedTabletsListByDate GET error', error.response)
@@ -22,7 +22,7 @@ export default {
       .post(Urls.allBookedTablets, postData)
       .then(response => {
         console.log('BookTablets POST response', response)
-        component.bookedTabletsLists = response.data
+        this.getBookedTabletsListByDate(postData.date)
         component.dialog.bookTablets = false
       })
       .catch(error => {

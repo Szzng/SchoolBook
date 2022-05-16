@@ -21,29 +21,24 @@
           </v-btn>
         </v-card-actions>
 
-        <v-card
-          v-for="list in bookedTabletsLists"
-          :key="list.period"
-          flat
-          class="my-0 py-0"
-        >
-          <v-card-subtitle class="py-3 black--text">
-            {{ list.period }}교시</v-card-subtitle
+        <v-card v-for="period in periods" :key="period" flat class="my-0 py-0">
+          <v-card-subtitle class="py-3 black--text"
+            >{{ period }}교시</v-card-subtitle
           >
-          <v-row
-            v-for="place in list.place"
-            :key="place.name"
-            align="center"
-            class="ml-2"
-          >
-            <v-col cols="3" class="ml-2 indigo--text">
-              {{ place.name }} + {{ place.left }}대
-            </v-col>
-            <v-col>
-              <v-card-text class="pa-0">
+          <v-card-text class="pa-0">
+            <v-row
+              v-for="(arrayByPlaces, j) in bookedTabletsLists[period]"
+              :key="j"
+              class="ml-2"
+              align="center"
+            >
+              <v-col cols="3" class="ml-2 indigo--text">
+                {{ places[j] }} + 대
+              </v-col>
+              <v-col>
                 <v-chip-group column>
                   <v-chip
-                    v-for="(item, i) in place.classes"
+                    v-for="(item, i) in arrayByPlaces"
                     :key="i"
                     :color="colors[i]"
                     outlined
@@ -55,12 +50,16 @@
                     {{ item.borrower }} ({{ item.quantity }}대)
                   </v-chip>
                 </v-chip-group>
-              </v-card-text>
-            </v-col>
-          </v-row>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <!-- </v-col>
+          </v-row> -->
+
           <v-divider class="my-3"></v-divider>
         </v-card>
       </v-card>
+      <!-- {{bookedTabletsLists[Object.keys(bookedTabletsLists)[0]].전산실}} -->
     </v-dialog>
 
     <BookTabletsDialog :selectedDate="selectedDate" />
@@ -75,17 +74,18 @@ export default {
   components: { BookTabletsDialog },
 
   props: {
-    selectedDate: String,
-    bookedTabletsLists: Array
+    selectedDate: String
   },
 
   data: () => ({
     periods: [1, 2, 3, 4, 5, 6],
+    places: ['전산실', '준비물실'],
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green']
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog']),
+    ...mapState('bookStore', ['dialog', 'bookedTabletsLists']),
+
     formatSelectedDate () {
       const date = this.selectedDate.split('-')
       return date[1] + '월  ' + date[2] + '일'

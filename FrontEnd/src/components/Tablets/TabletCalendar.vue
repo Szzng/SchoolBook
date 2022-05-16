@@ -50,22 +50,21 @@
 
       </v-col>
     </v-row>
-    <checkTabletsBookingDialog :selectedDate="focus" :bookedTabletsLists="bookedTabletsLists" />
+    <CheckTabletsBookingDialog :selectedDate="focus"/>
   </div>
 </template>
 
 <script>
-import checkTabletsBookingDialog from '@/components/Tablets/CheckTabletsBookingDialog.vue'
+import CheckTabletsBookingDialog from '@/components/Tablets/CheckTabletsBookingDialog.vue'
 import { mapState } from 'vuex'
 import api from '@/api/modules/tablets'
 
 export default {
-  components: { checkTabletsBookingDialog },
+  components: { CheckTabletsBookingDialog },
 
   data: () => ({
     focus: '',
-    weekday: [1, 2, 3, 4, 5, 6, 0],
-    bookedTabletsLists: []
+    weekday: [1, 2, 3, 4, 5, 6, 0]
   }),
 
   computed: {
@@ -74,7 +73,7 @@ export default {
   methods: {
     checkTabletsBooking ({ date }) {
       this.focus = date
-      api.getBookedTabletsListByDate(this, date)
+      api.getBookedTabletsListByDate(date)
       this.dialog.checkTabletsBooking = true
     },
     setToday () {
