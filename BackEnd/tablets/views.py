@@ -32,13 +32,19 @@ class TabletsViewSet(mixins.CreateModelMixin,
 
     def retrieve(self, request, pk):
         timetable = TimeTable.objects.filter(id__contains=pk).order_by('id')
-        places = ['전산실', '학습 준비물실']
+        places = {'전산실': 58, '학습 준비물실': 52}
         data = {}
         for period in timetable:
-            dictByPeriod = []
-            for place in places:
-                dictByPeriod.append(list(period.bookedtablets_set.filter(place=place).values('borrower', 'quantity')))
-                print(list(period.bookedtablets_set.filter(place=place).values('quantity')))
+            dictByPeriod = {}
+            for place in places.keys():
+                left = places[place]
+                filteredByPlace = period.bookedtablets_set.filter(place=place)
+                for i in filteredByPlace:
+                    left -= i.quantity
+                dictByPeriod[place] = {
+                    'left': left,
+                    'classes': list(filteredByPlace.values('borrower', 'quantity'))
+                }
             data[period.period] = dictByPeriod
 
         return Response(data)

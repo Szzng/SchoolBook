@@ -2,7 +2,7 @@
   <div>
     <v-dialog
       v-model="dialog.checkTabletsBooking"
-      max-width="600"
+      max-width="700"
       content-class="check-booking-dialog"
     >
       <v-card class="pl-2">
@@ -27,18 +27,18 @@
           >
           <v-card-text class="pa-0">
             <v-row
-              v-for="(arrayByPlaces, j) in bookedTabletsLists[period]"
-              :key="j"
+              v-for="place in Object.keys(places)"
+              :key="place"
               class="ml-2"
               align="center"
             >
-              <v-col cols="3" class="ml-2 indigo--text">
-                {{ places[j] }} + 대
+              <v-col cols="4" class="ml-2 indigo--text">
+                {{ place }} + {{ getLeft(period, place) }}대
               </v-col>
               <v-col>
                 <v-chip-group column>
                   <v-chip
-                    v-for="(item, i) in arrayByPlaces"
+                    v-for="(item, i) in getListsByPeriodPlace(period, place)"
                     :key="i"
                     :color="colors[i]"
                     outlined
@@ -53,13 +53,9 @@
               </v-col>
             </v-row>
           </v-card-text>
-          <!-- </v-col>
-          </v-row> -->
-
           <v-divider class="my-3"></v-divider>
         </v-card>
       </v-card>
-      <!-- {{bookedTabletsLists[Object.keys(bookedTabletsLists)[0]].전산실}} -->
     </v-dialog>
 
     <BookTabletsDialog :selectedDate="selectedDate" />
@@ -79,7 +75,7 @@ export default {
 
   data: () => ({
     periods: [1, 2, 3, 4, 5, 6],
-    places: ['전산실', '준비물실'],
+    places: {'전산실': 58, '학습 준비물실': 52},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green']
   }),
 
@@ -93,6 +89,21 @@ export default {
   },
 
   methods: {
+    getListsByPeriodPlace (period, place) {
+      let a = this.bookedTabletsLists[period]
+      if (a) {
+        return a[place].classes
+      }
+    },
+    getLeft (period, place) {
+      let a = this.bookedTabletsLists[period]
+      if (a) {
+        return a[place].left
+      } else {
+        return this.places[place]
+      }
+    },
+
     book () {
       this.dialog.bookTablets = true
     }
