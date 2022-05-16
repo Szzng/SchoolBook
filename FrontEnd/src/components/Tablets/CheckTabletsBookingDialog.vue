@@ -32,7 +32,7 @@
               class="ml-2"
               align="center"
             >
-              <v-col cols="4" class="ml-2 indigo--text">
+              <v-col cols="3" class="ml-2 indigo--text">
                 {{ place }} + {{ getLeft(period, place) }}대
               </v-col>
               <v-col>
@@ -75,7 +75,7 @@ export default {
 
   data: () => ({
     periods: [1, 2, 3, 4, 5, 6],
-    places: {'전산실': 58, '학습 준비물실': 52},
+    places: {'전산실': 58, '준비물실': 52},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green']
   }),
 

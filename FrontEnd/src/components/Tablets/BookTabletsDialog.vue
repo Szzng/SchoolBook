@@ -76,7 +76,7 @@ export default {
     period: [],
     borrower: '',
     quantity: 0,
-    places: ['전산실', '학습 준비물실'],
+    places: ['전산실', '준비물실'],
     periods: [1, 2, 3, 4, 5, 6],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   }),
@@ -93,11 +93,11 @@ export default {
     save () {
       console.log('save()...')
       const postData = {
-        date: this.selectedDate,
-        period: this.period,
-        place: this.place,
-        borrower: this.borrower,
-        quantity: this.quantity
+        'time.date': this.selectedDate,
+        'time.period': this.period,
+        'place.name': this.place,
+        'borrower': this.borrower,
+        'quantity': this.quantity
       }
       api.BookTablets(this, postData)
       console.log(postData)

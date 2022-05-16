@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
-from .models import TimeTable, BookedTablets
+from .models import TimeTable, BookedTablets, Place
 from .serializers import TimeTableSerializer, BookedTabletsSerializer
 
 
@@ -15,33 +15,33 @@ class TabletsViewSet(mixins.CreateModelMixin,
         return BookedTablets.objects.all().order_by('time')
 
     def create(self, request, *args, **kwargs):
-        for i in request.data['period']:
+        for i in request.data['time.period']:
             timetable, created = TimeTable.objects.get_or_create(
-                date=request.data['date'],
+                date=request.data['time.date'],
                 period=i,
-                id=request.data['date'] + '-' + str(i)
+                id=request.data['time.date'] + '-' + str(i)
             )
-
+            place = Place.objects.get(name=request.data['place.name'])
             bookedTablets, created = BookedTablets.objects.get_or_create(
                 time=timetable,
-                place=request.data['place'],
+                place=place,
                 borrower=request.data['borrower'],
                 quantity=request.data['quantity']
             )
-        return Response(status=201)
+        return Response(self.serializer_class(bookedTablets).data)
 
     def retrieve(self, request, pk):
         timetable = TimeTable.objects.filter(id__contains=pk).order_by('id')
-        places = {'전산실': 58, '학습 준비물실': 52}
+        places = Place.objects.all()
         data = {}
         for period in timetable:
             dictByPeriod = {}
-            for place in places.keys():
-                left = places[place]
-                filteredByPlace = period.bookedtablets_set.filter(place=place)
+            for place in places:
+                left = place.totalQuantity
+                filteredByPlace = period.bookedtablets_set.filter(place=place.name)
                 for i in filteredByPlace:
                     left -= i.quantity
-                dictByPeriod[place] = {
+                dictByPeriod[place.name] = {
                     'left': left,
                     'classes': list(filteredByPlace.values('borrower', 'quantity'))
                 }

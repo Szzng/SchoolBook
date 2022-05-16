@@ -22,7 +22,7 @@ export default {
       .post(Urls.allBookedTablets, postData)
       .then(response => {
         console.log('BookTablets POST response', response)
-        this.getBookedTabletsListByDate(postData.date)
+        this.getBookedTabletsListByDate(postData['time.date'])
         component.dialog.bookTablets = false
       })
       .catch(error => {
