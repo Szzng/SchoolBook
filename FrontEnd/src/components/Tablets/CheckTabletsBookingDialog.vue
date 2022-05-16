@@ -74,13 +74,11 @@ export default {
   },
 
   data: () => ({
-    periods: [1, 2, 3, 4, 5, 6],
-    places: {'전산실': 58, '준비물실': 52},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green']
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog', 'bookedTabletsLists']),
+    ...mapState('bookStore', ['dialog', 'periods', 'places', 'bookedTabletsLists']),
 
     formatSelectedDate () {
       const date = this.selectedDate.split('-')

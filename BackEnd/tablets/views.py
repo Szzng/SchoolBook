@@ -1,8 +1,7 @@
-from django.http import JsonResponse
 from rest_framework.response import Response
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins
 from .models import TimeTable, BookedTablets, Place
-from .serializers import TimeTableSerializer, BookedTabletsSerializer
+from .serializers import BookedTabletsSerializer
 
 
 class TabletsViewSet(mixins.CreateModelMixin,
