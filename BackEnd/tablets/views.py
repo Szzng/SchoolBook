@@ -1,10 +1,10 @@
 from rest_framework.response import Response
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 from .models import TimeTable, BookedTablets, Place
 from .serializers import BookedTabletsSerializer
 
 
-class TabletsViewSet(mixins.CreateModelMixin,
+class DateTabletsViewSet(mixins.CreateModelMixin,
                      mixins.DestroyModelMixin,
                      mixins.ListModelMixin,
                      viewsets.GenericViewSet):
@@ -42,8 +42,21 @@ class TabletsViewSet(mixins.CreateModelMixin,
                     left -= i.quantity
                 dictByPeriod[place.name] = {
                     'left': left,
-                    'classes': list(filteredByPlace.values('borrower', 'quantity'))
+                    'classes': list(filteredByPlace.values('id', 'borrower', 'quantity'))
                 }
             data[period.period] = dictByPeriod
 
         return Response(data)
+
+
+class DestroyBookedTabletViewSet(mixins.DestroyModelMixin,
+                                 viewsets.GenericViewSet):
+
+    def get_queryset(self):
+        pass
+
+    def destroy(self, request, pk, *args, **kwargs):
+        tablet = BookedTablets.objects.get(id=pk)
+        print(tablet)
+        tablet.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,27 +1,19 @@
 from rest_framework import serializers
-from .models import TimeTable, BookedTablets, Place
 
 
-class TimeTableSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TimeTable
-        fields = '__all__'
-        read_only_fields = ("id",)
-
-class PlaceSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Place
-        fields = '__all__'
-        read_only_fields = ("totalQuantity",)
+class TimeTableSerializer(serializers.Serializer):
+    id = serializers.CharField(read_only=True)
+    date = serializers.DateField(required=True)
+    period = serializers.IntegerField(required=True)
 
 
-class BookedTabletsSerializer(serializers.ModelSerializer):
+class PlaceSerializer(serializers.Serializer):
+    name = serializers.CharField(required=True)
+    totalQuantity = serializers.IntegerField(read_only=True)
+
+
+class BookedTabletsSerializer(serializers.Serializer):
     time = TimeTableSerializer()
     place = PlaceSerializer()
-
-    class Meta:
-        model = BookedTablets
-        fields = '__all__'
-        # depth = 1
-
-
+    borrower = serializers.CharField(required=True)
+    quantity = serializers.IntegerField(required=True)

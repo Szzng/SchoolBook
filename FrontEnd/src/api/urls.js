@@ -7,5 +7,8 @@ export default {
   allBookedTablets: 'tablets/',
   bookedTabletsByDate: (date) => {
     return `tablets/${date}/`
+  },
+  destroyBookedTablet: (id) => {
+    return `tablets/destroy/${id}/`
   }
 }

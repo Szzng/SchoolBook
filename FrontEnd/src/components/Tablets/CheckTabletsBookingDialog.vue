@@ -7,15 +7,11 @@
     >
       <v-card class="pl-2">
         <v-card-actions>
+          <v-spacer></v-spacer>
           <v-card-title class="pl-0">{{ formatSelectedDate }}</v-card-title>
           <v-spacer></v-spacer>
-          <v-btn
-            color="blue darken-1"
-            class="pr-0 mr-0"
-            text
-            x-large
-            @click="book"
-          >
+
+          <v-btn color="primary" class="pr-0 mr-0" @click="book">
             예약
             <v-icon left class="ml-0"> mdi-clock-plus-outline </v-icon>
           </v-btn>
@@ -32,7 +28,7 @@
               class="ml-2"
               align="center"
             >
-              <v-col cols="3" class="ml-2 indigo--text">
+              <v-col cols="3" class="ml-2 purple--text">
                 {{ place }} + {{ getLeft(period, place) }}대
               </v-col>
               <v-col>
@@ -43,6 +39,7 @@
                     :color="colors[i]"
                     outlined
                     class="white--text"
+                    @click="assertDestroyBooking(item)"
                   >
                     <v-avatar left>
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
@@ -58,6 +55,35 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="showDestroyDialog" max-width="400" persistent>
+      <v-card>
+        <v-row align="center" justify="center">
+          <v-chip color="red darken-2" class="white--text mt-10">
+            <v-avatar left>
+              <v-icon>mdi-close-circle-outline</v-icon>
+            </v-avatar>
+            {{ destroyItem.borrower }} ({{ destroyItem.quantity }}대)
+          </v-chip>
+        </v-row>
+        <v-row
+          align="center"
+          justify="center"
+          class="mt-8 mb-6"
+          :style="{ fontSize: '18px' }"
+        >
+          정말 예약을 취소하시겠어요?
+        </v-row>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" class="white--text" @click="destroyBooking"
+            >예약 취소하기</v-btn
+          >
+          <v-btn @click="showDestroyDialog = false">아니요</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <BookTabletsDialog :selectedDate="selectedDate" />
   </div>
 </template>
@@ -65,6 +91,7 @@
 <script>
 import { mapState } from 'vuex'
 import BookTabletsDialog from '@/components/Tablets/BookTabletsDialog.vue'
+import api from '@/api/modules/tablets'
 
 export default {
   components: { BookTabletsDialog },
@@ -74,11 +101,19 @@ export default {
   },
 
   data: () => ({
-    colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green']
+    showDestroyDialog: false,
+    destroy: false,
+    destroyItem: '',
+    colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green', 'indigo']
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog', 'periods', 'places', 'bookedTabletsLists']),
+    ...mapState('bookStore', [
+      'dialog',
+      'periods',
+      'places',
+      'bookedTabletsLists'
+    ]),
 
     formatSelectedDate () {
       const date = this.selectedDate.split('-')
@@ -104,6 +139,17 @@ export default {
 
     book () {
       this.dialog.bookTablets = true
+    },
+
+    assertDestroyBooking (item) {
+      this.destroyItem = item
+      console.log(this.destroyId)
+      this.showDestroyDialog = true
+    },
+
+    destroyBooking () {
+      api.DestroyBookedTablets(this.destroyItem.id, this.selectedDate)
+      this.showDestroyDialog = false
     }
   }
 }

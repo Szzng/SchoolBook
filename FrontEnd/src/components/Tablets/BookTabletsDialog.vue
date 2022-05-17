@@ -92,8 +92,10 @@ export default {
     quantity: 0,
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
     placeRule: [(v) => !!v || '어디에서 빌리시나요?'],
-    periodRule: [(v) => !!v || '몇 교시에 사용하시나요?'],
-    borrowerRule: [(v) => !!v || '대여자를 적어주세요.'],
+    borrowerRule: [
+      (v) => !!v || '대여자를 적어주세요.',
+      v => (v && v.length <= 10) || '대여자는 10글자 이하로 적어주세요.'
+    ],
     quantityRule: [
       (v) => !!v || '몇 개를 빌리시나요?',
       (v) => (v && v >= 1) || '0보다 큰 수를 입력해주세요.',
@@ -102,7 +104,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog', 'periods', 'places']),
+    ...mapState('bookStore', ['dialog', 'periods', 'places', 'max']),
     formatSelectedDate () {
       const date = this.selectedDate.split('-')
       return date[1] + '월  ' + date[2] + '일'
@@ -112,13 +114,16 @@ export default {
   methods: {
     save () {
       console.log('save()...')
-      if (this.$refs.form.validate()) {
+      if (!this.period.length) {
+        alert('몇 교시에 사용하실지 선택해주세요!')
+      }
+      if (this.period.length && this.$refs.form.validate()) {
         const postData = {
           'time.date': this.selectedDate,
           'time.period': this.period,
           'place.name': this.place,
-          borrower: this.borrower,
-          quantity: this.quantity
+          'borrower': this.borrower,
+          'quantity': this.quantity
         }
         api.BookTablets(this, postData)
         this.$refs.form.reset()

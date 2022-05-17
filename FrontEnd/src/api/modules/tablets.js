@@ -28,5 +28,18 @@ export default {
       .catch(error => {
         console.log('BookTablets POST error', error.response)
       })
+  },
+
+  DestroyBookedTablets (destroyId, date) {
+    console.log('BookTablets()...')
+    myAxios
+      .delete(Urls.destroyBookedTablet(destroyId))
+      .then(response => {
+        console.log('BookTablets POST response', response)
+        this.getBookedTabletsListByDate(date)
+      })
+      .catch(error => {
+        console.log('BookTablets POST error', error.response)
+      })
   }
 }
