@@ -55,7 +55,7 @@
       </v-card>
     </v-dialog>
 
-    <BookTabletsDialog :selectedDate="selectedDate" />
+    <BookTabletsDialog :selectedDate="selectedDate" :left="left" />
     <DestroyTabletDialog :destroyItem="destroyItem" :selectedDate="selectedDate"/>
   </div>
 </template>
@@ -64,6 +64,7 @@
 import { mapState } from 'vuex'
 import BookTabletsDialog from '@/components/Tablets/BookTabletsDialog.vue'
 import DestroyTabletDialog from '@/components/Tablets/DestroyTabletDialog.vue'
+import api from '@/api/modules/tablets'
 
 export default {
   components: { BookTabletsDialog, DestroyTabletDialog },
@@ -73,6 +74,7 @@ export default {
   },
 
   data: () => ({
+    left: {'전산실': '', '준비물실': ''},
     destroyItem: {id: '', borrower: '', quantity: ''},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green', 'indigo']
   }),
@@ -110,6 +112,7 @@ export default {
     },
 
     book () {
+      this.left = api.getLeftTabletsCounts(this, this.selectedDate)
       this.dialog.bookTablets = true
     },
 

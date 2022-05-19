@@ -28,13 +28,13 @@
           <v-row justify="center">
             <v-col
               cols="4"
-              class="pl-9 py-0"
+              class="py-0"
               v-for="item in periods"
               :key="item"
             >
               <v-checkbox
                 v-model="period"
-                :label="`${item}교시`"
+                :label="`${item}교시 (${left[place][item-1]}대)`"
                 :color="colors[item - 1]"
                 :value="item"
                 hide-details
@@ -84,9 +84,12 @@ import { mapState } from 'vuex'
 import api from '@/api/modules/tablets'
 
 export default {
-  props: { selectedDate: String },
+  props: {
+    selectedDate: String,
+    left: Object
+  },
   data: () => ({
-    place: '',
+    place: '전산실',
     period: [],
     borrower: '',
     quantity: 0,

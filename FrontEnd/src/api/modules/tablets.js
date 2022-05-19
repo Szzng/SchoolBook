@@ -35,11 +35,24 @@ export default {
     myAxios
       .delete(Urls.tabletDestroy(destroyId))
       .then(response => {
-        console.log('BookTablets POST response', response)
+        console.log('BookTablets DELETE response', response)
         this.getBookedTabletsListByDate(date)
       })
       .catch(error => {
         console.log('BookTablets POST error', error.response)
+      })
+  },
+
+  getLeftTabletsCounts (component, date) {
+    console.log('getLeftTabletsCount()...')
+    myAxios
+      .get(Urls.tabletLeft(date))
+      .then(response => {
+        console.log('getLeftTabletsCount GET response', response)
+        component.left = response.data
+      })
+      .catch(error => {
+        console.log('getLeftTabletsCount GET error', error.response)
       })
   }
 }

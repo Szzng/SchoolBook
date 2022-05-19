@@ -20,6 +20,8 @@ def updateLeftTabletsCount(time, place, count, increase=True):
     else:
         left -= int(count)
 
+    left = min(left, place.totalQuantity)
+
     LeftTablets.objects.update_or_create(
         time=time, place=place,
         defaults={'count': left}

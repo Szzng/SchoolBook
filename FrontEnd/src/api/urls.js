@@ -10,5 +10,8 @@ export default {
   },
   tabletDestroy: (tabletId) => {
     return `tablets/destroy/${tabletId}/`
+  },
+  tabletLeft: (date) => {
+    return `tablets/left/${date}`
   }
 }

@@ -5,8 +5,10 @@ from . import views
 app_name = 'api/tablets'
 
 router = DefaultRouter()
-router.register(r'destroy', views.DestroyBookingViewSet, basename='Destroy')
 router.register(r'', views.BookedTabletsByDateViewSet, basename='Tablets')
+router.register(r'left', views.LeftTabletsViewSet, basename='Tablets')
+router.register(r'destroy', views.DestroyBookingViewSet, basename='Destroy')
+
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
 
-from .models import TimeTable, Place, BookedTablets
+from .models import TimeTable, Place, BookedTablets, LeftTablets
 from .serializers import BookedTabletsSerializer
 from .actions import updateLeftTabletsCount, getLeftTabletsCount
 
@@ -52,6 +52,25 @@ class BookedTabletsByDateViewSet(mixins.CreateModelMixin,
                         period.bookedtablets_set.filter(place=place.name).values('id', 'borrower', 'quantity'))
                 }
             data[period.period] = dictByPeriod
+
+        return Response(data)
+
+
+class LeftTabletsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+
+    def get_queryset(self):
+        return LeftTablets.objects.all().order_by('time')
+
+    def retrieve(self, request, pk):
+        date = TimeTable.objects.filter(id__contains=pk).order_by('id')
+        places = Place.objects.all()
+        data = {}
+
+        for place in places:
+            lefts = [place.totalQuantity] * 6
+            for period in date:
+                lefts[period.period - 1] = getLeftTabletsCount(period, place)
+            data[place.name] = lefts
 
         return Response(data)
 
