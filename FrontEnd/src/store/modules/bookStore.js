@@ -3,8 +3,9 @@ const bookStore = {
   state: {
     dialog: {
       checkTabletsBooking: false,
-      checkComputerRoomsBooking: false,
       bookTablets: false,
+      destroyTablet: false,
+      checkComputerRoomsBooking: false,
       bookComputerRooms: false
     },
     periods: [1, 2, 3, 4, 5, 6],

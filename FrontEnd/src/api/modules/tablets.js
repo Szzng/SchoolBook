@@ -6,7 +6,7 @@ export default {
   getBookedTabletsListByDate (date) {
     console.log('getBookedTabletsListByDate()...')
     myAxios
-      .get(Urls.bookedTabletsByDate(date))
+      .get(Urls.tabletsByDate(date))
       .then(response => {
         console.log('getBookedTabletsListByDate GET response', response)
         bookStore.state.bookedTabletsLists = response.data
@@ -19,7 +19,7 @@ export default {
   BookTablets (component, postData) {
     console.log('BookTablets()...')
     myAxios
-      .post(Urls.allBookedTablets, postData)
+      .post(Urls.tabletsAll, postData)
       .then(response => {
         console.log('BookTablets POST response', response)
         this.getBookedTabletsListByDate(postData['time.date'])
@@ -33,7 +33,7 @@ export default {
   DestroyBookedTablets (destroyId, date) {
     console.log('BookTablets()...')
     myAxios
-      .delete(Urls.destroyBookedTablet(destroyId))
+      .delete(Urls.tabletDestroy(destroyId))
       .then(response => {
         console.log('BookTablets POST response', response)
         this.getBookedTabletsListByDate(date)

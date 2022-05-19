@@ -55,55 +55,25 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="showDestroyDialog" max-width="400" persistent>
-      <v-card>
-        <v-row align="center" justify="center">
-          <v-chip color="red darken-2" class="white--text mt-10">
-            <v-avatar left>
-              <v-icon>mdi-close-circle-outline</v-icon>
-            </v-avatar>
-            {{ destroyItem.borrower }} ({{ destroyItem.quantity }}대)
-          </v-chip>
-        </v-row>
-        <v-row
-          align="center"
-          justify="center"
-          class="mt-8 mb-6"
-          :style="{ fontSize: '18px' }"
-        >
-          정말 예약을 취소하시겠어요?
-        </v-row>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="error" class="white--text" @click="destroyBooking"
-            >예약 취소하기</v-btn
-          >
-          <v-btn @click="showDestroyDialog = false">아니요</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
     <BookTabletsDialog :selectedDate="selectedDate" />
+    <DestroyTabletDialog :destroyItem="destroyItem" :selectedDate="selectedDate"/>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import BookTabletsDialog from '@/components/Tablets/BookTabletsDialog.vue'
-import api from '@/api/modules/tablets'
+import DestroyTabletDialog from '@/components/Tablets/DestroyTabletDialog.vue'
 
 export default {
-  components: { BookTabletsDialog },
+  components: { BookTabletsDialog, DestroyTabletDialog },
 
   props: {
     selectedDate: String
   },
 
   data: () => ({
-    showDestroyDialog: false,
-    destroy: false,
-    destroyItem: '',
+    destroyItem: {id: '', borrower: '', quantity: ''},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green', 'indigo']
   }),
 
@@ -122,12 +92,14 @@ export default {
   },
 
   methods: {
+
     getListsByPeriodPlace (period, place) {
       let a = this.bookedTabletsLists[period]
       if (a) {
         return a[place].classes
       }
     },
+
     getLeft (period, place) {
       let a = this.bookedTabletsLists[period]
       if (a) {
@@ -143,14 +115,9 @@ export default {
 
     assertDestroyBooking (item) {
       this.destroyItem = item
-      console.log(this.destroyId)
-      this.showDestroyDialog = true
-    },
-
-    destroyBooking () {
-      api.DestroyBookedTablets(this.destroyItem.id, this.selectedDate)
-      this.showDestroyDialog = false
+      this.dialog.destroyTablet = true
     }
+
   }
 }
 </script>

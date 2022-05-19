@@ -3,12 +3,12 @@ const DjangoBase = 'http://127.0.0.1:8000/'
 export default {
   Django_API: `${DjangoBase}api/`,
 
-  /* Tablets */
-  allBookedTablets: 'tablets/',
-  bookedTabletsByDate: (date) => {
+  /* Book Tablets */
+  tabletsAll: 'tablets/',
+  tabletsByDate: (date) => {
     return `tablets/${date}/`
   },
-  destroyBookedTablet: (id) => {
-    return `tablets/destroy/${id}/`
+  tabletDestroy: (tabletId) => {
+    return `tablets/destroy/${tabletId}/`
   }
 }
