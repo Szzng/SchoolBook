@@ -22,3 +22,8 @@ class BookedTablets(models.Model):
 
     def __str__(self):
         return self.borrower + "(" + str(self.quantity) + "대)"
+
+class LeftTablets(models.Model):
+    time = models.ForeignKey(TimeTable, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    count = models.PositiveSmallIntegerField()
