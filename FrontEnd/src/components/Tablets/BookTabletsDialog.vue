@@ -4,9 +4,15 @@
       v-model="dialog.bookTablets"
       max-width="500"
       content-class="book-dialog"
+      persistent
     >
       <v-card class="pa-6">
-        <v-row justify="center">
+        <v-row justify="end">
+          <v-btn text @click="close">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-row>
+        <v-row justify="center" class="mt-0">
           <v-card-title>{{ formatSelectedDate }}</v-card-title>
         </v-row>
 
@@ -25,16 +31,24 @@
             ></v-checkbox>
           </v-row>
 
-          <v-row justify="center">
-            <v-col
-              cols="4"
-              class="py-0"
-              v-for="item in periods"
-              :key="item"
-            >
+          <v-row v-if="place" justify="center">
+            <v-col cols="4" class="py-0" v-for="item in periods" :key="item">
               <v-checkbox
                 v-model="period"
-                :label="`${item}교시 (${left[place][item-1]}대)`"
+                :label="`${item}교시 (${left[place][item - 1]}대)`"
+                :color="colors[item - 1]"
+                :value="item"
+                hide-details
+              >
+              </v-checkbox>
+            </v-col>
+          </v-row>
+
+          <v-row v-else justify="center" class="ml-8">
+            <v-col cols="4" class="py-0" v-for="item in periods" :key="item">
+              <v-checkbox
+                v-model="period"
+                :label="`${item}교시`"
                 :color="colors[item - 1]"
                 :value="item"
                 hide-details
@@ -89,7 +103,7 @@ export default {
     left: Object
   },
   data: () => ({
-    place: '전산실',
+    place: '',
     period: [],
     borrower: '',
     quantity: 0,
@@ -97,7 +111,7 @@ export default {
     placeRule: [(v) => !!v || '어디에서 빌리시나요?'],
     borrowerRule: [
       (v) => !!v || '대여자를 적어주세요.',
-      v => (v && v.length <= 10) || '대여자는 10글자 이하로 적어주세요.'
+      (v) => (v && v.length <= 10) || '대여자는 10글자 이하로 적어주세요.'
     ],
     quantityRule: [
       (v) => !!v || '몇 개를 빌리시나요?',
@@ -114,7 +128,14 @@ export default {
     }
   },
 
+  watch: {},
+
   methods: {
+    close () {
+      this.dialog.bookTablets = false
+      this.$refs.form.reset()
+      this.$refs.form.resetValidation()
+    },
     save () {
       console.log('save()...')
       if (!this.period.length) {
@@ -125,12 +146,11 @@ export default {
           'time.date': this.selectedDate,
           'time.period': this.period,
           'place.name': this.place,
-          'borrower': this.borrower,
-          'quantity': this.quantity
+          borrower: this.borrower,
+          quantity: this.quantity
         }
         api.BookTablets(this, postData)
         this.$refs.form.reset()
-        // this.$refs.form.resetValidation()
         console.log(postData)
       }
     }

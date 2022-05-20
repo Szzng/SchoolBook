@@ -11,7 +11,7 @@
           <v-card-title class="pl-0">{{ formatSelectedDate }}</v-card-title>
           <v-spacer></v-spacer>
 
-          <v-btn color="primary" class="pr-0 mr-0" @click="book">
+          <v-btn color="primary" class="pr-0 mr-0" @click="bookTablets">
             예약
             <v-icon left class="ml-0"> mdi-clock-plus-outline </v-icon>
           </v-btn>
@@ -74,7 +74,7 @@ export default {
   },
 
   data: () => ({
-    left: {'전산실': '', '준비물실': ''},
+    left: {},
     destroyItem: {id: '', borrower: '', quantity: ''},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green', 'indigo']
   }),
@@ -111,7 +111,7 @@ export default {
       }
     },
 
-    book () {
+    bookTablets () {
       this.left = api.getLeftTabletsCounts(this, this.selectedDate)
       this.dialog.bookTablets = true
     },
