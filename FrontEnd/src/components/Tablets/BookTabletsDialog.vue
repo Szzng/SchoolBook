@@ -128,14 +128,13 @@ export default {
     }
   },
 
-  watch: {},
-
   methods: {
     close () {
       this.dialog.bookTablets = false
       this.$refs.form.reset()
       this.$refs.form.resetValidation()
     },
+
     save () {
       console.log('save()...')
       if (!this.period.length) {
