@@ -129,7 +129,6 @@ export default {
         this.period.forEach(function (i) {
           min = Math.min(min, leftArrayByPlace[i - 1])
         })
-        console.log(min)
         return min
       }
     },
@@ -140,7 +139,6 @@ export default {
       ]
 
       if (this.fetchMinLeft) {
-        console.log('실행중')
         const rule = (v) =>
           (v || '') <= this.fetchMinLeft ||
           `${this.fetchMinLeft} 이하의 수를 입력해주세요`
@@ -159,7 +157,6 @@ export default {
     },
 
     save () {
-      console.log('save()...')
       if (!this.period.length) {
         alert('몇 교시에 사용하실지 선택해주세요!')
       }
@@ -173,7 +170,6 @@ export default {
         }
         api.BookTablets(this, postData)
         this.$refs.form.reset()
-        console.log(postData)
       }
     }
   }

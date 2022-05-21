@@ -4,11 +4,9 @@ import bookStore from '../../store/modules/bookStore'
 
 export default {
   getBookedTabletsListByDate (date) {
-    console.log('getBookedTabletsListByDate()...')
     myAxios
       .get(Urls.tabletsByDate(date))
       .then(response => {
-        console.log('getBookedTabletsListByDate GET response', response)
         bookStore.state.bookedTabletsLists = response.data
       })
       .catch(error => {
@@ -17,11 +15,9 @@ export default {
   },
 
   BookTablets (component, postData) {
-    console.log('BookTablets()...')
     myAxios
       .post(Urls.tabletsAll, postData)
       .then(response => {
-        console.log('BookTablets POST response', response)
         this.getBookedTabletsListByDate(postData['time.date'])
         component.dialog.bookTablets = false
       })
@@ -31,11 +27,9 @@ export default {
   },
 
   DestroyBookedTablets (destroyId, date) {
-    console.log('BookTablets()...')
     myAxios
       .delete(Urls.tabletDestroy(destroyId))
       .then(response => {
-        console.log('BookTablets DELETE response', response)
         this.getBookedTabletsListByDate(date)
       })
       .catch(error => {
@@ -44,11 +38,9 @@ export default {
   },
 
   getLeftTabletsCounts (component, date) {
-    console.log('getLeftTabletsCount()...')
     myAxios
       .get(Urls.tabletLeft(date))
       .then(response => {
-        console.log('getLeftTabletsCount GET response', response)
         component.left = response.data
       })
       .catch(error => {
