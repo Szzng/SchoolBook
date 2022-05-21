@@ -2,7 +2,6 @@
   <div>
     <v-row class="fill-height mx-12 my-12">
       <v-col>
-
         <v-sheet height="80">
           <v-toolbar flat class="pt-2">
             <v-spacer></v-spacer>
@@ -16,6 +15,9 @@
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
               {{ $refs.calendar.title }}
+            </v-toolbar-title>
+            <v-toolbar-title v-else>
+              {{ initCalendarTitle }}
             </v-toolbar-title>
             <v-btn
               fab
@@ -47,10 +49,9 @@
             @click:date="checkTabletsBooking"
           ></v-calendar>
         </v-sheet>
-
       </v-col>
     </v-row>
-    <CheckTabletsBookingDialog :selectedDate="focus"/>
+    <CheckTabletsBookingDialog :selectedDate="focus" />
   </div>
 </template>
 
@@ -63,6 +64,7 @@ export default {
   components: { CheckTabletsBookingDialog },
 
   data: () => ({
+    initCalendarTitle: '',
     focus: '',
     weekday: [1, 2, 3, 4, 5]
   }),
@@ -70,6 +72,12 @@ export default {
   computed: {
     ...mapState('bookStore', ['dialog'])
   },
+
+  async created () {
+    await this.$nextTick()
+    this.initCalendarTitle = this.$refs.calendar.title
+  },
+
   methods: {
     checkTabletsBooking ({ date }) {
       this.focus = date
