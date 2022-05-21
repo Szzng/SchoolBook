@@ -112,19 +112,41 @@ export default {
     borrowerRule: [
       (v) => !!v || '대여자를 적어주세요.',
       (v) => (v && v.length <= 10) || '대여자는 10글자 이하로 적어주세요.'
-    ],
-    quantityRule: [
-      (v) => !!v || '몇 개를 빌리시나요?',
-      (v) => (v && v >= 1) || '0보다 큰 수를 입력해주세요.',
-      (v) => (v && v < 60) || '60보다 작은 수를 입력해주세요.'
     ]
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog', 'periods', 'places', 'max']),
+    ...mapState('bookStore', ['dialog', 'periods', 'places']),
     formatSelectedDate () {
       const date = this.selectedDate.split('-')
       return date[1] + '월  ' + date[2] + '일'
+    },
+    fetchMinLeft () {
+      if (this.place) {
+        var leftArrayByPlace = this.left[this.place]
+        var min = Math.max(...leftArrayByPlace)
+        this.period.forEach(function (i) {
+          min = Math.min(min, leftArrayByPlace[i - 1])
+        })
+        console.log(min)
+        return min
+      }
+    },
+    quantityRule () {
+      const rules = [
+        (v) => !!v || '몇 개를 빌리시나요?',
+        (v) => (v && v >= 1) || '0보다 큰 수를 입력해주세요.'
+      ]
+
+      if (this.fetchMinLeft) {
+        console.log('실행중')
+        const rule = (v) =>
+          (v || '') <= this.fetchMinLeft ||
+          `${this.fetchMinLeft} 이하의 수를 입력해주세요`
+
+        rules.push(rule)
+      }
+      return rules
     }
   },
 
