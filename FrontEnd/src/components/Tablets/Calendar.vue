@@ -2,7 +2,6 @@
   <div>
     <v-row class="fill-height mx-12 my-12">
       <v-col>
-
         <v-sheet height="80">
           <v-toolbar flat class="pt-2">
             <v-spacer></v-spacer>
@@ -16,6 +15,9 @@
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
               {{ $refs.calendar.title }}
+            </v-toolbar-title>
+            <v-toolbar-title v-else>
+              {{ initCalendarTitle }}
             </v-toolbar-title>
             <v-btn
               fab
@@ -44,34 +46,42 @@
             :weekdays="weekday"
             color="primary"
             type="month"
-            @click:date="bookTablets"
+            @click:date="checkTabletsBooking"
           ></v-calendar>
         </v-sheet>
-
       </v-col>
     </v-row>
-    <checkTabletsBookingDialog :selectedDate="focus" />
+    <CheckTabletsBookingDialog :selectedDate="focus" />
   </div>
 </template>
 
 <script>
-import checkTabletsBookingDialog from '@/components/Tablets/CheckTabletsBookingDialog.vue'
+import CheckTabletsBookingDialog from '@/components/Tablets/CheckTabletsBookingDialog.vue'
 import { mapState } from 'vuex'
+import api from '@/api/modules/tablets'
 
 export default {
-  components: { checkTabletsBookingDialog },
+  components: { CheckTabletsBookingDialog },
 
   data: () => ({
+    initCalendarTitle: '',
     focus: '',
-    weekday: [1, 2, 3, 4, 5, 6, 0]
+    weekday: [1, 2, 3, 4, 5]
   }),
 
   computed: {
     ...mapState('bookStore', ['dialog'])
   },
+
+  async created () {
+    await this.$nextTick()
+    this.initCalendarTitle = this.$refs.calendar.title
+  },
+
   methods: {
-    bookTablets ({ date }) {
+    checkTabletsBooking ({ date }) {
       this.focus = date
+      api.getBookedTabletsListByDate(date)
       this.dialog.checkTabletsBooking = true
     },
     setToday () {
