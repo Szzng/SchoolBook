@@ -65,7 +65,7 @@
             :rules="borrowerRule"
             outlined
             color="primary"
-            class="mt-12 pt-2"
+            class="mt-12 pt-2 px-3"
           ></v-text-field>
           <v-text-field
             v-model="quantity"
@@ -75,7 +75,7 @@
             type="number"
             outlined
             color="primary"
-            class="mt-3"
+            class="mt-3 px-3"
           ></v-text-field>
           <v-card-actions>
             <v-btn
