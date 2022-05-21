@@ -117,7 +117,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog', 'periods', 'places']),
+    ...mapState('tabletsStore', ['dialog', 'periods', 'places']),
     formatSelectedDate () {
       const date = this.selectedDate.split('-')
       return date[1] + '월  ' + date[2] + '일'

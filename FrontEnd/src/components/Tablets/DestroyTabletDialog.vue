@@ -46,7 +46,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog'])
+    ...mapState('tabletsStore', ['dialog'])
   },
 
   methods: {

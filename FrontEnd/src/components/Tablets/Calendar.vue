@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="fill-height mx-12 my-12">
+    <v-row class="fill-height mx-12 my-16">
       <v-col>
         <v-sheet height="80">
           <v-toolbar flat class="pt-2">
@@ -70,7 +70,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog'])
+    ...mapState('tabletsStore', ['dialog'])
   },
 
   async created () {
