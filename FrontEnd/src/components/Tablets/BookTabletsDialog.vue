@@ -36,6 +36,7 @@
               <v-checkbox
                 v-model="period"
                 :label="`${item}교시 (${left[place][item - 1]}대)`"
+                :disabled="!left[place][item - 1]"
                 :color="colors[item - 1]"
                 :value="item"
                 hide-details
