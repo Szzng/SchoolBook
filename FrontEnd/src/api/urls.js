@@ -13,5 +13,14 @@ export default {
   },
   tabletLeft: (date) => {
     return `tablets/left/${date}`
+  },
+
+  /* Book Room */
+  roomAll: 'rooms/',
+  roomByDate: (date) => {
+    return `rooms/${date}`
+  },
+  roomDestroy: (roomId) => {
+    return `rooms/destroy/${roomId}`
   }
 }

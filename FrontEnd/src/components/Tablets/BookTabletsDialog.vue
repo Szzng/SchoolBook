@@ -65,7 +65,7 @@
             :rules="borrowerRule"
             outlined
             color="primary"
-            class="mt-12 pt-2"
+            class="mt-12 pt-2 px-3"
           ></v-text-field>
           <v-text-field
             v-model="quantity"
@@ -75,7 +75,7 @@
             type="number"
             outlined
             color="primary"
-            class="mt-3"
+            class="mt-3 px-3"
           ></v-text-field>
           <v-card-actions>
             <v-btn
@@ -111,13 +111,13 @@ export default {
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
     placeRule: [(v) => !!v || '어디에서 빌리시나요?'],
     borrowerRule: [
-      (v) => !!v || '대여자를 적어주세요.',
-      (v) => (v && v.length <= 10) || '대여자는 10글자 이하로 적어주세요.'
+      (v) => !!v || '예약자를 적어주세요.',
+      (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
     ]
   }),
 
   computed: {
-    ...mapState('bookStore', ['dialog', 'periods', 'places']),
+    ...mapState('tabletsStore', ['dialog', 'periods', 'places']),
     formatSelectedDate () {
       const date = this.selectedDate.split('-')
       return date[1] + '월  ' + date[2] + '일'

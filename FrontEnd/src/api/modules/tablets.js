@@ -1,13 +1,13 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
-import bookStore from '../../store/modules/bookStore'
+import tabletsStore from '../../store/modules/tabletsStore'
 
 export default {
   getBookedTabletsListByDate (date) {
     myAxios
       .get(Urls.tabletsByDate(date))
       .then(response => {
-        bookStore.state.bookedTabletsLists = response.data
+        tabletsStore.state.bookedTabletsLists = response.data
       })
       .catch(error => {
         console.log('getBookedTabletsListByDate GET error', error.response)

@@ -80,7 +80,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('bookStore', [
+    ...mapState('tabletsStore', [
       'dialog',
       'periods',
       'places',
