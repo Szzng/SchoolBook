@@ -111,8 +111,8 @@ export default {
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
     placeRule: [(v) => !!v || '어디에서 빌리시나요?'],
     borrowerRule: [
-      (v) => !!v || '대여자를 적어주세요.',
-      (v) => (v && v.length <= 10) || '대여자는 10글자 이하로 적어주세요.'
+      (v) => !!v || '예약자를 적어주세요.',
+      (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
     ]
   }),
 
