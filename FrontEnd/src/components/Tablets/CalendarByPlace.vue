@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-row class="fill-height mx-12">
-      <v-col>
+      <v-col sm="12" md="6">
         <v-sheet height="80">
-          <v-toolbar flat class="pt-2">
+          <v-toolbar flat class="pt-0">
             <v-spacer></v-spacer>
             <v-btn
               fab
@@ -39,7 +39,7 @@
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="600">
+        <v-sheet height="530">
           <v-calendar
             ref="calendar"
             v-model="focusDate"
@@ -50,8 +50,11 @@
           ></v-calendar>
         </v-sheet>
       </v-col>
+
+      <v-col sm="12" md="6">
+         <CheckTabletsBookingDialog :focusDate="focusDate" :focusPlace="focusPlace"/>
+      </v-col>
     </v-row>
-    <CheckTabletsBookingDialog :focusDate="focusDate" :focusPlace="focusPlace"/>
   </div>
 </template>
 
@@ -68,6 +71,16 @@ export default {
     focusDate: '',
     focusPlace: '',
     weekday: [1, 2, 3, 4, 5]
+    // events: [
+    //   {
+    //     name: '38 & 20',
+    //     start: '2022-05-10'},
+    //   {
+    //     name: '38 & 20',
+    //     start: '2022-05-10'},
+    //   {
+    //     name: '38 & 20',
+    //     start: '2022-05-10'}]
   }),
 
   computed: {
