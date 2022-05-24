@@ -40,58 +40,82 @@
           <v-calendar
             ref="calendar"
             v-model="focus"
-            color="primary"
-            type="week"
+            :events="notYetBooked"
+            :event-more="false"
             :weekdays="weekday"
-            first-time="1"
-            interval-height="80"
-            interval-minutes="60"
-            interval-count="6"
-            :interval-format="formatInterval"
-            :show-interval-label="showInterval"
-            :events="bookedRoomLists"
-            :event-name="getEventName"
-            @click:date="bookRoom"
-            @click:event="assertDestroyRoomBooking"
+            color="primary"
+            type="month"
+            @click:date="checkRoomBooking"
+            @click:event="bookRoom"
           ></v-calendar>
         </v-sheet>
       </v-col>
     </v-row>
-    <BookRoomDialog :selectedDate="focus" />
-    <DestroyRoomBookingDialog :destroyEvent="destroyEvent" />
+    <CheckRoomBookingDialog :selectedDate="focus" />
+    <BookRoomDialog :eventBooking="eventBooking"/>
+    <DestroyRoomBookingDialog :eventDestroying="eventDestroying" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import CheckRoomBookingDialog from '@/components/Rooms/CheckRoomBookingDialog.vue'
 import BookRoomDialog from '@/components/Rooms/BookRoomDialog.vue'
 import DestroyRoomBookingDialog from '@/components/Rooms/DestroyRoomBookingDialog.vue'
-import api from '@/api/modules/room'
+// import api from '@/api/modules/room'
 
 export default {
-  components: { BookRoomDialog, DestroyRoomBookingDialog },
+  components: { CheckRoomBookingDialog, BookRoomDialog, DestroyRoomBookingDialog },
 
   data: () => ({
     initCalendarTitle: '',
     focus: '',
-    destroyEvent: {},
-    weekday: [1, 2, 3, 4, 5]
+    eventBooking: {},
+    eventDestroying: {},
+    weekday: [1, 2, 3, 4, 5],
+    notYetBooked: [
+      {
+        name: '1교시',
+        start: '2022-05-18' },
+      {
+        name: '2교시',
+        start: '2022-05-18' },
+      {
+        name: '3교시',
+        start: '2022-05-18' },
+      {
+        name: '4교시',
+        start: '2022-05-18' },
+      {
+        name: '5교시',
+        start: '2022-05-18' },
+      {
+        name: '6교시',
+        start: '2022-05-18' }
+    ]
   }),
 
   created () {
-    api.getBookedRoomLists()
+    // api.getBookedRoomLists()
   },
 
   computed: {
     ...mapState('roomStore', ['dialog', 'bookedRoomLists'])
   },
   methods: {
-    bookRoom () {
+    checkRoomBooking ({ date }) {
+      this.focus = date
+      // api.getBookedTabletsListByDate(date)
+      this.dialog.checkRoomBooking = true
+    },
+
+    bookRoom ({nativeEvent, event}) {
+      this.eventBooking = event
       this.dialog.bookRoom = true
     },
 
     assertDestroyRoomBooking ({nativeEvent, event}) {
-      this.destroyEvent = event
+      this.eventDestroying = event
       this.dialog.destroyRoomBooking = true
     },
 
@@ -115,16 +139,11 @@ export default {
 </script>
 
 <style scoped>
->>> .v-calendar-daily__interval-text {
-  font-size: 15px;
-  padding-top: 2.5em;
-}
->>> .v-event-timed {
-  margin-left: 5px;
-  line-height: 75px;
+>>> .v-event {
+  max-width: 32%;
+  margin-right: 1px;
+  margin-left: 2px;
+  float: left;
   text-align: center;
-}
->>> .v-event-summary {
-  font-size: 20px;
 }
 </style>
