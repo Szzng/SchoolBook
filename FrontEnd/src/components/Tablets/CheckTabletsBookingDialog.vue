@@ -22,11 +22,17 @@
             <v-col class="pa-0">
               <v-card-text>
                 <v-chip-group column>
-                  <v-chip color="primary" outlined>
+                  <v-chip v-if="[2, 3, 4].includes(period)" :color="colors[0]" outlined>
                     <v-avatar left>
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
                     </v-avatar>
-                    예약자 (OO대)
+                    예약자1 (OO대)
+                  </v-chip>
+                  <v-chip v-if="period == 3" :color="colors[1]" outlined>
+                    <v-avatar left>
+                      <v-icon>mdi-checkbox-marked-circle</v-icon>
+                    </v-avatar>
+                    예약자2 (OO대)
                   </v-chip>
                 </v-chip-group>
               </v-card-text>
