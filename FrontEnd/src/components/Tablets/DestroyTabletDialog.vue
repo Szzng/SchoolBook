@@ -38,7 +38,8 @@ import api from '@/api/modules/tablets'
 export default {
   props: {
     destroyItem: Object,
-    selectedDate: String
+    focusPlace: String,
+    focusDate: String
   },
 
   data: () => ({
@@ -51,7 +52,7 @@ export default {
 
   methods: {
     destroyBooking () {
-      api.DestroyBookedTablets(this.destroyItem.id, this.selectedDate)
+      api.DestroyBookedTablets(this.destroyItem.id, this.focusPlace, this.focusDate)
       this.dialog.destroyTablet = false
     }
   }

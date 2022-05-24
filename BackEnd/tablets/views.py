@@ -1,3 +1,4 @@
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
 
@@ -6,10 +7,7 @@ from .serializers import BookedTabletsSerializer
 from .actions import updateLeftTabletsCount, getLeftTabletsCount
 
 
-class BookedTabletsByDateViewSet(mixins.CreateModelMixin,
-                                 mixins.DestroyModelMixin,
-                                 mixins.ListModelMixin,
-                                 viewsets.GenericViewSet):
+class BookedTabletsListCreateAPI(ListCreateAPIView):
     serializer_class = BookedTabletsSerializer
 
     def get_queryset(self):
@@ -38,56 +36,42 @@ class BookedTabletsByDateViewSet(mixins.CreateModelMixin,
 
         return Response(self.serializer_class(bookedTablets).data)
 
-    def retrieve(self, request, pk):
-        date = TimeTable.objects.filter(id__contains=pk).order_by('id')
-        places = Place.objects.all()
+
+class BookedTabletsByDateAPI(RetrieveAPIView):
+
+    def retrieve(self, request, *args, **kwargs):
+        timetable = TimeTable.objects.filter(id__contains=kwargs['date']).order_by('id')
+        place = Place.objects.filter(name=kwargs['placeName']).get()
         data = {}
 
-        for period in date:
-            dictByPeriod = {}
-            for place in places:
-                dictByPeriod[place.name] = {
-                    'left': min(getLeftTabletsCount(period, place), place.totalQuantity),
-                    'classes': list(
-                        period.bookedtablets_set.filter(place=place.name).values('id', 'borrower', 'quantity'))
-                }
-            data[period.period] = dictByPeriod
-
+        for period in timetable:
+            data[period.period] = list(
+                period.bookedtablets_set.filter(place=place.name).values('id', 'borrower', 'quantity'))
         return Response(data)
 
 
-class LeftTabletsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class BookedTabletsDestroyAPI(DestroyAPIView):
 
-    def get_queryset(self):
-        return LeftTablets.objects.all().order_by('time')
-
-    def retrieve(self, request, pk):
-        date = TimeTable.objects.filter(id__contains=pk).order_by('id')
-        places = Place.objects.all()
-        data = {}
-
-        for place in places:
-            lefts = [place.totalQuantity] * 6
-            for period in date:
-                lefts[period.period - 1] = getLeftTabletsCount(period, place)
-            data[place.name] = lefts
-
-        return Response(data)
-
-
-class DestroyBookingViewSet(mixins.DestroyModelMixin,
-                            viewsets.GenericViewSet):
-
-    def get_queryset(self):
-        pass
-
-    def destroy(self, request, pk, *args, **kwargs):
-        tablet = BookedTablets.objects.get(id=pk)
+    def destroy(self, request, *args, **kwargs):
+        bookedTablet = BookedTablets.objects.get(id=kwargs['id'])
         updateLeftTabletsCount(
-            time=tablet.time,
-            place=tablet.place,
-            count=tablet.quantity,
+            time=bookedTablet.time,
+            place=bookedTablet.place,
+            count=bookedTablet.quantity,
             increase=True
         )
-        tablet.delete()
+        bookedTablet.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class LeftTabletsCountAPI(RetrieveAPIView):
+
+    def retrieve(self, request, *args, **kwargs):
+        timetable = TimeTable.objects.filter(id__contains=kwargs['date']).order_by('id')
+        place = Place.objects.filter(name=kwargs['placeName']).get()
+
+        lefts = [place.totalQuantity] * 6
+        for period in timetable:
+            lefts[period.period - 1] = getLeftTabletsCount(period, place)
+
+        return Response(lefts)

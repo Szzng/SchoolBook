@@ -3,9 +3,9 @@ import Urls from '@/api/urls'
 import tabletsStore from '../../store/modules/tabletsStore'
 
 export default {
-  getBookedTabletsListByDate (date) {
+  getBookedTabletsListByDate (place, date) {
     myAxios
-      .get(Urls.tabletsByDate(date))
+      .get(Urls.tabletsByDate(place, date))
       .then(response => {
         tabletsStore.state.bookedTabletsLists = response.data
       })
@@ -18,7 +18,8 @@ export default {
     myAxios
       .post(Urls.tabletsAll, postData)
       .then(response => {
-        this.getBookedTabletsListByDate(postData['time.date'])
+        this.getBookedTabletsListByDate(postData['place.name'], postData['time.date'])
+        this.getLeftTabletsCounts(postData['place.name'], postData['time.date'])
         component.dialog.bookTablets = false
       })
       .catch(error => {
@@ -26,22 +27,23 @@ export default {
       })
   },
 
-  DestroyBookedTablets (destroyId, date) {
+  DestroyBookedTablets (destroyId, place, date) {
     myAxios
       .delete(Urls.tabletDestroy(destroyId))
       .then(response => {
-        this.getBookedTabletsListByDate(date)
+        this.getBookedTabletsListByDate(place, date)
+        this.getLeftTabletsCounts(place, date)
       })
       .catch(error => {
-        console.log('BookTablets POST error', error.response)
+        console.log('BookTablets DELETE error', error.response)
       })
   },
 
-  getLeftTabletsCounts (component, date) {
+  getLeftTabletsCounts (place, date) {
     myAxios
-      .get(Urls.tabletLeft(date))
+      .get(Urls.tabletLeft(place, date))
       .then(response => {
-        component.left = response.data
+        tabletsStore.state.left = response.data
       })
       .catch(error => {
         console.log('getLeftTabletsCount GET error', error.response)

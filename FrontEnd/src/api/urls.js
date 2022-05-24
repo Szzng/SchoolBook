@@ -5,14 +5,14 @@ export default {
 
   /* Book Tablets */
   tabletsAll: 'tablets/',
-  tabletsByDate: (date) => {
-    return `tablets/${date}/`
+  tabletsByDate: (place, date) => {
+    return `tablets/${place}/${date}/`
   },
   tabletDestroy: (tabletId) => {
-    return `tablets/destroy/${tabletId}/`
+    return `tablets/${tabletId}/`
   },
-  tabletLeft: (date) => {
-    return `tablets/left/${date}`
+  tabletLeft: (place, date) => {
+    return `tablets/left/${place}/${date}`
   },
 
   /* Book Room */
