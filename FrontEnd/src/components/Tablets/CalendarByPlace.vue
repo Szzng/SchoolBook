@@ -102,6 +102,7 @@ export default {
     },
     setToday () {
       this.focusDate = ''
+      this.dialog.checkTabletsBooking = false
     }
   }
 }
