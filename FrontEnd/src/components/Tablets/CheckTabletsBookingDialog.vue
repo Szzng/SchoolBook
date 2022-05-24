@@ -22,7 +22,11 @@
             <v-col class="pa-0">
               <v-card-text>
                 <v-chip-group column>
-                  <v-chip v-if="[2, 3, 4].includes(period)" :color="colors[0]" outlined>
+                  <v-chip
+                    v-if="[2, 3, 4].includes(period)"
+                    :color="colors[0]"
+                    outlined
+                  >
                     <v-avatar left>
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
                     </v-avatar>
