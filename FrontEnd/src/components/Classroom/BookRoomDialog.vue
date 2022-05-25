@@ -12,10 +12,11 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
-        <v-row justify="center" class="mt-0">
-          <v-card-title
-            >{{ formatSelectedDate }} {{ eventBooking.name }}교시</v-card-title
-          >
+        <v-row align="center" justify="center" class="mt-0">
+          <v-card-title class="pb-0"
+            >{{ formatSelectedDate }} {{ eventBooking.name }}교시
+          <v-card-subtitle class="purple--text pl-1 pb-3">{{focusPlace}}</v-card-subtitle>
+          </v-card-title>
         </v-row>
 
         <v-form ref="form" lazy-validation>
@@ -64,7 +65,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog', 'periods']),
+    ...mapState('classroomStore', ['dialog', 'periods', 'focusDate', 'focusPlace']),
     formatSelectedDate () {
       const date = this.eventBooking.start.split('-')
       return date[1] + '월  ' + date[2] + '일 '
