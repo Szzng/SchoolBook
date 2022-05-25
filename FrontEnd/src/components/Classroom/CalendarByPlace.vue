@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-row class="fill-height mx-12 my-16">
-      <v-col>
-        <v-sheet height="80">
-          <v-toolbar flat class="pt-2">
+    <v-row class="fill-height ml-5">
+      <v-col sm="12" md="8">
+        <v-sheet height="80" class="pr-10 mt-5">
+          <v-toolbar flat>
             <v-spacer></v-spacer>
             <v-btn
               fab
@@ -15,6 +15,9 @@
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
               {{ $refs.calendar.title }}
+            </v-toolbar-title>
+            <v-toolbar-title v-else>
+              {{ initCalendarTitle }}
             </v-toolbar-title>
             <v-btn
               fab
@@ -36,36 +39,44 @@
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="600">
+        <v-sheet height="500" class="pr-10">
           <v-calendar
             ref="calendar"
-            v-model="focus"
-            :events="notYetBooked"
-            :event-more="false"
+            v-model="$store.state.classroomStore.focusDate"
             :weekdays="weekday"
             color="primary"
             type="month"
+            :events="notYetBooked"
+            event-color="primary"
+            :event-more="false"
             @click:date="checkRoomBooking"
             @click:event="bookRoom"
           ></v-calendar>
         </v-sheet>
       </v-col>
+
+      <v-col sm="12" md="4">
+        <CheckRoomBookingDialog />
+      </v-col>
+
     </v-row>
-    <CheckRoomBookingDialog :selectedDate="focus" />
-    <BookRoomDialog :eventBooking="eventBooking"/>
+    <BookRoomDialog :eventBooking="eventBooking" />
     <DestroyRoomBookingDialog :eventDestroying="eventDestroying" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import CheckRoomBookingDialog from '@/components/Rooms/CheckRoomBookingDialog.vue'
-import BookRoomDialog from '@/components/Rooms/BookRoomDialog.vue'
-import DestroyRoomBookingDialog from '@/components/Rooms/DestroyRoomBookingDialog.vue'
-// import api from '@/api/modules/room'
+import CheckRoomBookingDialog from '@/components/Classroom/CheckRoomBookingDialog.vue'
+import BookRoomDialog from '@/components/Classroom/BookRoomDialog.vue'
+import DestroyRoomBookingDialog from '@/components/Classroom/DestroyRoomBookingDialog.vue'
 
 export default {
-  components: { CheckRoomBookingDialog, BookRoomDialog, DestroyRoomBookingDialog },
+  components: {
+    CheckRoomBookingDialog,
+    BookRoomDialog,
+    DestroyRoomBookingDialog
+  },
 
   data: () => ({
     initCalendarTitle: '',
@@ -75,46 +86,54 @@ export default {
     weekday: [1, 2, 3, 4, 5],
     notYetBooked: [
       {
-        name: '1교시',
-        start: '2022-05-18' },
+        name: '1',
+        start: '2022-05-18',
+        color: 'white'
+      },
       {
-        name: '2교시',
-        start: '2022-05-18' },
+        name: '2',
+        start: '2022-05-18'
+      },
       {
-        name: '3교시',
-        start: '2022-05-18' },
+        name: '3',
+        start: '2022-05-18'
+      },
       {
-        name: '4교시',
-        start: '2022-05-18' },
+        name: '4',
+        start: '2022-05-18'
+      },
       {
-        name: '5교시',
-        start: '2022-05-18' },
+        name: '5',
+        start: '2022-05-18'
+      },
       {
-        name: '6교시',
-        start: '2022-05-18' }
+        name: '6',
+        start: '2022-05-18'
+      }
     ]
   }),
 
-  created () {
-    // api.getBookedRoomLists()
+  computed: {
+    ...mapState('classroomStore', ['dialog', 'bookedRoomLists'])
   },
 
-  computed: {
-    ...mapState('roomStore', ['dialog', 'bookedRoomLists'])
+  async created () {
+    await this.$nextTick()
+    this.initCalendarTitle = this.$refs.calendar.title
   },
+
   methods: {
     checkRoomBooking ({ date }) {
-      this.focus = date
-      // api.getBookedTabletsListByDate(date)
+      this.$store.commit('classroomStore/focusDateSetter', date)
       this.dialog.checkRoomBooking = true
     },
 
-    bookRoom ({nativeEvent, event}) {
+    bookRoom ({ nativeEvent, event }) {
       this.eventBooking = event
       this.dialog.bookRoom = true
     },
 
-    assertDestroyRoomBooking ({nativeEvent, event}) {
+    assertDestroyRoomBooking ({ nativeEvent, event }) {
       this.eventDestroying = event
       this.dialog.destroyRoomBooking = true
     },
@@ -140,10 +159,20 @@ export default {
 
 <style scoped>
 >>> .v-event {
-  max-width: 32%;
+  max-width: 12%;
+  height: 26% !important;
+  border-radius: 100%;
   margin-right: 1px;
-  margin-left: 2px;
+  margin-left: 4px;
   float: left;
   text-align: center;
+  font-size: 15px;
 }
+
+/* >>> .pl-1 {
+  font-size: 20px;
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-left: 0px;
+} */
 </style>

@@ -33,7 +33,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/room'
+import api from '@/api/modules/classroom'
 
 export default {
   props: {
@@ -45,7 +45,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog'])
+    ...mapState('classroomStore', ['dialog'])
   },
 
   methods: {

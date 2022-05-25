@@ -1,13 +1,13 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
-import roomStore from '../../store/modules/roomStore'
+import classroomStore from '../../store/modules/classroomStore'
 
 export default {
   getBookedRoomLists () {
     myAxios
       .get(Urls.roomAll)
       .then(response => {
-        roomStore.state.bookedRoomLists = response.data
+        classroomStore.state.bookedRoomLists = response.data
       })
       .catch(error => {
         console.log('getBookedRoomList GET error', error.response)
@@ -28,7 +28,7 @@ export default {
     myAxios
       .get(Urls.roomByDate(date))
       .then(response => {
-        roomStore.state.bookedRoomLists = response.data
+        classroomStore.state.bookedRoomLists = response.data
       })
       .catch(error => {
         console.log('getBookedRoomListByDate GET error', error.response)

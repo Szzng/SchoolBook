@@ -13,12 +13,14 @@
           </v-btn>
         </v-row>
         <v-row justify="center" class="mt-0">
-          <v-card-title>{{ formatSelectedDate }}</v-card-title>
+          <v-card-title
+            >{{ formatSelectedDate }} {{ eventBooking.name }}교시</v-card-title
+          >
         </v-row>
 
         <v-form ref="form" lazy-validation>
           <v-text-field
-          v-model="borrower"
+            v-model="borrower"
             label="학년-반"
             required
             outlined
@@ -45,7 +47,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/room'
+import api from '@/api/modules/classroom'
 
 export default {
   props: {
@@ -62,10 +64,10 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods']),
+    ...mapState('classroomStore', ['dialog', 'periods']),
     formatSelectedDate () {
       const date = this.eventBooking.start.split('-')
-      return date[1] + '월  ' + date[2] + '일 ' + this.eventBooking.name
+      return date[1] + '월  ' + date[2] + '일 '
     }
   },
 
