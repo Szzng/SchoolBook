@@ -1,6 +1,6 @@
 <template>
   <div class="mt-2 mr-10">
-    <v-sheet v-show="!selected" outlined>
+    <v-sheet v-show="!selected" outlined height="603">
       <v-card class="pl-5" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
