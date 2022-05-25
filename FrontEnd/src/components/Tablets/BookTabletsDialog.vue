@@ -16,40 +16,13 @@
           <v-card-title>{{ formatSelectedDate }}</v-card-title>
         </v-row>
 
-        <v-form ref="form" lazy-validation>
-          <v-row justify="space-between" class="mx-12 mt-2 mb-5">
-            <v-checkbox
-              v-for="(item, i) in Object.keys(places)"
-              :key="i"
-              v-model="place"
-              :label="item"
-              :color="colors[i]"
-              :value="item"
-              hide-details
-              :rules="placeRule"
-              required
-            ></v-checkbox>
-          </v-row>
-
-          <v-row v-if="place" justify="center">
+        <v-form v-if="left" ref="form" lazy-validation>
+          <v-row justify="center" class="mt-5">
             <v-col cols="4" class="py-0" v-for="item in periods" :key="item">
               <v-checkbox
                 v-model="period"
-                :label="`${item}교시 (${left[place][item - 1]}대)`"
-                :disabled="!left[place][item - 1]"
-                :color="colors[item - 1]"
-                :value="item"
-                hide-details
-              >
-              </v-checkbox>
-            </v-col>
-          </v-row>
-
-          <v-row v-else justify="center" class="ml-8">
-            <v-col cols="4" class="py-0" v-for="item in periods" :key="item">
-              <v-checkbox
-                v-model="period"
-                :label="`${item}교시`"
+                :label="`${item}교시 (${left[item - 1]}대)`"
+                :disabled="!left[item - 1]"
                 :color="colors[item - 1]"
                 :value="item"
                 hide-details
@@ -99,17 +72,10 @@ import { mapState } from 'vuex'
 import api from '@/api/modules/tablets'
 
 export default {
-  props: {
-    selectedDate: String,
-    left: Object
-  },
   data: () => ({
-    place: '',
     period: [],
     borrower: '',
     quantity: 0,
-    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
-    placeRule: [(v) => !!v || '어디에서 빌리시나요?'],
     borrowerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
@@ -117,21 +83,28 @@ export default {
   }),
 
   computed: {
-    ...mapState('tabletsStore', ['dialog', 'periods', 'places']),
+    ...mapState('tabletsStore', [
+      'dialog',
+      'periods',
+      'left',
+      'focusDate',
+      'focusPlace',
+      'colors'
+    ]),
     formatSelectedDate () {
-      const date = this.selectedDate.split('-')
+      const date = this.focusDate.split('-')
       return date[1] + '월  ' + date[2] + '일'
     },
+
     fetchMinLeft () {
-      if (this.place) {
-        var leftArrayByPlace = this.left[this.place]
-        var min = Math.max(...leftArrayByPlace)
-        this.period.forEach(function (i) {
-          min = Math.min(min, leftArrayByPlace[i - 1])
-        })
-        return min
-      }
+      var leftArrayByPlace = this.left
+      var min = Math.max(...leftArrayByPlace)
+      this.period.forEach(function (i) {
+        min = Math.min(min, leftArrayByPlace[i - 1])
+      })
+      return min
     },
+
     quantityRule () {
       const rules = [
         (v) => !!v || '몇 개를 빌리시나요?',
@@ -162,9 +135,9 @@ export default {
       }
       if (this.period.length && this.$refs.form.validate()) {
         const postData = {
-          'time.date': this.selectedDate,
+          'time.date': this.focusDate,
           'time.period': this.period,
-          'place.name': this.place,
+          'place.name': this.focusPlace,
           borrower: this.borrower,
           quantity: this.quantity
         }

@@ -14,10 +14,7 @@ new Vue({
   el: '#inspire',
   router,
   store,
-  beforeCreate () {
-    // // this.$store.dispatch('userStore/getUserInfo')
-    // this.$store.commit('userStore/loginSuccess')
-  },
+  beforeCreate () {},
   components: { App },
   template: '<App/>'
 }).$mount('#inspire')

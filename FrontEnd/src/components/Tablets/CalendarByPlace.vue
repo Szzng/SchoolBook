@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-row class="fill-height mx-12 my-16">
-      <v-col>
-        <v-sheet height="80">
-          <v-toolbar flat class="pt-2">
+    <v-row class="fill-height ml-5">
+      <v-col sm="12" md="6">
+        <v-sheet height="80" class="pr-10">
+          <v-toolbar flat>
             <v-spacer></v-spacer>
             <v-btn
               fab
@@ -39,10 +39,10 @@
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="600">
+        <v-sheet height="530" class="pr-10">
           <v-calendar
             ref="calendar"
-            v-model="focus"
+            v-model="$store.state.tabletsStore.focusDate"
             :weekdays="weekday"
             color="primary"
             type="month"
@@ -50,8 +50,11 @@
           ></v-calendar>
         </v-sheet>
       </v-col>
+
+      <v-col sm="12" md="6">
+        <CheckTabletsBookingDialog />
+      </v-col>
     </v-row>
-    <CheckTabletsBookingDialog :selectedDate="focus" />
   </div>
 </template>
 
@@ -65,12 +68,11 @@ export default {
 
   data: () => ({
     initCalendarTitle: '',
-    focus: '',
     weekday: [1, 2, 3, 4, 5]
   }),
 
   computed: {
-    ...mapState('tabletsStore', ['dialog'])
+    ...mapState('tabletsStore', ['dialog', 'focusPlace'])
   },
 
   async created () {
@@ -80,12 +82,14 @@ export default {
 
   methods: {
     checkTabletsBooking ({ date }) {
-      this.focus = date
-      api.getBookedTabletsListByDate(date)
+      this.$store.commit('tabletsStore/focusDateSetter', date)
+      api.getBookedTabletsListByDate(this.focusPlace, date)
+      api.getLeftTabletsCounts(this.focusPlace, date)
       this.dialog.checkTabletsBooking = true
     },
     setToday () {
-      this.focus = ''
+      this.$store.commit('tabletsStore/focusDateSetter', '')
+      this.dialog.checkTabletsBooking = false
     }
   }
 }
