@@ -37,9 +37,7 @@ import api from '@/api/modules/tablets'
 
 export default {
   props: {
-    destroyItem: Object,
-    focusPlace: String,
-    focusDate: String
+    destroyItem: Object
   },
 
   data: () => ({
@@ -47,7 +45,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('tabletsStore', ['dialog'])
+    ...mapState('tabletsStore', ['dialog', 'focusPlace', 'focusDate'])
   },
 
   methods: {

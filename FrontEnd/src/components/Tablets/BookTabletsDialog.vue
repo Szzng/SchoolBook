@@ -72,16 +72,10 @@ import { mapState } from 'vuex'
 import api from '@/api/modules/tablets'
 
 export default {
-  props: {
-    focusDate: String,
-    focusPlace: String
-  },
-
   data: () => ({
     period: [],
     borrower: '',
     quantity: 0,
-    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
     borrowerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
@@ -92,8 +86,10 @@ export default {
     ...mapState('tabletsStore', [
       'dialog',
       'periods',
-      'places',
-      'left'
+      'left',
+      'focusDate',
+      'focusPlace',
+      'colors'
     ]),
     formatSelectedDate () {
       const date = this.focusDate.split('-')

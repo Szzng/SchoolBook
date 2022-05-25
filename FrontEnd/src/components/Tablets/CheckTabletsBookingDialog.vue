@@ -1,12 +1,12 @@
 <template>
-  <div class="mt-1">
-    <v-sheet v-show="!dialog.checkTabletsBooking || !focusDate" outlined>
+  <div class="mt-2 mr-10">
+    <v-sheet v-show="!selected" outlined>
       <v-card class="pl-5" flat>
-        <v-card-actions class="mb-3">
+        <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
-          <v-card-title class="pl-0"
-            >달력에서 예약 날짜를 선택하세요.</v-card-title
-          >
+          <v-card-title class="pl-0 pt-1"
+            >달력에서 예약 날짜를 선택하세요.
+          </v-card-title>
           <v-spacer></v-spacer>
         </v-card-actions>
 
@@ -42,19 +42,23 @@
               </v-card-text>
             </v-col>
           </v-row>
-          <v-divider class="my-3 mr-7"></v-divider>
+          <v-divider class="my-3 ml-3 mr-7"></v-divider>
         </v-card>
       </v-card>
     </v-sheet>
 
-    <v-sheet v-show="dialog.checkTabletsBooking" outlined>
+    <v-sheet v-show="selected" outlined>
       <v-card class="pl-5" flat>
-        <v-card-actions class="mb-3">
+        <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
-          <v-card-title class="pl-0">{{ formatSelectedDate }}</v-card-title>
+          <v-card-title class="pl-0 pt-1"
+            >{{ formatSelectedDate }}
+            <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
+              {{ focusPlace }}</v-card-subtitle
+            >
+          </v-card-title>
           <v-spacer></v-spacer>
-
-          <v-btn color="primary" class="pr-0 mr-2" @click="bookTablets">
+          <v-btn color="primary" class="pr-0 mr-1" @click="bookTablets">
             예약
             <v-icon left class="ml-0"> mdi-clock-plus-outline </v-icon>
           </v-btn>
@@ -89,21 +93,13 @@
               </v-card-text>
             </v-col>
           </v-row>
-          <v-divider class="my-3 mr-7"></v-divider>
+          <v-divider class="my-3 ml-3 mr-7"></v-divider>
         </v-card>
       </v-card>
     </v-sheet>
 
-    <BookTabletsDialog
-      :focusPlace="focusPlace"
-      :focusDate="focusDate"
-      :left="left"
-    />
-    <DestroyTabletDialog
-      :destroyItem="destroyItem"
-      :focusPlace="focusPlace"
-      :focusDate="focusDate"
-    />
+    <BookTabletsDialog />
+    <DestroyTabletDialog :destroyItem="destroyItem" />
   </div>
 </template>
 
@@ -115,13 +111,8 @@ import DestroyTabletDialog from '@/components/Tablets/DestroyTabletDialog.vue'
 export default {
   components: { BookTabletsDialog, DestroyTabletDialog },
 
-  props: {
-    focusDate: String,
-    focusPlace: String
-  },
-
   data: () => ({
-    destroyItem: { id: '', borrower: '', quantity: '' },
+    destroyItem: {},
     colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green', 'indigo']
   }),
 
@@ -129,10 +120,15 @@ export default {
     ...mapState('tabletsStore', [
       'dialog',
       'periods',
-      'places',
+      'focusPlace',
+      'focusDate',
       'bookedTabletsLists',
       'left'
     ]),
+
+    selected () {
+      return this.dialog.checkTabletsBooking && this.focusDate
+    },
 
     formatSelectedDate () {
       const date = this.focusDate.split('-')

@@ -7,11 +7,19 @@ const tabletsStore = {
       destroyTablet: false
     },
     periods: [1, 2, 3, 4, 5, 6],
-    places: {'전산실': 58, '준비물실': 52},
+    focusDate: '',
+    focusPlace: '',
     bookedTabletsLists: [],
-    left: []
+    left: [],
+    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   },
   mutations: {
+    focusDateSetter (state, date) {
+      state.focusDate = date
+    },
+    focusPlaceSetter (state, place) {
+      state.focusPlace = place
+    }
   },
   actions: {
   }
