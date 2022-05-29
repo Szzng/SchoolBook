@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="fill-height ml-5">
+    <v-row class="fill-height ml-5 mt-2">
       <v-col sm="12" md="6">
         <v-sheet height="80" class="pr-10">
           <v-toolbar flat>
@@ -39,7 +39,7 @@
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="530" class="pr-10">
+        <v-sheet height="512" class="pr-8 ml-2">
           <v-calendar
             ref="calendar"
             v-model="$store.state.tabletsStore.focusDate"
