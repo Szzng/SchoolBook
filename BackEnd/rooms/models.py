@@ -1,13 +1,6 @@
 from django.db import models
 
 
-class TimeTable(models.Model):
-    id = models.CharField(max_length=100, primary_key=True)
-    date = models.DateField()
-    period = models.PositiveSmallIntegerField(verbose_name="교시",
-                                              choices=((1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)))
-
-
 class Place(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
 
@@ -15,9 +8,30 @@ class Place(models.Model):
         return self.name
 
 
-class BookedRoom(models.Model):
-    time = models.ForeignKey(TimeTable, on_delete=models.CASCADE)
+class FixedTimeTable(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    weekday = models.PositiveSmallIntegerField(verbose_name="요일",
+                                               choices=((0, '월'), (1, '화'), (2, '수'), (3, '목'), (4, '금')))
+    period = models.PositiveSmallIntegerField(verbose_name="교시",
+                                              choices=((1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)))
+    borrower = models.CharField(max_length=100)
+
+
+class EmptyTimeTable(models.Model):
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    weekday = models.PositiveSmallIntegerField()
+    period = models.PositiveSmallIntegerField(verbose_name="교시",
+                                              choices=((1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)))
+
+
+class AvailableBooking(models.Model):
+    timetable = models.ForeignKey(EmptyTimeTable, on_delete=models.CASCADE)
+    date = models.DateField()
+
+
+class RoomBooking(models.Model):
+    timetable = models.ForeignKey(EmptyTimeTable, on_delete=models.CASCADE)
+    date = models.DateField()
     borrower = models.CharField(max_length=100)
 
     def __str__(self):
