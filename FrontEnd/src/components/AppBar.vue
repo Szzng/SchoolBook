@@ -34,7 +34,8 @@ export default {
     menus: [
       { name: 'Home', url: '/' },
       { name: '태블릿', url: '/tablets' },
-      { name: '컴퓨터실', url: '/classroom/computer' }
+      { name: '컴퓨터실', url: '/classroom/computer' },
+      { name: '기본 설정', url: '/setting' }
     ],
     notifications: 1
   }),
