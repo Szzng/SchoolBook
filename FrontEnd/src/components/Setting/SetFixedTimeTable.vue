@@ -8,7 +8,7 @@
         <v-card-text>
           <v-row justify="start" align="center" class="">
             <v-col
-              cols="3"
+              cols="2"
               class="py-1 mb-3"
               v-for="item in places"
               :key="item"
@@ -18,7 +18,11 @@
                 :label="item"
                 :value="item"
                 hide-details
+                color="secondary"
               >
+                <template v-slot:label>
+                  <span id="checkboxLabel">{{ item }}</span>
+                </template>
               </v-checkbox>
             </v-col>
           </v-row>
@@ -79,7 +83,6 @@ import { mapState } from 'vuex'
 export default {
   data: () => ({
     place: '',
-    places: ['강당', '컴퓨터1실', '컴퓨터2실'],
     weekdays: ['월', '화', '수', '목', '금'],
     fixedTimeTable: {
       0: ['', '', '', '', '', ''],
@@ -91,14 +94,20 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', ['periods'])
+    ...mapState('classroomStore', ['periods', 'places'])
   }
 }
 </script>
 
 <style scoped>
+#checkboxLabel {
+   color: indigo;
+   font-size: 17px;
+   font-weight: bold;
+}
+
 .v-card__title {
-  font-size: 18px;
+  font-size: 19px;
   color: indigo;
   font-weight: bolder;
 }

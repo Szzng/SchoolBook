@@ -91,7 +91,7 @@ export default {
 
 <style scoped>
 .v-card__title {
-  font-size: 18px;
+  font-size: 19px;
   color: indigo;
   font-weight: bolder;
 }

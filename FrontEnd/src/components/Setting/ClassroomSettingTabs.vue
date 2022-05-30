@@ -1,8 +1,8 @@
 <template>
-  <div class="pt-0">
+  <div>
     <v-container>
       <v-row class="fill-height mx-12">
-        <v-col cols="12">
+        <v-col cols="12" class="pt-0">
           <v-tabs v-model="activeTab" centered color="indigo">
             <v-tabs-slider></v-tabs-slider>
             <v-tab
