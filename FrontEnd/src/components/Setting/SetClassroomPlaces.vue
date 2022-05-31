@@ -1,22 +1,26 @@
 <template>
-  <div class="mt-10">
+  <div class="mt-4">
     <v-sheet class="mx-16">
       <v-form ref="form" lazy-validation>
-        <v-card>
-          <v-card-title>
-            Q. 예약 시스템을 사용할 교실(장소)은 모두 몇 개인가요?
-          </v-card-title>
-          <v-card-text>
-            <v-text-field
-              v-model="placesCount"
-              label="0 이상의 정수를 입력해주세요."
-              filled
-              dense
-              hide-details
-              :rules="placesCountRule"
-            ></v-text-field>
-          </v-card-text>
-        </v-card>
+        <v-row justify="center">
+          <v-col cols="6">
+            <v-card>
+              <v-card-title>
+                Q. 예약 시스템을 사용할 교실(장소)은 모두 몇 개인가요?
+              </v-card-title>
+              <v-card-text>
+                <v-text-field
+                  v-model="placesCount"
+                  label="0 이상의 정수를 입력해주세요."
+                  filled
+                  dense
+                  hide-details
+                  :rules="placesCountRule"
+                ></v-text-field>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
 
         <v-row align="end" justify="start" class="my-5">
           <v-col cols="3" v-for="i in range" :key="i">

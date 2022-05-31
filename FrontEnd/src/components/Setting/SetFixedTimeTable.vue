@@ -3,7 +3,7 @@
     <v-form ref="form" lazy-validation>
       <v-row align="start" justify="center">
         <v-col sm="12" md="4">
-          <v-card outlined class="mb-3" height="530">
+          <v-card class="mb-3" height="530">
             <v-card-title>
               1. 시간표를 설정할 교실(장소)를 선택하세요.
             </v-card-title>
@@ -33,9 +33,9 @@
         </v-col>
 
         <v-col v-show="place" sm="12" md="8">
-          <v-card outlined class="mb-3" height="530">
+          <v-card class="mt-3" height="530">
             <v-row align="center">
-              <v-col>
+              <v-col class="pt-0">
                 <v-card-title>
                   2. 정해진 시간표를 입력하세요.
                   <v-card-subtitle
@@ -44,7 +44,7 @@
                   >
                 </v-card-title>
               </v-col>
-              <v-col cols="2" class="text-right mr-2">
+              <v-col cols="2" class="text-right pt-0 mr-2">
                 <v-btn class="primary" large> 완료 </v-btn>
               </v-col>
             </v-row>
