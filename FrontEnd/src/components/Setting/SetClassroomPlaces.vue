@@ -52,6 +52,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import api from '@/api/modules/setting'
 
 export default {
   data: () => ({
@@ -82,10 +83,10 @@ export default {
   methods: {
     save () {
       if (this.$refs.form.validate()) {
-        // const postData = {
-        //   placesName: this.placesName
-        // }
-        // api.BookTablets(this, postData)
+        const postData = {
+          placesName: this.placesName
+        }
+        api.setClassroomPlaces(postData)
         this.$refs.form.reset()
       }
     }

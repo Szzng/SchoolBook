@@ -7,6 +7,7 @@ const tabletsStore = {
       destroyTablet: false
     },
     periods: [1, 2, 3, 4, 5, 6],
+    places: [],
     focusDate: '',
     focusPlace: '',
     bookedTabletsLists: [],

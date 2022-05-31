@@ -22,6 +22,7 @@
                   :value="item"
                   hide-details
                   color="secondary"
+                  :rules="placeRule"
                 >
                   <template v-slot:label>
                     <span id="checkboxLabel">{{ item }}</span>
@@ -45,7 +46,7 @@
                 </v-card-title>
               </v-col>
               <v-col cols="2" class="text-right pt-0 mr-2">
-                <v-btn class="primary" large> 완료 </v-btn>
+                <v-btn @click="save" class="primary" large> 완료 </v-btn>
               </v-col>
             </v-row>
 
@@ -92,6 +93,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import api from '@/api/modules/setting'
 
 export default {
   data: () => ({
@@ -103,11 +105,23 @@ export default {
       2: ['', '', '', '', '', ''],
       3: ['', '', '', '', '', ''],
       4: ['', '', '', '', '', '']
-    }
+    },
+    placeRule: [(v) => !!v || '시간표를 설정할 교실(장소)를 선택하세요.']
   }),
 
   computed: {
     ...mapState('classroomStore', ['periods', 'places'])
+  },
+
+  methods: {
+    save () {
+      if (this.$refs.form.validate()) {
+        const postData = {
+        }
+        api.setFixedTimeTable(postData)
+        this.$refs.form.reset()
+      }
+    }
   }
 }
 </script>
