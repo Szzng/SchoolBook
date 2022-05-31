@@ -9,7 +9,7 @@
               class="black--text px-16"
               v-for="tab in tabs"
               :key="tab.name"
-              :to="tab.path"
+              :to="`/setting/classroom/${tab.path}`"
               exact
               @click="changeTab(tab.name)"
             >
@@ -35,7 +35,7 @@ export default {
   }),
 
   mounted () {
-    this.activeTab = `/setting/classroom/${this.tabs.path}`
+    // this.activeTab = `/setting/classroom/${this.tabs.path}`
   },
 
   methods: {

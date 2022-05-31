@@ -13,6 +13,7 @@ export default {
         console.log('getBookedRoomList GET error', error.response)
       })
   },
+
   BookRoom (component, postData) {
     myAxios
       .post(Urls.roomAll, postData)
@@ -24,6 +25,7 @@ export default {
         console.log('Bookroom POST error', error.response)
       })
   },
+
   getBookedRoomListByDate (date) {
     myAxios
       .get(Urls.roomByDate(date))
