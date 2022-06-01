@@ -6,7 +6,7 @@ from .models import Place, RoomBooking, FixedTimeTable, EmptyTimeTable, Availabl
 from .serializers import RoomBookingSerializer, AvailableBookingSerializer, FixedTimeTableSerializer, PlaceSerializer
 
 
-class SetPlacesListCreateAPI(ListCreateAPIView):
+class PlacesListCreateAPI(ListCreateAPIView):
     serializer_class = PlaceSerializer
 
     def get_queryset(self):
@@ -20,7 +20,7 @@ class SetPlacesListCreateAPI(ListCreateAPIView):
         return Response(Place.objects.all().values('name'))
 
 
-class SetPlacesDestroyAPI(DestroyAPIView):
+class PlacesDestroyAPI(DestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         place = Place.objects.get(name=kwargs['placeName'])
         place.delete()
@@ -28,7 +28,7 @@ class SetPlacesDestroyAPI(DestroyAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class SetFixedTimeTableListCreateAPI(ListCreateAPIView):
+class FixedTimeTableListCreateAPI(ListCreateAPIView):
     serializer_class = FixedTimeTableSerializer
 
     def get_queryset(self):
@@ -60,7 +60,7 @@ class SetFixedTimeTableListCreateAPI(ListCreateAPIView):
         return Response(status=status.HTTP_201_CREATED)
 
 
-class SetFixedTimeTableByPlaceAPI(RetrieveAPIView):
+class FixedTimeTableByPlaceAPI(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         place = Place.objects.get(name=kwargs['placeName'])
         timetable = FixedTimeTable.objects.filter(place=place.name).order_by('weekday')
