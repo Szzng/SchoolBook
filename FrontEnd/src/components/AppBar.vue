@@ -4,47 +4,40 @@
       app
       color="#FFFFFF"
       clipped-left
-
       style="border-bottom: 1px solid #d2d2d2 !important"
     >
       <a href="/"><v-toolbar-title>School Book</v-toolbar-title></a>
 
       <v-tabs centered class="pl-n12 black--text" color="primary">
         <v-tabs-slider></v-tabs-slider>
+        <v-tab to="/">Home</v-tab>
+        <v-tab class="indigo--text" to="/tablets">태블릿 예약</v-tab>
         <v-tab
           class="black--text"
-          v-for="menu in menus"
-          :key="menu.name"
-          :to="menu.url"
-          >{{ menu.name }}</v-tab
+          v-for="place in places"
+          :key="place.name"
+          :to="`/classroom/${place.name}`"
+          >{{ place.name }}</v-tab
         >
+        <v-tab to="/setting">기본 설정</v-tab>
       </v-tabs>
 
       <v-spacer></v-spacer>
-
     </v-app-bar>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
-
-  data: () => ({
-    menus: [
-      { name: 'Home', url: '/' },
-      { name: '태블릿', url: '/tablets' },
-      { name: '컴퓨터실', url: '/classroom/computer' },
-      { name: '기본 설정', url: '/setting' }
-    ],
-    notifications: 1
-  }),
+  data: () => ({}),
 
   computed: {
+    ...mapState('classroomStore', ['places'])
   },
 
-  methods: {
-  }
+  methods: {}
 }
 </script>
 

@@ -14,18 +14,18 @@
                 align="center"
                 class="ml-3 pb-1"
                 v-for="item in places"
-                :key="item"
+                :key="item.name"
               >
                 <v-checkbox
                   v-model="place"
-                  :label="item"
-                  :value="item"
+                  :label="item.name"
+                  :value="item.name"
                   hide-details
                   color="secondary"
                   :rules="placeRule"
                 >
                   <template v-slot:label>
-                    <span id="checkboxLabel">{{ item }}</span>
+                    <span id="checkboxLabel">{{ item.name }}</span>
                   </template>
                 </v-checkbox>
               </v-row>
@@ -71,7 +71,7 @@
               class="my-2 mx-0"
             >
               <v-col cols="1" class="text-center py-1">
-                {{ period }}교시
+                {{ period }}
               </v-col>
               <v-col v-for="(weekday, idx) in weekdays" :key="idx" class="py-1">
                 <v-text-field
@@ -106,8 +106,15 @@ export default {
       3: ['', '', '', '', '', ''],
       4: ['', '', '', '', '', '']
     },
+    show: false,
     placeRule: [(v) => !!v || '시간표를 설정할 교실(장소)를 선택하세요.']
   }),
+
+  watch: {
+    place () {
+      api.getFixedTimeTable(this, this.place)
+    }
+  },
 
   computed: {
     ...mapState('classroomStore', ['periods', 'places'])
@@ -117,9 +124,11 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         const postData = {
+          placeName: this.place,
+          fixedTimeTable: this.fixedTimeTable
         }
-        api.setFixedTimeTable(postData)
-        this.$refs.form.reset()
+        api.setFixedTimeTable(this, postData)
+        // this.$refs.form.reset()
       }
     }
   }

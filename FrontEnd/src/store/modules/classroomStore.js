@@ -4,10 +4,11 @@ const classroomStore = {
     dialog: {
       checkRoomBooking: false,
       bookRoom: false,
-      destroyRoomBooking: false
+      destroyRoomBooking: false,
+      destroyRoom: false
     },
     periods: [1, 2, 3, 4, 5, 6],
-    places: ['강당', '컴퓨터1실', '컴퓨터2실'],
+    places: [],
     focusDate: '',
     focusPlace: '',
     bookedRoomLists: [],

@@ -35,7 +35,7 @@ export default new Router({
     },
 
     {
-      path: '/classroom/computer',
+      path: '/classroom',
       component: ClassroomTabs,
       props: true,
       children: [

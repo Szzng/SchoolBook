@@ -4,9 +4,18 @@ export default {
   Django_API: `${DjangoBase}api/`,
 
   /* Setting */
-  settingTabletsPlaces: '',
-  settingClassroomPlaces: '',
-  settingFixedTimeTable: '',
+  setting_TabletsPlaces: 'tablets/setting/place/',
+  setting_DestroyTabletsPlace: (placeName) => {
+    return `tablets/setting/place/${placeName}/`
+  },
+  setting_ClassroomPlaces: 'rooms/setting/place/',
+  setting_DestroyClassroomPlace: (placeName) => {
+    return `rooms/setting/place/${placeName}/`
+  },
+  setting_FixedTimeTable: 'rooms/setting/fixedtimetable/',
+  setting_ByPlaceFixedTimeTable: (placeName) => {
+    return `rooms/setting/fixedtimetable/${placeName}/`
+  },
 
   /* Book Tablets */
   tabletsAll: 'tablets/',
@@ -17,7 +26,7 @@ export default {
     return `tablets/${tabletId}/`
   },
   tabletLeft: (place, date) => {
-    return `tablets/left/${place}/${date}`
+    return `tablets/left/${place}/${date}/`
   },
 
   /* Book Room */
@@ -26,6 +35,6 @@ export default {
     return `rooms/${date}`
   },
   roomDestroy: (roomId) => {
-    return `rooms/destroy/${roomId}`
+    return `rooms/destroy/${roomId}/`
   }
 }
