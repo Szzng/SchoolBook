@@ -1,4 +1,4 @@
-from .models import Place, EmptyTimeTable, AvailableBooking
+from .models import Place, EmptyTimeTable, AvailableBookingEvent
 import calendar
 
 
@@ -16,7 +16,7 @@ def createAvailableBooking(emptytimetables, year, start, end):
             for day in days:
                 if day == 0:
                     continue
-                AvailableBooking.objects.create(
+                AvailableBookingEvent.objects.create(
                     timetable=empty,
                     date=str(year) + '-' + str(month) + '-' + str(day)
                 )

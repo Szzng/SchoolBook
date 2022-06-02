@@ -24,9 +24,10 @@ class EmptyTimeTable(models.Model):
                                               choices=((1, 1), (2, 2), (3, 3), (4, 4), (5, 5), (6, 6)))
 
 
-class AvailableBooking(models.Model):
+class AvailableBookingEvent(models.Model):
     timetable = models.ForeignKey(EmptyTimeTable, on_delete=models.CASCADE)
-    date = models.DateField()
+    start = models.DateField()
+    name = models.PositiveSmallIntegerField()
 
 
 class RoomBooking(models.Model):

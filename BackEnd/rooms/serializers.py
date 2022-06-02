@@ -18,9 +18,10 @@ class EmptyTimeTableSerializer(serializers.Serializer):
     period = serializers.IntegerField(required=True)
 
 
-class AvailableBookingSerializer(serializers.Serializer):
-    timetable = EmptyTimeTableSerializer()
+class AvailableBookingEventSerializer(serializers.Serializer):
+    # timetable = EmptyTimeTableSerializer()
     date = serializers.DateField(required=True)
+    name = serializers.CharField(required=True)
 
 
 class RoomBookingSerializer(serializers.Serializer):
