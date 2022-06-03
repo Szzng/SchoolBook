@@ -67,8 +67,10 @@ export default {
   computed: {
     ...mapState('classroomStore', ['dialog', 'periods', 'focusDate', 'focusPlace']),
     formatSelectedDate () {
-      const date = this.eventBooking.start.split('-')
-      return date[1] + '월  ' + date[2] + '일 '
+      if (this.eventBooking.start) {
+        const date = this.eventBooking.start.split('-')
+        return date[1] + '월  ' + date[2] + '일 '
+      }
     }
   },
 
