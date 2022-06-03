@@ -46,5 +46,27 @@ export default {
       .catch(error => {
         console.log('BookTablets POST error', error.response)
       })
+  },
+
+  getAvailableBookingEvents (component, place, date) {
+    myAxios
+      .get(Urls.roomAvailableBookingEvents(place, date))
+      .then(response => {
+        classroomStore.state.availableBookingEvents = response.data
+      })
+      .catch(error => {
+        console.log('getAvailableBookingEvents GET error', error.response)
+      })
+  },
+
+  getRoomBookingsByDate (place, date) {
+    myAxios
+      .get(Urls.roomBookingByDate(place, date))
+      .then(response => {
+        classroomStore.state.bookedRoomLists = response.data
+      })
+      .catch(error => {
+        console.log('getRoomBookingsByDate GET error', error.response)
+      })
   }
 }

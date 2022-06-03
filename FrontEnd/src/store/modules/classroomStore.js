@@ -12,6 +12,7 @@ const classroomStore = {
     focusDate: '',
     focusPlace: '',
     bookedRoomLists: [],
+    availableBookingEvents: [],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   },
   mutations: {

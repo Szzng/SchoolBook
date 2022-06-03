@@ -36,5 +36,11 @@ export default {
   },
   roomDestroy: (roomId) => {
     return `rooms/destroy/${roomId}/`
+  },
+  roomAvailableBookingEvents: (place, date) => {
+    return `rooms/events/${place}/${date}/`
+  },
+  roomBookingByDate: (place, date) => {
+    return `rooms/${place}/${date}/`
   }
 }

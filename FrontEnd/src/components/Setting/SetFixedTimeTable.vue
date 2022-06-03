@@ -128,6 +128,7 @@ export default {
           fixedTimeTable: this.fixedTimeTable
         }
         api.setFixedTimeTable(this, postData)
+        alert('시간표가 저장되었습니다.')
         // this.$refs.form.reset()
       }
     }

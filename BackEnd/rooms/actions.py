@@ -1,22 +1,25 @@
-from .models import Place, EmptyTimeTable, AvailableBookingEvent
+from .models import Place, EmptyTimeTable, AvailableBookingEvent, RoomBooking
 import calendar
 
+def eventsCreated(placeName, yearMonth):
+    events = AvailableBookingEvent.objects.filter(timetable__place=placeName,
+                                                  start__contains=yearMonth).exists()
+    bookings = RoomBooking.objects.filter(timetable__place=placeName,
+                                          date__contains=yearMonth).exists()
 
-def initialize(year):
-    for place in Place.objects.all():
-        emptytimetables = EmptyTimeTable.objects.filter(place=place.name).order_by('weekday')
-        createAvailableBooking(emptytimetables, year, 3, 13)
-        createAvailableBooking(emptytimetables, year + 1, 1, 3)
+    return events or bookings
 
+def createEvents(place, year, month):
+    monthcalendar = calendar.monthcalendar(int(year), int(month))
 
-def createAvailableBooking(emptytimetables, year, start, end):
-    for month in range(start, end):
-        for empty in emptytimetables:
-            days = list(map(lambda x: x[empty.weekday], calendar.monthcalendar(year, month)))
-            for day in days:
-                if day == 0:
-                    continue
+    for i in range(5):
+        emptyPeriodsByWeekDay = EmptyTimeTable.objects.filter(place=place, weekday=i)
+        daysOnWeekday = list(map(lambda x: x[i], monthcalendar))
+        for day in daysOnWeekday:
+            if day == 0: continue
+            for emptyPeriod in emptyPeriodsByWeekDay:
                 AvailableBookingEvent.objects.create(
-                    timetable=empty,
-                    date=str(year) + '-' + str(month) + '-' + str(day)
+                    timetable=emptyPeriod,
+                    start=year + '-' + month + '-' + str(day),
+                    name=emptyPeriod.period
                 )

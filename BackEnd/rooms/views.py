@@ -2,10 +2,11 @@ from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveA
 from rest_framework.response import Response
 from rest_framework import status, mixins
 import datetime as dt
+
+from .actions import eventsCreated, createEvents
 from .models import Place, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableBookingEvent
 from .serializers import RoomBookingSerializer, AvailableBookingEventSerializer, FixedTimeTableSerializer, \
     PlaceSerializer
-import calendar
 
 
 class PlacesListCreateAPI(ListCreateAPIView):
@@ -129,29 +130,11 @@ class RoomBookingDestroyAPI(DestroyAPIView):
 
 class AvailableBookingEventsByMonth(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
-
-        # 이미 AvailableBookingEvents가 해당 월에 있거나, 룸부킹의 개수가 모두 찬 경우에는 이미 이벤트 생성된 것. -> 바로 get
-        AvailableBookingEvent.objects.filter(timetable__place=kwargs['placeName'],
-                                             start__contains=kwargs['date'][:-3]).exists()
-
-        # 그외 경우에는 이벤트가 생성되지 않은 상태로 초기 생성 필요 -> 이벤트 생성 후 get
-        year = kwargs['date'][:4]
-        month = kwargs['date'][5:7]
-        monthcalendar = calendar.monthcalendar(year, month)
-
-        for i in range(4):
-            emptyPeriodsByWeekDay = EmptyTimeTable.objects.filter(place=kwargs['placeName'], weekday=i)
-            daysOnWeekday = list(map(lambda x: x[i], monthcalendar))
-            for day in daysOnWeekday:
-                if day == 0: continue
-                for emptyPeriod in emptyPeriodsByWeekDay:
-                    AvailableBookingEvent.objects.create(
-                        timetable=emptyPeriod,
-                        start=str(year) + '-' + str(month) + '-' + str(day),
-                        name=emptyPeriod.period
-                    )
+        if not eventsCreated(kwargs['placeName'], kwargs['date'][:-3]):
+            createEvents(kwargs['placeName'], kwargs['date'][:4], kwargs['date'][5:7])
 
         events = AvailableBookingEvent.objects.filter(timetable__place=kwargs['placeName'],
-                                                      start__contains=kwargs['date'][:-3]).values('name', 'start')
+                                                      start__contains=kwargs['date'][:-3]).order_by('start').values(
+            'name', 'start')
 
-        return Response(AvailableBookingEventSerializer(events).data)
+        return Response(events)

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-row class="fill-height ml-5">
+  <div class="mt-16 pt-4 ml-4">
+    <v-row class="fill-height ml-3">
       <v-col sm="12" md="8">
         <v-sheet height="80" class="pr-10 mt-5">
           <v-toolbar flat>
@@ -14,10 +14,10 @@
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }}
+              {{ $refs.calendar.title }} {{focusPlace}}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }}
+              {{ initCalendarTitle }} {{focusPlace}}
             </v-toolbar-title>
             <v-btn
               fab
@@ -39,18 +39,19 @@
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="500" class="pr-10">
+        <v-sheet height="550" class="pr-10">
           <v-calendar
             ref="calendar"
             v-model="$store.state.classroomStore.focusDate"
             :weekdays="weekday"
             color="primary"
             type="month"
-            :events="notYetBooked"
-            event-color="primary"
+            :events="availableBookingEvents"
+            event-color="deep-purple lighten-3"
             :event-more="false"
             @click:date="checkRoomBooking"
             @click:event="bookRoom"
+            @change="changed"
           ></v-calendar>
         </v-sheet>
       </v-col>
@@ -70,6 +71,7 @@ import { mapState } from 'vuex'
 import CheckRoomBookingDialog from '@/components/Classroom/CheckRoomBookingDialog.vue'
 import BookRoomDialog from '@/components/Classroom/BookRoomDialog.vue'
 import DestroyRoomBookingDialog from '@/components/Classroom/DestroyRoomBookingDialog.vue'
+import api from '@/api/modules/classroom'
 
 export default {
   components: {
@@ -83,48 +85,26 @@ export default {
     focus: '',
     eventBooking: {},
     eventDestroying: {},
-    weekday: [1, 2, 3, 4, 5],
-    notYetBooked: [
-      {
-        name: '1',
-        start: '2022-05-18',
-        color: 'white'
-      },
-      {
-        name: '2',
-        start: '2022-05-18'
-      },
-      {
-        name: '3',
-        start: '2022-05-18'
-      },
-      {
-        name: '4',
-        start: '2022-05-18'
-      },
-      {
-        name: '5',
-        start: '2022-05-18'
-      },
-      {
-        name: '6',
-        start: '2022-05-18'
-      }
-    ]
+    weekday: [1, 2, 3, 4, 5]
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog', 'bookedRoomLists'])
+    ...mapState('classroomStore', ['dialog', 'bookedRoomLists', 'focusPlace', 'availableBookingEvents'])
   },
 
   async created () {
     await this.$nextTick()
     this.initCalendarTitle = this.$refs.calendar.title
+    api.getAvailableBookingEvents(this, this.focusPlace, this.$refs.calendar.start)
   },
 
   methods: {
+    changed (info) {
+      api.getAvailableBookingEvents(this, this.focusPlace, info.start.date)
+    },
     checkRoomBooking ({ date }) {
       this.$store.commit('classroomStore/focusDateSetter', date)
+      api.getRoomBookingsByDate(this.focusPlace, date)
       this.dialog.checkRoomBooking = true
     },
 
@@ -138,13 +118,8 @@ export default {
       this.dialog.destroyRoomBooking = true
     },
 
-    getEventName (event) {
-      return event.input.name
-    },
-    getEventColor (event) {
-      return event.color
-    },
     setToday () {
+      this.$store.commit('classroomStore/focusDateSetter', '')
       this.focus = ''
     },
     formatInterval (interval) {
@@ -160,10 +135,11 @@ export default {
 <style scoped>
 >>> .v-event {
   max-width: 12%;
-  height: 26% !important;
+  height: 22% !important;
   border-radius: 100%;
   margin-right: 1px;
-  margin-left: 4px;
+  margin-left: 0.4em;
+  margin-top:0.9em;
   float: left;
   text-align: center;
   font-size: 15px;

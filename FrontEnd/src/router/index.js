@@ -9,7 +9,6 @@ import ClassroomSettingTabs from '@/components/Setting/ClassroomSettingTabs.vue'
 import TabletsTabs from '@/components/Tablets/TabletsTabs.vue'
 import TabletsCalendar from '@/components/Tablets/CalendarByPlace.vue'
 
-import ClassroomTabs from '@/components/Classroom/ClassroomTabs.vue'
 import ClassRoomCalendar from '@/components/Classroom/CalendarByPlace.vue'
 
 Vue.use(Router)
@@ -30,17 +29,15 @@ export default new Router({
           children: [
             { path: 'place', component: SetClassroomPlaces },
             { path: 'fixtimetable', component: SetFixedTimeTable }
-          ] }
+          ]
+        }
       ]
     },
 
     {
-      path: '/classroom',
-      component: ClassroomTabs,
-      props: true,
-      children: [
-        { path: ':place', component: ClassRoomCalendar, props: true }
-      ]
+      path: '/classroom/:place',
+      component: ClassRoomCalendar,
+      props: true
     },
     {
       path: '/tablets',
