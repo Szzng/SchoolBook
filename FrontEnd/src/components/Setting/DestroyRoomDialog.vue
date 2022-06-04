@@ -58,7 +58,7 @@ export default {
 
   methods: {
     destroyPlace () {
-      api.DestroyRoomPlace(this.room)
+      api.destroyRoom(this.room)
       this.dialog.destroyRoom = false
       this.dialog.updateRoom = false
     }

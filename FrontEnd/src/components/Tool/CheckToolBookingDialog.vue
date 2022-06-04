@@ -54,7 +54,7 @@
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
             <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
-              {{ focusPlace }}</v-card-subtitle
+              {{ focusRoom }}</v-card-subtitle
             >
           </v-card-title>
           <v-spacer></v-spacer>
@@ -87,7 +87,7 @@
                     <v-avatar left>
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
                     </v-avatar>
-                    {{ item.borrower }} ({{ item.quantity }}대)
+                    {{ item.booker }} ({{ item.quantity }}대)
                   </v-chip>
                 </v-chip-group>
               </v-card-text>
@@ -120,7 +120,7 @@ export default {
     ...mapState('toolStore', [
       'dialog',
       'periods',
-      'focusPlace',
+      'focusRoom',
       'focusDate',
       'bookedToolLists',
       'left'

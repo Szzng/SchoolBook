@@ -12,9 +12,9 @@ const roomStore = {
       destroyRoomBooking: false
     },
     periods: [1, 2, 3, 4, 5, 6],
-    places: [],
+    rooms: [],
     focusDate: '',
-    focusPlace: '',
+    focusRoom: '',
     bookedRoomLists: [],
     availableBookingEvents: [],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
@@ -31,7 +31,7 @@ const roomStore = {
       state.focusDate = date
     },
     focusPlaceSetter (state, place) {
-      state.focusPlace = place
+      state.focusRoom = place
     }
   },
   actions: {

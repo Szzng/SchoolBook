@@ -76,13 +76,13 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'places', 'timetable'])
+    ...mapState('roomStore', ['dialog', 'periods', 'rooms', 'timetable'])
   },
 
   methods: {
     save () {
       const postData = {
-        placeName: this.room,
+        room: this.room,
         timetable: this.timetable
       }
       api.updateTimetable(postData)

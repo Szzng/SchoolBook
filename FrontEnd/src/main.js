@@ -16,7 +16,7 @@ new Vue({
   router,
   store,
   beforeCreate () {
-    settingApi.getRoomPlaces()
+    settingApi.getRooms()
   },
   components: { App },
   template: '<App/>'

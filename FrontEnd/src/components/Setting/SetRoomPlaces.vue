@@ -7,19 +7,19 @@
             <v-card-title>등록된 교실 · 장소 수정</v-card-title>
             <v-card-text class="mt-3">
               <v-card
-                v-for="place in places"
+                v-for="place in rooms"
                 :key="place.name"
                 outlined
                 class="py-2 mb-3"
               >
                 <v-row align="center" justify="start">
-                  <v-col sm="12" md="6" class="pl-7">
+                  <v-col sm="12" md="4" class="pl-7">
                     <span style="font-size: 18px; font-weight: bolder">
                       {{ place.name }}</span
                     >
                   </v-col>
 
-                  <v-col sm="12" md="6" class="text-right pr-6">
+                  <v-col sm="12" md="8" class="text-right pr-6">
                     <v-btn
                       class="mr-2"
                       width="120"
@@ -58,7 +58,7 @@
                     <v-text-field
                       v-model="newRoom"
                       outlined
-                      label="교실 · 장소 이름을 입력하세요."
+                      label="교실 · 장소 이름을 입력하세요. (특수 문자 불가)"
                       hide-details
                       :rules="placeNameRule"
                     ></v-text-field>
@@ -128,7 +128,7 @@ export default {
   },
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'places'])
+    ...mapState('roomStore', ['dialog', 'periods', 'rooms'])
   },
 
   methods: {

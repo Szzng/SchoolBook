@@ -3,17 +3,16 @@ from . import views
 
 app_name = 'api/rooms'
 
-
 urlpatterns = [
-    path('events/<str:placeName>/<str:date>/', views.AvailableBookingEventsByMonth.as_view()),
+    path('setting/', views.RoomListCreate.as_view()),
+    path('setting/destroy/', views.RoomDestroy.as_view()),
 
-    path('setting/', views.PlacesListCreateAPI.as_view()),
-    path('setting/destroy/', views.PlacesDestroyAPI.as_view()),
+    path('setting/timetable/', views.TimetableListCreate.as_view()),
+    path('setting/timetable/<str:room>/', views.TimetableRetrieve.as_view()),
 
-    path('setting/timetable/', views.FixedTimeTableListCreateAPI.as_view()),
-    path('setting/timetable/<str:placeName>/', views.FixedTimeTableByPlaceAPI.as_view()),
+    path('events/<str:room>/<str:date>/', views.AvailableEventByMonthRetrieve.as_view()),
 
-    path('', views.RoomBookingListCreateAPI.as_view()),
-    path('<int:id>/', views.RoomBookingDestroyAPI.as_view()),
-    path('<str:placeName>/<str:date>/', views.RoomBookingsByDateAPI.as_view()),
+    path('', views.RoomBookingListCreate.as_view()),
+    path('<int:bookingId>/', views.RoomBookingDestroy.as_view()),
+    path('<str:room>/<str:date>/', views.RoomBookingRetrieve.as_view()),
 ]

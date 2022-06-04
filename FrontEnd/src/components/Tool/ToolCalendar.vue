@@ -14,10 +14,10 @@
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusPlace}}
+              {{ $refs.calendar.title }} {{focusRoom}}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusPlace}}
+              {{ initCalendarTitle }} {{focusRoom}}
             </v-toolbar-title>
             <v-btn
               fab
@@ -72,7 +72,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('toolStore', ['dialog', 'focusPlace'])
+    ...mapState('toolStore', ['dialog', 'focusRoom'])
   },
 
   async created () {
@@ -83,8 +83,8 @@ export default {
   methods: {
     checkToolBooking ({ date }) {
       this.$store.commit('toolStore/focusDateSetter', date)
-      api.getBookedtoolListByDate(this.focusPlace, date)
-      api.getLefttoolCounts(this.focusPlace, date)
+      api.getBookedtoolListByDate(this.focusRoom, date)
+      api.getLefttoolCounts(this.focusRoom, date)
       this.dialog.checkToolBooking = true
     },
     setToday () {

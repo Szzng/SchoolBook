@@ -18,7 +18,7 @@
             </v-col>
             <v-col cols="3" class="text-right pt-0 mr-2">
               <v-btn @click="save" class="primary" large> 완료 </v-btn>
-              <v-btn @click="dialog.createTimetable=false" large outlined> 취소 </v-btn>
+              <v-btn @click="close" large outlined> 취소 </v-btn>
             </v-col>
           </v-row>
 
@@ -79,21 +79,38 @@ export default {
       2: ['', '', '', '', '', ''],
       3: ['', '', '', '', '', ''],
       4: ['', '', '', '', '', '']
+    },
+    resetTimetable: {
+      0: ['', '', '', '', '', ''],
+      1: ['', '', '', '', '', ''],
+      2: ['', '', '', '', '', ''],
+      3: ['', '', '', '', '', ''],
+      4: ['', '', '', '', '', '']
     }
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'places'])
+    ...mapState('roomStore', ['dialog', 'periods', 'rooms'])
   },
 
   methods: {
+    close () {
+      this.dialog.createTimetable = false
+      this.timetable = {
+        0: ['', '', '', '', '', ''],
+        1: ['', '', '', '', '', ''],
+        2: ['', '', '', '', '', ''],
+        3: ['', '', '', '', '', ''],
+        4: ['', '', '', '', '', '']
+      }
+    },
     save () {
       const postData = {
-        place: this.room,
+        room: this.room,
         timetable: this.timetable
       }
       api.createRoom(postData)
-      this.dialog.createTimetable = false
+      this.close()
     }
   }
 }

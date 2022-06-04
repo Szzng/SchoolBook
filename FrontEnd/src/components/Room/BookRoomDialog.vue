@@ -15,19 +15,19 @@
         <v-row align="center" justify="center" class="mt-0">
           <v-card-title class="pb-0"
             >{{ formatSelectedDate }} {{ eventBooking.name }}교시
-          <v-card-subtitle class="purple--text pl-1 pb-3">{{focusPlace}}</v-card-subtitle>
+          <v-card-subtitle class="purple--text pl-1 pb-3">{{focusRoom}}</v-card-subtitle>
           </v-card-title>
         </v-row>
 
         <v-form ref="form" lazy-validation>
           <v-text-field
-            v-model="borrower"
+            v-model="booker"
             label="학년-반"
             required
             outlined
             color="primary"
             class="mt-12 pt-2 px-3"
-            :rules="borrowerRule"
+            :rules="bookerRule"
           ></v-text-field>
           <v-card-actions>
             <v-btn
@@ -55,17 +55,15 @@ export default {
     eventBooking: Object
   },
   data: () => ({
-    place: '컴퓨터실1',
-    borrower: '',
-    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
-    borrowerRule: [
+    booker: '',
+    bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
     ]
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'focusDate', 'focusPlace']),
+    ...mapState('roomStore', ['dialog', 'periods', 'focusDate', 'focusRoom']),
     formatSelectedDate () {
       if (this.eventBooking.start) {
         const date = this.eventBooking.start.split('-')
@@ -84,10 +82,10 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         const postData = {
-          'time.date': this.eventBooking.start,
-          'time.period': this.eventBooking.name,
-          'place.name': this.place,
-          borrower: this.borrower
+          'date': this.eventBooking.start,
+          'period': this.eventBooking.name,
+          'room': this.focusRoom,
+          'booker': this.booker
         }
         api.BookRoom(this, postData)
         this.$refs.form.reset()

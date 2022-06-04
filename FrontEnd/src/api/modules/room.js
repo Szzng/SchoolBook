@@ -48,9 +48,9 @@ export default {
       })
   },
 
-  getAvailableBookingEvents (component, place, date) {
+  getAvailableBookingEvents (component, room, date) {
     myAxios
-      .get(Urls.room_AvailableBookingEvents(place, date))
+      .get(Urls.room_AvailableEvents(room, date))
       .then(response => {
         roomStore.state.availableBookingEvents = response.data
       })
@@ -59,9 +59,9 @@ export default {
       })
   },
 
-  getRoomBookingsByDate (place, date) {
+  getRoomBookingsByDate (room, date) {
     myAxios
-      .get(Urls.room_BookingByDate(place, date))
+      .get(Urls.room_BookingByDate(room, date))
       .then(response => {
         roomStore.state.bookedRoomLists = response.data
       })

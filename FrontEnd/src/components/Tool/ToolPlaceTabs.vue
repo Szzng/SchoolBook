@@ -7,7 +7,7 @@
             <v-tabs-slider></v-tabs-slider>
             <v-tab
               class="black--text"
-              v-for="place in places"
+              v-for="place in rooms"
               :key="place.name"
               :to="`/tool/${place.name}`"
               exact
@@ -37,7 +37,7 @@ export default {
   },
 
   computed: {
-    ...mapState('toolStore', ['places'])
+    ...mapState('toolStore', ['rooms'])
   },
 
   created () {

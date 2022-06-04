@@ -7,7 +7,7 @@
       <v-card outlined class="mt-1 mb-5">
         <v-card-text>
           <v-btn
-            v-for="place in places"
+            v-for="place in rooms"
             :key="place.name"
             color="primary"
             outlined
@@ -98,7 +98,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'places']),
+    ...mapState('roomStore', ['dialog', 'periods', 'rooms']),
     range () {
       return [...Array(Number(this.placesCount)).keys()]
     },
@@ -116,7 +116,7 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         const postData = {
-          places: this.placesNames
+          rooms: this.placesNames
         }
         api.setRoomPlaces(postData)
         this.$refs.form.reset()

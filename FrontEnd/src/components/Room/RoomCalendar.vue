@@ -14,10 +14,10 @@
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusPlace}}
+              {{ $refs.calendar.title }} {{focusRoom}}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusPlace}}
+              {{ initCalendarTitle }} {{focusRoom}}
             </v-toolbar-title>
             <v-btn
               fab
@@ -89,22 +89,22 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'bookedRoomLists', 'focusPlace', 'availableBookingEvents'])
+    ...mapState('roomStore', ['dialog', 'bookedRoomLists', 'focusRoom', 'availableBookingEvents'])
   },
 
   async created () {
     await this.$nextTick()
     this.initCalendarTitle = this.$refs.calendar.title
-    api.getAvailableBookingEvents(this, this.focusPlace, this.$refs.calendar.start)
+    api.getAvailableBookingEvents(this, this.focusRoom, this.$refs.calendar.start)
   },
 
   methods: {
     changed (info) {
-      api.getAvailableBookingEvents(this, this.focusPlace, info.start.date)
+      api.getAvailableBookingEvents(this, this.focusRoom, info.start.date)
     },
     checkRoomBooking ({ date }) {
       this.$store.commit('roomStore/focusDateSetter', date)
-      api.getRoomBookingsByDate(this.focusPlace, date)
+      api.getRoomBookingsByDate(this.focusRoom, date)
       this.dialog.checkRoomBooking = true
     },
 

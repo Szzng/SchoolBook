@@ -65,7 +65,7 @@
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
             <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
-              {{ focusPlace }}</v-card-subtitle
+              {{ focusRoom }}</v-card-subtitle
             >
           </v-card-title>
           <v-spacer></v-spacer>
@@ -135,7 +135,7 @@ export default {
       'dialog',
       'periods',
       'focusDate',
-      'focusPlace',
+      'focusRoom',
       'bookedRoomLists'
     ]),
 

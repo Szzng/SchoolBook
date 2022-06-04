@@ -19,7 +19,7 @@
         <v-tab class="indigo--text" to="/tool">물품</v-tab>
         <v-tab
           class="black--text"
-          v-for="place in places"
+          v-for="place in rooms"
           :key="place.name"
           :to="`/Room/${place.name}`"
           exact
@@ -48,7 +48,7 @@ export default {
   },
 
   computed: {
-    ...mapState('roomStore', ['places'])
+    ...mapState('roomStore', ['rooms'])
   },
 
   created () {

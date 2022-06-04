@@ -32,10 +32,10 @@
           </v-row>
 
           <v-text-field
-            v-model="borrower"
+            v-model="booker"
             label="학년-반"
             required
-            :rules="borrowerRule"
+            :rules="bookerRule"
             outlined
             color="primary"
             class="mt-12 pt-2 px-3"
@@ -74,9 +74,9 @@ import api from '@/api/modules/tool'
 export default {
   data: () => ({
     period: [],
-    borrower: '',
+    booker: '',
     quantity: 0,
-    borrowerRule: [
+    bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
     ]
@@ -88,7 +88,7 @@ export default {
       'periods',
       'left',
       'focusDate',
-      'focusPlace',
+      'focusRoom',
       'colors'
     ]),
     formatSelectedDate () {
@@ -137,8 +137,8 @@ export default {
         const postData = {
           'time.date': this.focusDate,
           'time.period': this.period,
-          'place.name': this.focusPlace,
-          borrower: this.borrower,
+          'place.name': this.focusRoom,
+          booker: this.booker,
           quantity: this.quantity
         }
         api.Booktool(this, postData)

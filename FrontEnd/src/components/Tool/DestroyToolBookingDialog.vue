@@ -7,7 +7,7 @@
             <v-avatar left>
               <v-icon>mdi-close-circle-outline</v-icon>
             </v-avatar>
-            {{ destroyItem.borrower }} ({{ destroyItem.quantity }}대)
+            {{ destroyItem.booker }} ({{ destroyItem.quantity }}대)
           </v-chip>
         </v-row>
         <v-row
@@ -45,12 +45,12 @@ export default {
   }),
 
   computed: {
-    ...mapState('toolStore', ['dialog', 'focusPlace', 'focusDate'])
+    ...mapState('toolStore', ['dialog', 'focusRoom', 'focusDate'])
   },
 
   methods: {
     destroyBooking () {
-      api.DestroyBookedtool(this.destroyItem.id, this.focusPlace, this.focusDate)
+      api.DestroyBookedtool(this.destroyItem.id, this.focusRoom, this.focusDate)
       this.dialog.destroyToolBooking = false
     }
   }

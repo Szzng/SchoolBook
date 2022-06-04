@@ -13,7 +13,7 @@ export default {
   setting_Room: 'rooms/setting/',
   setting_DestroyRoom: 'rooms/setting/destroy/',
   setting_UpdateTimetable: 'rooms/setting/timetable/',
-  setting_GetTimetableByRoom: (room) => {
+  setting_TimetableByRoom: (room) => {
     return `rooms/setting/timetable/${room}/`
   },
 
@@ -37,10 +37,10 @@ export default {
   room_Destroy: (roomId) => {
     return `rooms/destroy/${roomId}/`
   },
-  room_AvailableBookingEvents: (place, date) => {
-    return `rooms/events/${place}/${date}/`
+  room_AvailableEvents: (room, date) => {
+    return `rooms/events/${room}/${date}/`
   },
-  room_BookingByDate: (place, date) => {
-    return `rooms/${place}/${date}/`
+  room_BookingByDate: (room, date) => {
+    return `rooms/${room}/${date}/`
   }
 }
