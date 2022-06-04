@@ -29,8 +29,6 @@
         </v-tab>
         <v-tab to="/setting">기본 설정</v-tab>
       </v-tabs>
-
-      <v-spacer></v-spacer>
     </v-app-bar>
   </div>
 </template>
