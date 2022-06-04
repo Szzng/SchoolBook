@@ -35,7 +35,7 @@ export default {
         this.getLeftTabletsCounts(place, date)
       })
       .catch(error => {
-        console.log('DestroyBookedTablets DELETE error', error.response)
+        console.log('BookTablets DELETE error', error.response)
       })
   },
 

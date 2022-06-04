@@ -1,10 +1,8 @@
 from django.contrib import admin
-from .models import Place, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableBookingEvent
+from .models import TimeTable, Place, BookedRoom
 
+admin.site.register(TimeTable)
 admin.site.register(Place)
-admin.site.register(FixedTimeTable)
-admin.site.register(EmptyTimeTable)
-admin.site.register(AvailableBookingEvent)
-admin.site.register(RoomBooking)
+admin.site.register(BookedRoom)
 
 
