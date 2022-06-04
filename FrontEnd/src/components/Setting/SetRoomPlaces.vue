@@ -2,7 +2,7 @@
   <div class="mt-4">
     <v-sheet class="mx-16">
       <span style="font-size: 18px" class="black--text font-weight-bold">
-        1. 현재 등록된 장소
+        1. 등록된 교실 · 장소 수정
       </span>
       <v-card outlined class="mt-1 mb-5">
         <v-card-text>
@@ -11,11 +11,13 @@
             :key="place.name"
             color="primary"
             outlined
+            x-large
+            elevation="3"
             class="mx-1 my-1 white--text font-weight-bold"
-            @click="assertDestroyRoom(place.name)"
+            @click="fixRoom(place.name)"
           >
             {{ place.name }}
-            <v-icon class="ml-2">mdi-close-circle-outline</v-icon>
+            <v-icon class="ml-1">mdi-comment-edit-outline</v-icon>
           </v-btn>
         </v-card-text>
       </v-card>
@@ -28,7 +30,7 @@
           <v-form ref="form" lazy-validation>
             <v-card>
               <v-card-title>
-              추가로 등록할 교실(장소)은 모두 몇 개인가요?
+                추가로 등록할 교실 · 장소는 모두 몇 개인가요?
               </v-card-title>
               <v-card-text>
                 <v-text-field
@@ -74,20 +76,20 @@
       </v-card>
     </v-sheet>
 
-    <DestroyRoomDialog :roomToDestroy="roomToDestroy" />
+    <FixRoomDialog :roomToFix="roomToFix" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import api from '@/api/modules/setting'
-import DestroyRoomDialog from '@/components/Setting/DestroyRoomDialog.vue'
+import FixRoomDialog from '@/components/Setting/FixRoomDialog.vue'
 
 export default {
-  components: { DestroyRoomDialog },
+  components: { FixRoomDialog },
 
   data: () => ({
-    roomToDestroy: '',
+    roomToFix: '',
     placesCount: 0,
     placesNames: [],
     placesCountRule: [
@@ -123,9 +125,9 @@ export default {
       }
     },
 
-    assertDestroyRoom (room) {
-      this.roomToDestroy = room
-      this.dialog.destroyRoom = true
+    fixRoom (room) {
+      this.roomToFix = room
+      this.dialog.fixRoom = true
     }
   }
 }

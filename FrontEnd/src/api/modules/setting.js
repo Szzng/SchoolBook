@@ -39,7 +39,7 @@ export default {
 
   DestroyRoomPlace (placeName) {
     myAxios
-      .delete(Urls.setting_DestroyRoomPlace(placeName))
+      .delete(Urls.setting_DestroyRoomPlace, { data: { 'placeName': placeName } })
       .then(response => {
         this.getRoomPlaces()
       })
@@ -52,7 +52,9 @@ export default {
     myAxios
       .get(Urls.setting_ByPlaceFixedTimeTable(placeName))
       .then(response => {
-        component.fixedTimeTable = response.data
+        component.fixedTimetable = response.data
+        console.log(component.fixedTimetable)
+        component.dialog.fixTimetable = true
       })
       .catch(error => {
         console.log('setFixedTimeTable GET error', error.response)

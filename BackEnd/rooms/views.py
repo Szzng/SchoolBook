@@ -25,7 +25,8 @@ class PlacesListCreateAPI(ListCreateAPIView):
 
 class PlacesDestroyAPI(DestroyAPIView):
     def destroy(self, request, *args, **kwargs):
-        place = Place.objects.get(name=kwargs['placeName'])
+        print(request.data)
+        place = Place.objects.get(name=request.data['placeName'])
         place.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)

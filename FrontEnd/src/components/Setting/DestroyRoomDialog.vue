@@ -7,10 +7,11 @@
             <v-btn
               color="primary"
               outlined
-              large
+              x-large
               class="mx-1 mt-5 white--text font-weight-bold"
             >
-              {{ roomToDestroy }}
+              {{ room }}
+              <v-icon class="ml-1">mdi-progress-close</v-icon>
             </v-btn>
           </v-row>
         </v-card-title>
@@ -19,7 +20,7 @@
             align="center"
             justify="center"
             class="mt-10 mb-3 black--text text-center font-weight-bold"
-            style="font-size:18px;"
+            style="font-size: 18px"
           >
             관련된 모든 예약 정보가 삭제됩니다. <br />
             정말 삭제하시겠어요?
@@ -44,7 +45,7 @@ import api from '@/api/modules/setting'
 
 export default {
   props: {
-    roomToDestroy: String
+    room: String
   },
 
   data: () => ({
@@ -57,8 +58,9 @@ export default {
 
   methods: {
     destroyPlace () {
-      api.DestroyRoomPlace(this.roomToDestroy)
+      api.DestroyRoomPlace(this.room)
       this.dialog.destroyRoom = false
+      this.dialog.fixRoom = false
     }
   }
 }

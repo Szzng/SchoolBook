@@ -2,10 +2,13 @@ const roomStore = {
   namespaced: true,
   state: {
     dialog: {
+      fixRoom: false,
+      destroyRoom: false,
+      fixTimetable: false,
+
       checkRoomBooking: false,
       bookRoom: false,
-      destroyRoomBooking: false,
-      destroyRoom: false
+      destroyRoomBooking: false
     },
     periods: [1, 2, 3, 4, 5, 6],
     places: [],

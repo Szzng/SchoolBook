@@ -8,7 +8,7 @@ urlpatterns = [
     path('events/<str:placeName>/<str:date>/', views.AvailableBookingEventsByMonth.as_view()),
 
     path('setting/place/', views.PlacesListCreateAPI.as_view()),
-    path('setting/place/<str:placeName>/', views.PlacesDestroyAPI.as_view()),
+    path('setting/place/destroy/', views.PlacesDestroyAPI.as_view()),
 
     path('setting/fixedtimetable/', views.FixedTimeTableListCreateAPI.as_view()),
     path('setting/fixedtimetable/<str:placeName>/', views.FixedTimeTableByPlaceAPI.as_view()),

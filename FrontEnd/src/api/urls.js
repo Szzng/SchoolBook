@@ -9,9 +9,7 @@ export default {
     return `tool/setting/place/${placeName}/`
   },
   setting_RoomPlaces: 'rooms/setting/place/',
-  setting_DestroyRoomPlace: (placeName) => {
-    return `rooms/setting/place/${placeName}/`
-  },
+  setting_DestroyRoomPlace: 'rooms/setting/place/destroy/',
   setting_FixedTimeTable: 'rooms/setting/fixedtimetable/',
   setting_ByPlaceFixedTimeTable: (placeName) => {
     return `rooms/setting/fixedtimetable/${placeName}/`
