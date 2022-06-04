@@ -2,7 +2,7 @@
   <div class="mt-2 mr-10">
     <v-sheet v-show="!selected" outlined height="603">
       <v-card class="pl-5" flat>
-        <v-card-actions class="mb-5">
+        <v-card-actions>
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1"
             >달력에서 예약 날짜를 선택하세요.
@@ -47,9 +47,9 @@
       </v-card>
     </v-sheet>
 
-    <v-sheet v-show="selected" outlined>
+    <v-sheet v-show="selected" outlined class="mt-3">
       <v-card class="pl-5" flat>
-        <v-card-actions class="mb-5">
+        <v-card-actions>
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
