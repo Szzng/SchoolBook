@@ -4,7 +4,7 @@ import toolStore from '../../store/modules/toolStore'
 import roomStore from '../../store/modules/roomStore'
 
 export default {
-  settoolPlaces (postData) {
+  setToolPlaces (postData) {
     myAxios
       .post(Urls.setting_toolPlaces, postData)
       .then(response => {
@@ -15,20 +15,20 @@ export default {
       })
   },
 
-  setRoomPlaces (postData) {
+  createRoom (postData) {
     myAxios
-      .post(Urls.setting_RoomPlaces, postData)
+      .post(Urls.setting_Room, postData)
       .then(response => {
-        roomStore.state.places = response.data
+        this.getRoomPlaces()
       })
       .catch(error => {
-        console.log('setRoomPlaces POST error', error.response)
+        console.log('createRoom POST error', error.response)
       })
   },
 
   getRoomPlaces () {
     myAxios
-      .get(Urls.setting_RoomPlaces)
+      .get(Urls.setting_Room)
       .then(response => {
         roomStore.state.places = response.data
       })
@@ -39,7 +39,7 @@ export default {
 
   DestroyRoomPlace (placeName) {
     myAxios
-      .delete(Urls.setting_DestroyRoomPlace, { data: { 'placeName': placeName } })
+      .delete(Urls.setting_DestroyRoom, { data: { 'placeName': placeName } })
       .then(response => {
         this.getRoomPlaces()
       })
@@ -48,27 +48,26 @@ export default {
       })
   },
 
-  getFixedTimeTable (component, placeName) {
+  getTimetable (room) {
     myAxios
-      .get(Urls.setting_ByPlaceFixedTimeTable(placeName))
+      .get(Urls.setting_GetTimetableByRoom(room))
       .then(response => {
-        component.fixedTimetable = response.data
-        console.log(component.fixedTimetable)
-        component.dialog.fixTimetable = true
+        roomStore.state.timetable = response.data
+        roomStore.state.dialog.updateTimetable = true
       })
       .catch(error => {
-        console.log('setFixedTimeTable GET error', error.response)
+        console.log('getTimetable GET error', error.response)
       })
   },
 
-  setFixedTimeTable (component, postData) {
+  updateTimetable (postData) {
     myAxios
-      .post(Urls.setting_FixedTimeTable, postData)
+      .post(Urls.setting_UpdateTimetable, postData)
       .then(response => {
-        this.getFixedTimeTable(component, postData.placeName)
+        this.getTimetable(postData.placeName)
       })
       .catch(error => {
-        console.log('setFixedTimeTable POST error', error.response)
+        console.log('updateTimetable POST error', error.response)
       })
   }
 

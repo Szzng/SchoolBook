@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status, mixins
 import datetime as dt
 
-from .actions import eventsCreated, createEvents
+from .actions import eventsCreated, createEvents, saveTimetable
 from .models import Place, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableBookingEvent
 from .serializers import RoomBookingSerializer, AvailableBookingEventSerializer, FixedTimeTableSerializer, \
     PlaceSerializer
@@ -16,11 +16,11 @@ class PlacesListCreateAPI(ListCreateAPIView):
         return Place.objects.all().order_by('name')
 
     def create(self, request, *args, **kwargs):
-        for place in request.data['places']:
-            if place is not None:
-                Place.objects.get_or_create(name=place)
-
-        return Response(Place.objects.all().values('name'))
+        place, created = Place.objects.get_or_create(name=request.data['place'])
+        if created:
+            timetable = request.data['timetable']
+            saveTimetable(place, timetable)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class PlacesDestroyAPI(DestroyAPIView):
@@ -43,23 +43,8 @@ class FixedTimeTableListCreateAPI(ListCreateAPIView):
         FixedTimeTable.objects.filter(place=place.name).delete()
         EmptyTimeTable.objects.filter(place=place.name).delete()
 
-        timetable = request.data['fixedTimeTable']
-        for weekday, classlist in timetable.items():
-            for i in range(6):
-                fixedclass = classlist[i]
-                if (fixedclass is not None) and (len(fixedclass) >= 1):
-                    FixedTimeTable.objects.create(
-                        place=place,
-                        weekday=weekday,
-                        period=i + 1,
-                        borrower=fixedclass
-                    )
-                else:
-                    EmptyTimeTable.objects.create(
-                        place=place,
-                        weekday=weekday,
-                        period=i + 1
-                    )
+        timetable = request.data['timetable']
+        saveTimetable(place, timetable)
 
         return Response(status=status.HTTP_201_CREATED)
 
@@ -104,14 +89,14 @@ class RoomBookingListCreateAPI(ListCreateAPIView):
 class RoomBookingsByDateAPI(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         weekday = dt.datetime.strptime(kwargs['date'], '%Y-%m-%d').weekday()
-        fixedTimetable = FixedTimeTable.objects.filter(place=kwargs['placeName'], weekday=weekday).order_by('period')
+        timetable = FixedTimeTable.objects.filter(place=kwargs['placeName'], weekday=weekday).order_by('period')
         bookings = RoomBooking.objects.filter(date=kwargs['date'])
 
         data = {1: '', 2: '', 3: '', 4: '', 5: '', 6: ''}
         for booking in bookings:
             data[booking.timetable.period] = booking.borrower
 
-        for period in fixedTimetable:
+        for period in timetable:
             data[period.period] = period.borrower
 
         return Response(data)

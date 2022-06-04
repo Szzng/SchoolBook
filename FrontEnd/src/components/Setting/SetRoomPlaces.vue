@@ -1,133 +1,156 @@
 <template>
   <div class="mt-4">
     <v-sheet class="mx-16">
-      <span style="font-size: 18px" class="black--text font-weight-bold">
-        1. 등록된 교실 · 장소 수정
-      </span>
-      <v-card outlined class="mt-1 mb-5">
-        <v-card-text>
-          <v-btn
-            v-for="place in places"
-            :key="place.name"
-            color="primary"
-            outlined
-            x-large
-            elevation="3"
-            class="mx-1 my-1 white--text font-weight-bold"
-            @click="fixRoom(place.name)"
-          >
-            {{ place.name }}
-            <v-icon class="ml-1">mdi-comment-edit-outline</v-icon>
-          </v-btn>
-        </v-card-text>
-      </v-card>
+      <v-row align="start" justify="center">
+        <v-col sm="12" md="6">
+          <v-card class="mt-1 mb-5">
+            <v-card-title>등록된 교실 · 장소 수정</v-card-title>
+            <v-card-text class="mt-3">
+              <v-card
+                v-for="place in places"
+                :key="place.name"
+                outlined
+                class="py-2 mb-3"
+              >
+                <v-row align="center" justify="start">
+                  <v-col sm="12" md="6" class="pl-7">
+                    <span style="font-size: 18px; font-weight: bolder">
+                      {{ place.name }}</span
+                    >
+                  </v-col>
 
-      <span style="font-size: 18px" class="black--text font-weight-bold">
-        2. 추가 등록
-      </span>
-      <v-card outlined class="mt-1 mb-5">
-        <v-card-text>
-          <v-form ref="form" lazy-validation>
-            <v-card>
-              <v-card-title>
-                추가로 등록할 교실 · 장소는 모두 몇 개인가요?
-              </v-card-title>
-              <v-card-text>
-                <v-text-field
-                  v-model="placesCount"
-                  label="0 이상의 정수를 입력해주세요."
-                  filled
-                  dense
-                  hide-details
-                  :rules="placesCountRule"
-                ></v-text-field>
-              </v-card-text>
-            </v-card>
-
-            <v-row align="end" justify="start" class="my-5">
-              <v-col cols="3" v-for="i in range" :key="i">
-                <v-card>
-                  <v-card-subtitle>
-                    교실(장소){{ i + 1 }}의 이름을 입력하세요.
-                  </v-card-subtitle>
-                  <v-card-text>
-                    <v-text-field
-                      v-model="placesNames[i]"
-                      :label="`${i + 1}번째`"
+                  <v-col sm="12" md="6" class="text-right pr-6">
+                    <v-btn
+                      class="mr-2"
+                      width="120"
+                      height="45"
                       outlined
-                      hide-details
-                      :rules="placesNameRule"
-                    ></v-text-field>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-              <v-col class="text-right">
-                <v-btn
-                  :disabled="disabled"
-                  @click="save"
-                  class="primary"
-                  x-large
-                  >등록</v-btn
-                >
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-sheet>
+                      color="indigo"
+                      elevation="2"
+                      @click="updateTimetable(place.name)"
+                      >기본 시간표
+                      <v-icon>mdi-timetable</v-icon>
+                    </v-btn>
+                    <v-btn
+                      width="70"
+                      height="45"
+                      outlined
+                      color="secondary"
+                      elevation="2"
+                      @click="destroyRoom(place.name)"
+                      >삭제
+                      <v-icon>mdi-delete-alert-outline</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-card-text>
+          </v-card>
+        </v-col>
 
-    <FixRoomDialog :roomToFix="roomToFix" />
+        <v-col sm="12" md="6">
+          <v-card class="mt-1 mb-5">
+            <v-card-title>추가 등록</v-card-title>
+            <v-card-title>
+              <v-row align="center" justify="start">
+                <v-col sm="6" md="12">
+                  <v-form ref="form" lazy-validation>
+                    <v-text-field
+                      v-model="newRoom"
+                      outlined
+                      label="교실 · 장소 이름을 입력하세요."
+                      hide-details
+                      :rules="placeNameRule"
+                    ></v-text-field>
+                  </v-form>
+                </v-col>
+                <v-col sm="6" md="12">
+                  <v-btn
+                    :disabled="disabled"
+                    outlined
+                    x-large
+                    block
+                    color="indigo"
+                    elevation="3"
+                    @click="createTimetable"
+                    >기본 시간표 등록
+                    <v-icon class="ml-1">mdi-timetable</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-sheet>
+    <UpdateTimetableDialog :room="room" />
+    <DestroyRoomDialog :room="room" />
+
+    <CreateTimetableDialog :room="propsRoom" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import api from '@/api/modules/setting'
-import FixRoomDialog from '@/components/Setting/FixRoomDialog.vue'
+import DestroyRoomDialog from '@/components/Setting/DestroyRoomDialog.vue'
+import UpdateTimetableDialog from '@/components/Setting/UpdateTimetableDialog.vue'
+
+import CreateTimetableDialog from '@/components/Setting/CreateTimetableDialog.vue'
 
 export default {
-  components: { FixRoomDialog },
+  components: {
+    DestroyRoomDialog,
+    UpdateTimetableDialog,
+    CreateTimetableDialog
+  },
 
   data: () => ({
-    roomToFix: '',
-    placesCount: 0,
-    placesNames: [],
-    placesCountRule: [
-      (v) => !!v || '교실(장소)의 개수를 적어주세요.',
-      (v) => (v && v >= 0) || '0보다 큰 수를 입력해주세요.'
-    ],
-    placesNameRule: [(v) => !!v || '교실(장소)의 이름을 입력하세요.']
+    room: '',
+    newRoom: '',
+    propsRoom: '',
+    disabled: true,
+    placeNameRule: [
+      (v) => !!v || '이름을 입력하세요.',
+      (v) =>
+        !/[~!@#$%^&*()_+|<>?:{}/]/.test(v) || '특수문자를 사용할 수 없습니다.'
+    ]
   }),
 
-  computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'places']),
-    range () {
-      return [...Array(Number(this.placesCount)).keys()]
-    },
-
-    disabled () {
-      if (this.placesCount > 0) {
-        return false
+  watch: {
+    newRoom () {
+      if (this.$refs.form.validate()) {
+        this.disabled = false
       } else {
-        return true
+        this.disabled = true
       }
     }
   },
 
+  computed: {
+    ...mapState('roomStore', ['dialog', 'periods', 'places'])
+  },
+
   methods: {
-    save () {
-      if (this.$refs.form.validate()) {
-        const postData = {
-          places: this.placesNames
-        }
-        api.setRoomPlaces(postData)
-        this.$refs.form.reset()
-      }
+    updateRoom (room) {
+      this.room = room
+      this.dialog.updateRoom = true
     },
 
-    fixRoom (room) {
-      this.roomToFix = room
-      this.dialog.fixRoom = true
+    updateTimetable (room) {
+      this.room = room
+      api.getTimetable(this.room)
+    },
+
+    destroyRoom (room) {
+      this.room = room
+      this.dialog.destroyRoom = true
+    },
+
+    createTimetable () {
+      this.propsRoom = this.newRoom
+      this.dialog.createTimetable = true
+      this.$refs.form.reset()
     }
   }
 }

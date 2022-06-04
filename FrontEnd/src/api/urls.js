@@ -3,28 +3,30 @@ const DjangoBase = 'http://127.0.0.1:8000/'
 export default {
   Django_API: `${DjangoBase}api/`,
 
-  /* Setting */
-  setting_toolPlaces: 'tool/setting/place/',
+  /* Setting_Tool */
+  setting_toolPlaces: 'tools/setting/place/',
   setting_DestroytoolPlace: (placeName) => {
-    return `tool/setting/place/${placeName}/`
+    return `tools/setting/place/${placeName}/`
   },
-  setting_RoomPlaces: 'rooms/setting/place/',
-  setting_DestroyRoomPlace: 'rooms/setting/place/destroy/',
-  setting_FixedTimeTable: 'rooms/setting/fixedtimetable/',
-  setting_ByPlaceFixedTimeTable: (placeName) => {
-    return `rooms/setting/fixedtimetable/${placeName}/`
+
+  /* Setting_Room */
+  setting_Room: 'rooms/setting/',
+  setting_DestroyRoom: 'rooms/setting/destroy/',
+  setting_UpdateTimetable: 'rooms/setting/timetable/',
+  setting_GetTimetableByRoom: (room) => {
+    return `rooms/setting/timetable/${room}/`
   },
 
   /* Tool */
-  tool_All: 'tool/',
+  tool_All: 'tools/',
   tool_ByDate: (place, date) => {
-    return `tool/${place}/${date}/`
+    return `tools/${place}/${date}/`
   },
   tool_Destroy: (toolId) => {
-    return `tool/${toolId}/`
+    return `tools/${toolId}/`
   },
   tool_Left: (place, date) => {
-    return `tool/left/${place}/${date}/`
+    return `tools/left/${place}/${date}/`
   },
 
   /* Room */

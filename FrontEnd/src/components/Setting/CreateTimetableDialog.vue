@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog.fixTimetable" max-width="900" persistent>
+    <v-dialog v-model="dialog.createTimetable" max-width="900" persistent>
       <v-form ref="form" lazy-validation>
         <v-card height="540" class="pa-4">
           <v-row align="center">
@@ -18,7 +18,7 @@
             </v-col>
             <v-col cols="3" class="text-right pt-0 mr-2">
               <v-btn @click="save" class="primary" large> 완료 </v-btn>
-              <v-btn @click="dialog.fixTimetable=false" large outlined> 취소 </v-btn>
+              <v-btn @click="dialog.createTimetable=false" large outlined> 취소 </v-btn>
             </v-col>
           </v-row>
 
@@ -47,7 +47,7 @@
             </v-col>
             <v-col v-for="(weekday, idx) in weekdays" :key="idx" class="py-1">
               <v-text-field
-                v-model="fixedTimetable[idx][period - 1]"
+                v-model="timetable[idx][period - 1]"
                 :label="`${weekday} ${period}교시`"
                 filled
                 rounded
@@ -68,12 +68,18 @@ import api from '@/api/modules/setting'
 
 export default {
   props: {
-    room: String,
-    fixedTimetable: Object
+    room: String
   },
 
   data: () => ({
-    weekdays: ['월', '화', '수', '목', '금']
+    weekdays: ['월', '화', '수', '목', '금'],
+    timetable: {
+      0: ['', '', '', '', '', ''],
+      1: ['', '', '', '', '', ''],
+      2: ['', '', '', '', '', ''],
+      3: ['', '', '', '', '', ''],
+      4: ['', '', '', '', '', '']
+    }
   }),
 
   computed: {
@@ -82,14 +88,12 @@ export default {
 
   methods: {
     save () {
-      if (this.$refs.form.validate()) {
-        const postData = {
-          placeName: this.room,
-          fixedTimetable: this.fixedTimetable
-        }
-        api.setFixedTimeTable(this, postData)
-        this.dialog.fixTimetable = false
+      const postData = {
+        place: this.room,
+        timetable: this.timetable
       }
+      api.createRoom(postData)
+      this.dialog.createTimetable = false
     }
   }
 }

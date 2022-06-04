@@ -60,7 +60,7 @@ export default {
     destroyPlace () {
       api.DestroyRoomPlace(this.room)
       this.dialog.destroyRoom = false
-      this.dialog.fixRoom = false
+      this.dialog.updateRoom = false
     }
   }
 }

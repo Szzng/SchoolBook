@@ -2,9 +2,10 @@ const roomStore = {
   namespaced: true,
   state: {
     dialog: {
-      fixRoom: false,
+      updateRoom: false,
       destroyRoom: false,
-      fixTimetable: false,
+      updateTimetable: false,
+      createTimetable: false,
 
       checkRoomBooking: false,
       bookRoom: false,
@@ -16,7 +17,14 @@ const roomStore = {
     focusPlace: '',
     bookedRoomLists: [],
     availableBookingEvents: [],
-    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
+    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
+    timetable: {
+      0: ['', '', '', '', '', ''],
+      1: ['', '', '', '', '', ''],
+      2: ['', '', '', '', '', ''],
+      3: ['', '', '', '', '', ''],
+      4: ['', '', '', '', '', '']
+    }
   },
   mutations: {
     focusDateSetter (state, date) {
