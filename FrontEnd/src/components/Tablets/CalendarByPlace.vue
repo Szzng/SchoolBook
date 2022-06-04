@@ -14,10 +14,10 @@
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusPlace}}
+              {{ $refs.calendar.title }}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusPlace}}
+              {{ initCalendarTitle }}
             </v-toolbar-title>
             <v-btn
               fab

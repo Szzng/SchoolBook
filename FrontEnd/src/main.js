@@ -5,7 +5,6 @@ import vuetify from '@/plugins/vuetify'
 import App from './App'
 import router from './router'
 import store from './store'
-import settingApi from '@/api/modules/setting'
 
 Vue.config.productionTip = false
 
@@ -15,9 +14,7 @@ new Vue({
   el: '#inspire',
   router,
   store,
-  beforeCreate () {
-    settingApi.getClassroomPlaces()
-  },
+  beforeCreate () {},
   components: { App },
   template: '<App/>'
 }).$mount('#inspire')
