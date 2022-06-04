@@ -98,7 +98,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog', 'periods', 'places']),
+    ...mapState('roomStore', ['dialog', 'periods', 'places']),
     range () {
       return [...Array(Number(this.placesCount)).keys()]
     },
@@ -118,7 +118,7 @@ export default {
         const postData = {
           places: this.placesNames
         }
-        api.setClassroomPlaces(postData)
+        api.setRoomPlaces(postData)
         this.$refs.form.reset()
       }
     },

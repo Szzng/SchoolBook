@@ -117,7 +117,7 @@ export default {
   },
 
   computed: {
-    ...mapState('classroomStore', ['periods', 'places'])
+    ...mapState('roomStore', ['periods', 'places'])
   },
 
   methods: {

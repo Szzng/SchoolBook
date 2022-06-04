@@ -1,13 +1,13 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
-import classroomStore from '../../store/modules/classroomStore'
+import roomStore from '../../store/modules/roomStore'
 
 export default {
   getBookedRoomLists () {
     myAxios
-      .get(Urls.roomAll)
+      .get(Urls.room_All)
       .then(response => {
-        classroomStore.state.bookedRoomLists = response.data
+        roomStore.state.bookedRoomLists = response.data
       })
       .catch(error => {
         console.log('getBookedRoomList GET error', error.response)
@@ -16,7 +16,7 @@ export default {
 
   BookRoom (component, postData) {
     myAxios
-      .post(Urls.roomAll, postData)
+      .post(Urls.room_All, postData)
       .then(response => {
         this.getBookedRoomLists()
         component.dialog.bookRoom = false
@@ -28,9 +28,9 @@ export default {
 
   getBookedRoomListByDate (date) {
     myAxios
-      .get(Urls.roomByDate(date))
+      .get(Urls.room_ByDate(date))
       .then(response => {
-        classroomStore.state.bookedRoomLists = response.data
+        roomStore.state.bookedRoomLists = response.data
       })
       .catch(error => {
         console.log('getBookedRoomListByDate GET error', error.response)
@@ -39,20 +39,20 @@ export default {
 
   DestroyBookedRoom (destroyId) {
     myAxios
-      .delete(Urls.roomDestroy(destroyId))
+      .delete(Urls.room_Destroy(destroyId))
       .then(response => {
         this.getBookedRoomLists()
       })
       .catch(error => {
-        console.log('BookTablets POST error', error.response)
+        console.log('Booktool POST error', error.response)
       })
   },
 
   getAvailableBookingEvents (component, place, date) {
     myAxios
-      .get(Urls.roomAvailableBookingEvents(place, date))
+      .get(Urls.room_AvailableBookingEvents(place, date))
       .then(response => {
-        classroomStore.state.availableBookingEvents = response.data
+        roomStore.state.availableBookingEvents = response.data
       })
       .catch(error => {
         console.log('getAvailableBookingEvents GET error', error.response)
@@ -61,9 +61,9 @@ export default {
 
   getRoomBookingsByDate (place, date) {
     myAxios
-      .get(Urls.roomBookingByDate(place, date))
+      .get(Urls.room_BookingByDate(place, date))
       .then(response => {
-        classroomStore.state.bookedRoomLists = response.data
+        roomStore.state.bookedRoomLists = response.data
       })
       .catch(error => {
         console.log('getRoomBookingsByDate GET error', error.response)

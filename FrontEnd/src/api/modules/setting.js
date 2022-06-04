@@ -1,50 +1,50 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
-import tabletsStore from '../../store/modules/tabletsStore'
-import classroomStore from '../../store/modules/classroomStore'
+import toolStore from '../../store/modules/toolStore'
+import roomStore from '../../store/modules/roomStore'
 
 export default {
-  setTabletsPlaces (postData) {
+  settoolPlaces (postData) {
     myAxios
-      .post(Urls.setting_TabletsPlaces, postData)
+      .post(Urls.setting_toolPlaces, postData)
       .then(response => {
-        tabletsStore.state.places = response.data
+        toolStore.state.places = response.data
       })
       .catch(error => {
-        console.log('setTabletsPlaces POST error', error.response)
+        console.log('settoolPlaces POST error', error.response)
       })
   },
 
-  setClassroomPlaces (postData) {
+  setRoomPlaces (postData) {
     myAxios
-      .post(Urls.setting_ClassroomPlaces, postData)
+      .post(Urls.setting_RoomPlaces, postData)
       .then(response => {
-        classroomStore.state.places = response.data
+        roomStore.state.places = response.data
       })
       .catch(error => {
-        console.log('setClassroomPlaces POST error', error.response)
+        console.log('setRoomPlaces POST error', error.response)
       })
   },
 
-  getClassroomPlaces () {
+  getRoomPlaces () {
     myAxios
-      .get(Urls.setting_ClassroomPlaces)
+      .get(Urls.setting_RoomPlaces)
       .then(response => {
-        classroomStore.state.places = response.data
+        roomStore.state.places = response.data
       })
       .catch(error => {
-        console.log('getClassroomPlaces GET error', error.response)
+        console.log('getRoomPlaces GET error', error.response)
       })
   },
 
-  DestroyClassroomPlace (placeName) {
+  DestroyRoomPlace (placeName) {
     myAxios
-      .delete(Urls.setting_DestroyClassroomPlace(placeName))
+      .delete(Urls.setting_DestroyRoomPlace(placeName))
       .then(response => {
-        this.getClassroomPlaces()
+        this.getRoomPlaces()
       })
       .catch(error => {
-        console.log('DestroyClassroomPlace DELETE error', error.response)
+        console.log('DestroyRoomPlace DELETE error', error.response)
       })
   },
 

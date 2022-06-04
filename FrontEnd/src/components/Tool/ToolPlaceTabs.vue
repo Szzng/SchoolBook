@@ -9,7 +9,7 @@
               class="black--text"
               v-for="place in places"
               :key="place.name"
-              :to="`/tablets/${place.name}`"
+              :to="`/tool/${place.name}`"
               exact
               @click="changeTab(place.name)"
             >
@@ -33,24 +33,24 @@ export default {
   }),
 
   mounted () {
-    this.activeTab = `/tablets/${this.$route.params.place}`
+    this.activeTab = `/tool/${this.$route.params.place}`
   },
 
   computed: {
-    ...mapState('tabletsStore', ['places'])
+    ...mapState('toolStore', ['places'])
   },
 
   created () {
     this.$store.commit(
-      'tabletsStore/focusPlaceSetter',
+      'toolStore/focusPlaceSetter',
       this.$route.params.place
     )
   },
 
   methods: {
     changeTab (tabName) {
-      this.$store.commit('tabletsStore/focusDateSetter', '')
-      this.$store.commit('tabletsStore/focusPlaceSetter', tabName)
+      this.$store.commit('toolStore/focusDateSetter', '')
+      this.$store.commit('toolStore/focusPlaceSetter', tabName)
     }
   }
 }

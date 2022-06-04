@@ -16,12 +16,12 @@
       >
         <v-tabs-slider></v-tabs-slider>
         <v-tab to="/">Home</v-tab>
-        <v-tab class="indigo--text" to="/tablets">태블릿</v-tab>
+        <v-tab class="indigo--text" to="/tool">물품</v-tab>
         <v-tab
           class="black--text"
           v-for="place in places"
           :key="place.name"
-          :to="`/classroom/${place.name}`"
+          :to="`/Room/${place.name}`"
           exact
           @click="changeTab(place.name)"
         >
@@ -35,7 +35,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import classroomApi from '@/api/modules/classroom'
+import RoomApi from '@/api/modules/room'
 
 export default {
   data: () => ({
@@ -44,31 +44,31 @@ export default {
 
   mounted () {
     console.log(this.activeTab)
-    this.activeTab = `/classroom/${this.$route.params.place}`
+    this.activeTab = `/room/${this.$route.params.place}`
   },
 
   computed: {
-    ...mapState('classroomStore', ['places'])
+    ...mapState('roomStore', ['places'])
   },
 
   created () {
-    this.activeTab = `/classroom/${this.$route.params.place}`
+    this.activeTab = `/room/${this.$route.params.place}`
 
     this.$store.commit(
-      'classroomStore/focusPlaceSetter',
+      'roomStore/focusPlaceSetter',
       this.$route.params.place
     )
   },
 
   methods: {
     changeTab (tabName) {
-      this.$store.commit('classroomStore/focusDateSetter', '')
-      this.$store.commit('classroomStore/focusPlaceSetter', tabName)
+      this.$store.commit('roomStore/focusDateSetter', '')
+      this.$store.commit('roomStore/focusPlaceSetter', tabName)
       var today = new Date()
       var year = today.getFullYear()
       var month = ('0' + (today.getMonth() + 1)).slice(-2)
       var day = ('0' + today.getDate()).slice(-2)
-      classroomApi.getAvailableBookingEvents(
+      RoomApi.getAvailableBookingEvents(
         this,
         this.$route.params.place,
         year + '-' + month + '-' + day

@@ -121,7 +121,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import BookRoomDialog from '@/components/Classroom/BookRoomDialog.vue'
+import BookRoomDialog from '@/components/Room/BookRoomDialog.vue'
 
 export default {
   components: { BookRoomDialog },
@@ -131,7 +131,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', [
+    ...mapState('roomStore', [
       'dialog',
       'periods',
       'focusDate',

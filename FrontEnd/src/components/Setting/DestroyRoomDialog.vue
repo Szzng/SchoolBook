@@ -52,12 +52,12 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog'])
+    ...mapState('roomStore', ['dialog'])
   },
 
   methods: {
     destroyPlace () {
-      api.DestroyClassroomPlace(this.roomToDestroy)
+      api.DestroyRoomPlace(this.roomToDestroy)
       this.dialog.destroyRoom = false
     }
   }

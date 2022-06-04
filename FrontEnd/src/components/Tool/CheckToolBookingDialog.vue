@@ -58,7 +58,7 @@
             >
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-btn color="primary" class="pr-0 mr-1" @click="bookTablets">
+          <v-btn color="primary" class="pr-0 mr-1" @click="bookTool">
             예약
             <v-icon left class="ml-0"> mdi-clock-plus-outline </v-icon>
           </v-btn>
@@ -77,7 +77,7 @@
               <v-card-text>
                 <v-chip-group column>
                   <v-chip
-                    v-for="(item, i) in bookedTabletsLists[period]"
+                    v-for="(item, i) in bookedToolLists[period]"
                     :key="i"
                     :color="colors[i]"
                     outlined
@@ -98,18 +98,18 @@
       </v-card>
     </v-sheet>
 
-    <BookTabletsDialog />
-    <DestroyTabletDialog :destroyItem="destroyItem" />
+    <BookToolDialog />
+    <DestroyToolBookingDialog :destroyItem="destroyItem" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import BookTabletsDialog from '@/components/Tablets/BookTabletsDialog.vue'
-import DestroyTabletDialog from '@/components/Tablets/DestroyTabletDialog.vue'
+import BookToolDialog from '@/components/tool/BookToolDialog.vue'
+import DestroyToolBookingDialog from '@/components/tool/DestroyToolBookingDialog.vue'
 
 export default {
-  components: { BookTabletsDialog, DestroyTabletDialog },
+  components: { BookToolDialog, DestroyToolBookingDialog },
 
   data: () => ({
     destroyItem: {},
@@ -117,17 +117,17 @@ export default {
   }),
 
   computed: {
-    ...mapState('tabletsStore', [
+    ...mapState('toolStore', [
       'dialog',
       'periods',
       'focusPlace',
       'focusDate',
-      'bookedTabletsLists',
+      'bookedToolLists',
       'left'
     ]),
 
     selected () {
-      return this.dialog.checkTabletsBooking && this.focusDate
+      return this.dialog.checkToolBooking && this.focusDate
     },
 
     formatSelectedDate () {
@@ -137,13 +137,13 @@ export default {
   },
 
   methods: {
-    bookTablets () {
-      this.dialog.bookTablets = true
+    bookTool () {
+      this.dialog.bookTool = true
     },
 
     assertDestroyBooking (item) {
       this.destroyItem = item
-      this.dialog.destroyTablet = true
+      this.dialog.destroyToolBooking = true
     }
   }
 }

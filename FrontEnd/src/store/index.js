@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import tabletsStore from './modules/tabletsStore'
-import classroomStore from './modules/classroomStore'
+import toolStore from './modules/toolStore'
+import roomStore from './modules/roomStore'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    tabletsStore,
-    classroomStore
+    toolStore,
+    roomStore
   }
 })

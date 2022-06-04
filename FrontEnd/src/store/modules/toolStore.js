@@ -1,16 +1,17 @@
-const tabletsStore = {
+const toolStore = {
   namespaced: true,
   state: {
     dialog: {
-      checkTabletsBooking: false,
-      bookTablets: false,
-      destroyTablet: false
+      checkToolBooking: false,
+      bookTool: false,
+      destroyToolBooking: false,
+      destroyTool: false
     },
     periods: [1, 2, 3, 4, 5, 6],
     places: [{ name: '전산실' }, { name: '준비물실' }],
     focusDate: '',
     focusPlace: '',
-    bookedTabletsLists: [],
+    bookedToolLists: [],
     left: [],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   },
@@ -26,4 +27,4 @@ const tabletsStore = {
   }
 }
 
-export default tabletsStore
+export default toolStore

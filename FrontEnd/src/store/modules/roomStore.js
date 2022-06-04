@@ -1,4 +1,4 @@
-const classroomStore = {
+const roomStore = {
   namespaced: true,
   state: {
     dialog: {
@@ -27,4 +27,4 @@ const classroomStore = {
   }
 }
 
-export default classroomStore
+export default roomStore

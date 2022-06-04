@@ -42,7 +42,7 @@
         <v-sheet height="550" class="pr-10">
           <v-calendar
             ref="calendar"
-            v-model="$store.state.classroomStore.focusDate"
+            v-model="$store.state.roomStore.focusDate"
             :weekdays="weekday"
             color="primary"
             type="month"
@@ -68,10 +68,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import CheckRoomBookingDialog from '@/components/Classroom/CheckRoomBookingDialog.vue'
-import BookRoomDialog from '@/components/Classroom/BookRoomDialog.vue'
-import DestroyRoomBookingDialog from '@/components/Classroom/DestroyRoomBookingDialog.vue'
-import api from '@/api/modules/classroom'
+import CheckRoomBookingDialog from '@/components/Room/CheckRoomBookingDialog.vue'
+import BookRoomDialog from '@/components/Room/BookRoomDialog.vue'
+import DestroyRoomBookingDialog from '@/components/Room/DestroyRoomBookingDialog.vue'
+import api from '@/api/modules/room'
 
 export default {
   components: {
@@ -89,7 +89,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog', 'bookedRoomLists', 'focusPlace', 'availableBookingEvents'])
+    ...mapState('roomStore', ['dialog', 'bookedRoomLists', 'focusPlace', 'availableBookingEvents'])
   },
 
   async created () {
@@ -103,7 +103,7 @@ export default {
       api.getAvailableBookingEvents(this, this.focusPlace, info.start.date)
     },
     checkRoomBooking ({ date }) {
-      this.$store.commit('classroomStore/focusDateSetter', date)
+      this.$store.commit('roomStore/focusDateSetter', date)
       api.getRoomBookingsByDate(this.focusPlace, date)
       this.dialog.checkRoomBooking = true
     },
@@ -119,7 +119,7 @@ export default {
     },
 
     setToday () {
-      this.$store.commit('classroomStore/focusDateSetter', '')
+      this.$store.commit('roomStore/focusDateSetter', '')
       this.focus = ''
     },
     formatInterval (interval) {

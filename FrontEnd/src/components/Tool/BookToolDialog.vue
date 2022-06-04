@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog
-      v-model="dialog.bookTablets"
+      v-model="dialog.booktool"
       max-width="500"
       content-class="book-dialog"
       persistent
@@ -69,7 +69,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/tablets'
+import api from '@/api/modules/tool'
 
 export default {
   data: () => ({
@@ -83,7 +83,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('tabletsStore', [
+    ...mapState('toolStore', [
       'dialog',
       'periods',
       'left',
@@ -124,7 +124,7 @@ export default {
 
   methods: {
     close () {
-      this.dialog.bookTablets = false
+      this.dialog.booktool = false
       this.$refs.form.reset()
       this.$refs.form.resetValidation()
     },
@@ -141,7 +141,7 @@ export default {
           borrower: this.borrower,
           quantity: this.quantity
         }
-        api.BookTablets(this, postData)
+        api.Booktool(this, postData)
         this.$refs.form.reset()
       }
     }

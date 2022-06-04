@@ -29,8 +29,8 @@ export default {
   data: () => ({
     activeTab: null,
     tabs: [
-      { name: '태블릿 예약 설정', path: 'tablets' },
-      { name: '교실(장소) 예약 설정', path: 'classroom' }
+      { name: '물품 · 도구 설정', path: 'tool' },
+      { name: '교실 · 장소 설정', path: 'room' }
     ]
   }),
 

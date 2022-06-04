@@ -48,7 +48,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/classroom'
+import api from '@/api/modules/room'
 
 export default {
   props: {
@@ -65,7 +65,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog', 'periods', 'focusDate', 'focusPlace']),
+    ...mapState('roomStore', ['dialog', 'periods', 'focusDate', 'focusPlace']),
     formatSelectedDate () {
       if (this.eventBooking.start) {
         const date = this.eventBooking.start.split('-')
