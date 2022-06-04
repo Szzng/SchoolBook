@@ -1,17 +1,18 @@
-const tabletsStore = {
+const classroomStore = {
   namespaced: true,
   state: {
     dialog: {
-      checkTabletsBooking: false,
-      bookTablets: false,
-      destroyTablet: false
+      checkRoomBooking: false,
+      bookRoom: false,
+      destroyRoomBooking: false,
+      destroyRoom: false
     },
     periods: [1, 2, 3, 4, 5, 6],
-    places: [{ name: '전산실' }, { name: '준비물실' }],
+    places: [],
     focusDate: '',
     focusPlace: '',
-    bookedTabletsLists: [],
-    left: [],
+    bookedRoomLists: [],
+    availableBookingEvents: [],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   },
   mutations: {
@@ -26,4 +27,4 @@ const tabletsStore = {
   }
 }
 
-export default tabletsStore
+export default classroomStore

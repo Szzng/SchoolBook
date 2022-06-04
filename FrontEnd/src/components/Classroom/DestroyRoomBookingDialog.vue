@@ -3,11 +3,11 @@
     <v-dialog v-model="dialog.destroyRoomBooking " max-width="400" persistent>
       <v-card>
         <v-row align="center" justify="center">
-          <v-chip v-if="destroyEvent.name" color="red darken-2" class="white--text mt-10">
+          <v-chip v-if="eventDestroying.name" color="red darken-2" class="white--text mt-10">
             <v-avatar left>
               <v-icon>mdi-close-circle-outline</v-icon>
             </v-avatar>
-            {{ destroyEvent.name }}반 ({{ destroyEvent.start.substr(0, 10)}} {{ destroyEvent.start.substr(11,1)}}교시)
+            {{ eventDestroying.name }}반 ({{ eventDestroying.start.substr(0, 10)}} {{ eventDestroying.start.substr(11,1)}}교시)
           </v-chip>
         </v-row>
         <v-row
@@ -33,11 +33,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/room'
+import api from '@/api/modules/classroom'
 
 export default {
   props: {
-    destroyEvent: Object
+    eventDestroying: Object
   },
 
   data: () => ({
@@ -45,12 +45,12 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog'])
+    ...mapState('classroomStore', ['dialog'])
   },
 
   methods: {
     destroyBooking () {
-      api.DestroyBookedRoom(this.destroyEvent.id)
+      api.DestroyBookedRoom(this.eventDestroying.id)
       this.dialog.destroyRoomBooking = false
     }
   }

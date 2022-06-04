@@ -7,13 +7,13 @@
             <v-tabs-slider></v-tabs-slider>
             <v-tab
               class="black--text"
-              v-for="tab in tabs"
-              :key="tab.name"
-              :to="`/tablets/${tab.name}`"
+              v-for="place in places"
+              :key="place.name"
+              :to="`/tablets/${place.name}`"
               exact
-              @click="changeTab(tab.name)"
+              @click="changeTab(place.name)"
             >
-              {{ tab.name }}
+              {{ place.name }}
             </v-tab>
           </v-tabs>
         </v-col>
@@ -25,17 +25,20 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data: () => ({
-    activeTab: null,
-    tabs: [{ name: '전산실' }, { name: '준비물실' }]
+    activeTab: null
   }),
 
   mounted () {
     this.activeTab = `/tablets/${this.$route.params.place}`
   },
 
-  computed: {},
+  computed: {
+    ...mapState('tabletsStore', ['places'])
+  },
 
   created () {
     this.$store.commit(

@@ -12,27 +12,16 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
-        <v-row justify="center" class="mt-0">
-          <v-card-title>{{ formatSelectedDate }}</v-card-title>
+        <v-row align="center" justify="center" class="mt-0">
+          <v-card-title class="pb-0"
+            >{{ formatSelectedDate }} {{ eventBooking.name }}교시
+          <v-card-subtitle class="purple--text pl-1 pb-3">{{focusPlace}}</v-card-subtitle>
+          </v-card-title>
         </v-row>
 
         <v-form ref="form" lazy-validation>
-         <v-row justify="center" class="ml-8 mt-5">
-            <v-col cols="4" class="py-0" v-for="item in periods" :key="item">
-              <v-checkbox
-                v-model="period"
-                :label="`${item}교시`"
-                :color="colors[item - 1]"
-                :value="item"
-                :disabled="false"
-                :rules="periodRule"
-                hide-details
-              >
-              </v-checkbox>
-            </v-col>
-          </v-row>
           <v-text-field
-          v-model="borrower"
+            v-model="borrower"
             label="학년-반"
             required
             outlined
@@ -59,29 +48,29 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/room'
+import api from '@/api/modules/classroom'
 
 export default {
   props: {
-    selectedDate: String
+    eventBooking: Object
   },
   data: () => ({
-    period: '',
     place: '컴퓨터실1',
     borrower: '',
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
-    periodRule: [(v) => !!v || '몇 교시에 예약하시나요?'],
     borrowerRule: [
-      (v) => !!v || '예약자 적어주세요.',
+      (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
     ]
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods']),
+    ...mapState('classroomStore', ['dialog', 'periods', 'focusDate', 'focusPlace']),
     formatSelectedDate () {
-      const date = this.selectedDate.split('-')
-      return date[1] + '월  ' + date[2] + '일'
+      if (this.eventBooking.start) {
+        const date = this.eventBooking.start.split('-')
+        return date[1] + '월  ' + date[2] + '일 '
+      }
     }
   },
 
@@ -95,8 +84,8 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         const postData = {
-          'time.date': this.selectedDate,
-          'time.period': this.period,
+          'time.date': this.eventBooking.start,
+          'time.period': this.eventBooking.name,
           'place.name': this.place,
           borrower: this.borrower
         }
