@@ -61,7 +61,7 @@
       </v-col>
 
     </v-row>
-    <BookRoomDialog :eventBooking="eventBooking" />
+    <BookRoomDialog />
     <DestroyRoomBookingDialog :eventDestroying="eventDestroying" />
   </div>
 </template>
@@ -83,13 +83,12 @@ export default {
   data: () => ({
     initCalendarTitle: '',
     focus: '',
-    eventBooking: {},
     eventDestroying: {},
     weekday: [1, 2, 3, 4, 5]
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'bookedRoomLists', 'focusRoom', 'availableBookingEvents'])
+    ...mapState('roomStore', ['dialog', 'bookedRoomLists', 'focusRoom', 'availableBookingEvents', 'booking'])
   },
 
   async created () {
@@ -109,7 +108,7 @@ export default {
     },
 
     bookRoom ({ nativeEvent, event }) {
-      this.eventBooking = event
+      this.$store.commit('roomStore/bookingSetter', event)
       this.dialog.bookRoom = true
     },
 
@@ -141,14 +140,11 @@ export default {
   margin-left: 0.4em;
   margin-top:0.9em;
   float: left;
-  text-align: center;
   font-size: 15px;
+  font-weight: bold;
 }
 
-/* >>> .pl-1 {
-  font-size: 20px;
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-left: 0px;
-} */
+>>> .pl-1 {
+  margin-left: 2px;
+}
 </style>

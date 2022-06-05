@@ -115,7 +115,7 @@
       </v-card>
     </v-sheet>
 
-    <BookRoomDialog :eventBooking="eventBooking" />
+    <BookRoomDialog />
   </div>
 </template>
 
@@ -126,17 +126,14 @@ import BookRoomDialog from '@/components/Room/BookRoomDialog.vue'
 export default {
   components: { BookRoomDialog },
 
-  data: () => ({
-    eventBooking: {}
-  }),
-
   computed: {
     ...mapState('roomStore', [
       'dialog',
       'periods',
       'focusDate',
       'focusRoom',
-      'bookedRoomLists'
+      'bookedRoomLists',
+      'booking'
     ]),
 
     selected () {
@@ -151,7 +148,11 @@ export default {
 
   methods: {
     bookRoom (period) {
-      this.eventBooking = { name: period, start: this.focusDate }
+      this.$store.commit('roomStore/bookingSetter', {
+        name: period,
+        start: this.focusDate
+      })
+
       this.dialog.bookRoom = true
     }
   }

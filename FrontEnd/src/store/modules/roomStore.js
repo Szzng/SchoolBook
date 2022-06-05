@@ -13,6 +13,7 @@ const roomStore = {
     },
     periods: [1, 2, 3, 4, 5, 6],
     rooms: [],
+    booking: {},
     focusDate: '',
     focusRoom: '',
     bookedRoomLists: [],
@@ -32,6 +33,9 @@ const roomStore = {
     },
     focusPlaceSetter (state, place) {
       state.focusRoom = place
+    },
+    bookingSetter (state, booking) {
+      state.booking = booking
     }
   },
   actions: {

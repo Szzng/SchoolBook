@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-dialog
+      :retain-focus="false"
       v-model="dialog.bookRoom"
       max-width="500"
       content-class="book-dialog"
@@ -14,8 +15,10 @@
         </v-row>
         <v-row align="center" justify="center" class="mt-0">
           <v-card-title class="pb-0"
-            >{{ formatSelectedDate }} {{ eventBooking.name }}교시
-          <v-card-subtitle class="purple--text pl-1 pb-3">{{focusRoom}}</v-card-subtitle>
+            >{{ formatSelectedDate }} {{ booking.name }}교시
+            <v-card-subtitle class="purple--text pl-1 pb-3">{{
+              focusRoom
+            }}</v-card-subtitle>
           </v-card-title>
         </v-row>
 
@@ -52,7 +55,6 @@ import api from '@/api/modules/room'
 
 export default {
   props: {
-    eventBooking: Object
   },
   data: () => ({
     booker: '',
@@ -63,10 +65,10 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'focusDate', 'focusRoom']),
+    ...mapState('roomStore', ['dialog', 'periods', 'focusDate', 'focusRoom', 'booking']),
     formatSelectedDate () {
-      if (this.eventBooking.start) {
-        const date = this.eventBooking.start.split('-')
+      if (this.booking.start) {
+        const date = this.booking.start.split('-')
         return date[1] + '월  ' + date[2] + '일 '
       }
     }
@@ -82,10 +84,10 @@ export default {
     save () {
       if (this.$refs.form.validate()) {
         const postData = {
-          'date': this.eventBooking.start,
-          'period': this.eventBooking.name,
-          'room': this.focusRoom,
-          'booker': this.booker
+          date: this.booking.start,
+          period: this.booking.name,
+          room: this.focusRoom,
+          booker: this.booker
         }
         api.BookRoom(this, postData)
         this.$refs.form.reset()
