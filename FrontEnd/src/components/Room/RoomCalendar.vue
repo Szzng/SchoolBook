@@ -59,8 +59,8 @@
       <v-col sm="12" md="4">
         <CheckRoomBookingDialog />
       </v-col>
-
     </v-row>
+
     <BookRoomDialog />
     <DestroyRoomBookingDialog :eventDestroying="eventDestroying" />
   </div>
@@ -94,12 +94,12 @@ export default {
   async created () {
     await this.$nextTick()
     this.initCalendarTitle = this.$refs.calendar.title
-    api.getAvailableBookingEvents(this, this.focusRoom, this.$refs.calendar.start)
+    api.getAvailableEvents(this, this.focusRoom, this.$refs.calendar.start)
   },
 
   methods: {
     changed (info) {
-      api.getAvailableBookingEvents(this, this.focusRoom, info.start.date)
+      api.getAvailableEvents(this, this.focusRoom, info.start.date)
     },
     checkRoomBooking ({ date }) {
       this.$store.commit('roomStore/focusDateSetter', date)
@@ -135,9 +135,8 @@ export default {
 >>> .v-event {
   max-width: 12%;
   height: 22% !important;
-  border-radius: 100%;
-  margin-right: 1px;
-  margin-left: 0.4em;
+  margin-right: 2px;
+  margin-left: 6px;
   margin-top:0.9em;
   float: left;
   font-size: 15px;

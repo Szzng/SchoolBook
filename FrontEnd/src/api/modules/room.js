@@ -48,14 +48,14 @@ export default {
       })
   },
 
-  getAvailableBookingEvents (component, room, date) {
+  getAvailableEvents (component, room, date) {
     myAxios
       .get(Urls.room_AvailableEvents(room, date))
       .then(response => {
         roomStore.state.availableBookingEvents = response.data
       })
       .catch(error => {
-        console.log('getAvailableBookingEvents GET error', error.response)
+        console.log('getAvailableEvents GET error', error.response)
       })
   },
 
