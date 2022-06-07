@@ -1,12 +1,12 @@
-from .models import Room, EmptyTimeTable, AvailableEvent, RoomBooking, FixedTimeTable
+from .models import EmptyTimeTable, AvailableEvent, RoomBooking, FixedTimeTable
 import calendar
 
 
-def eventsCreated(room, yearMonth):
+def eventsCreated(room, year_month):
     events = AvailableEvent.objects.filter(timetable__room=room,
-                                           start__contains=yearMonth).exists()
+                                           start__contains=year_month).exists()
     bookings = RoomBooking.objects.filter(timetable__room=room,
-                                          date__contains=yearMonth).exists()
+                                          date__contains=year_month).exists()
 
     return events or bookings
 
@@ -14,23 +14,24 @@ def eventsCreated(room, yearMonth):
 def createEvents(room, year, month):
     monthcalendar = calendar.monthcalendar(int(year), int(month))
 
-    for i in range(5):
-        emptyPeriodsByWeekDay = EmptyTimeTable.objects.filter(room=room, weekday=i)
-        daysOnWeekday = list(map(lambda x: x[i], monthcalendar))
+    for weekday in range(5):
+        emptyPeriodsByWeekDay = EmptyTimeTable.objects.filter(room=room, weekday=weekday)
+        daysOnWeekday = list(map(lambda x: x[weekday], monthcalendar))
+
         for day in daysOnWeekday:
             if day == 0: continue
             for emptyPeriod in emptyPeriodsByWeekDay:
                 AvailableEvent.objects.create(
                     timetable=emptyPeriod,
-                    start=year + '-' + month + '-' + str(day),
-                    name=emptyPeriod.period
+                    name=emptyPeriod.period,
+                    start=year + '-' + month + '-' + str(day)
                 )
 
 
 def saveTimetable(room, timetable):
-    for weekday, classlist in timetable.items():
+    for weekday, classList in timetable.items():
         for period in range(6):
-            className = classlist[period]
+            className = classList[period]
             if (className is not None) and (len(className) >= 1):
                 FixedTimeTable.objects.create(
                     room=room,

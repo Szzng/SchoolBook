@@ -1,12 +1,11 @@
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveAPIView, ListAPIView, GenericAPIView
 from rest_framework.response import Response
-from rest_framework import status, mixins
+from rest_framework import status
 import datetime as dt
 
 from .actions import eventsCreated, createEvents, saveTimetable
 from .models import Room, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableEvent
-from .serializers import RoomBookingSerializer, AvailableEventSerializer, FixedTimeTableSerializer, \
-    RoomSerializer
+from .serializers import RoomBookingSerializer, FixedTimeTableSerializer, RoomSerializer
 
 
 class RoomListCreate(ListCreateAPIView):
@@ -51,7 +50,7 @@ class TimetableListCreate(ListCreateAPIView):
 class TimetableRetrieve(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         room = Room.objects.get(name=kwargs['room'])
-        timetable = FixedTimeTable.objects.filter(room=room.name).order_by('weekday')
+        fixedTimetables = FixedTimeTable.objects.filter(room=room.name).order_by('weekday')
         data = {
             0: ['', '', '', '', '', ''],
             1: ['', '', '', '', '', ''],
@@ -59,8 +58,8 @@ class TimetableRetrieve(RetrieveAPIView):
             3: ['', '', '', '', '', ''],
             4: ['', '', '', '', '', '']
         }
-        for item in timetable:
-            data[item.weekday][item.period - 1] = item.booker
+        for timetable in fixedTimetables:
+            data[timetable.weekday][timetable.period - 1] = timetable.booker
 
         return Response(data)
 
@@ -117,11 +116,15 @@ class RoomBookingDestroy(DestroyAPIView):
 
 class AvailableEventByMonthRetrieve(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
-        if not eventsCreated(kwargs['room'], kwargs['date'][:-3]):
-            createEvents(kwargs['room'], kwargs['date'][:4], kwargs['date'][5:7])
+        year = kwargs['date'][:4]
+        month = kwargs['date'][5:7]
+        year_month = year + '-' + month
+
+        if not eventsCreated(kwargs['room'], year_month):
+            createEvents(kwargs['room'], year, month)
 
         events = AvailableEvent.objects.filter(timetable__room=kwargs['room'],
-                                               start__contains=kwargs['date'][:-3]).order_by('start').values(
+                                               start__contains=year_month).order_by('start').values(
             'name', 'start')
 
         return Response(events)

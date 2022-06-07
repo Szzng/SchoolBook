@@ -53,7 +53,7 @@
                 </v-btn>
                 <v-btn
                   v-if="[3, 4].includes(period)"
-                  color="grey darken-3"
+                  color="indigo darken-2"
                   width="100"
                   height="40"
                   class="font-weight-bold"
@@ -62,7 +62,14 @@
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
                   예약완료
                 </v-btn>
-                <v-btn v-if="[5, 6].includes(period)" width="100" height="40" outlined color="primary">
+                <v-btn
+                  v-if="[5, 6].includes(period)"
+                  width="100"
+                  height="40"
+                  outlined
+                  color="primary"
+                  class="font-weight-bold"
+                >
                   <v-icon class="mr-1"> mdi-clock-plus-outline </v-icon>
                   예약가능
                 </v-btn>
@@ -106,13 +113,13 @@
                 <v-btn
                   v-if="roomBookingLists[period]"
                   :disabled="disabled(roomBookingLists[period].id)"
-                  color="grey darken-3"
+                  color="indigo darken-2"
                   width="100"
                   height="40"
                   class="font-weight-bold"
                   style="font-size: 16px"
                   outlined
-                  @click="assertDestroyBooking( roomBookingLists[period] )"
+                  @click="assertDestroyBooking(roomBookingLists[period])"
                 >
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
                   {{ roomBookingLists[period].booker }}
@@ -124,6 +131,7 @@
                   height="40"
                   outlined
                   color="primary"
+                  class="font-weight-bold"
                   @click="bookRoom(period)"
                 >
                   <v-icon class="mr-1"> mdi-clock-plus-outline </v-icon>
