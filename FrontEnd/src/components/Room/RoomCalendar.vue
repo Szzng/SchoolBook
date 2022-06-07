@@ -1,6 +1,6 @@
 <template>
-  <div class="ml-4">
-    <v-row class="fill-height ml-3">
+  <div>
+    <v-row class="fill-height ml-5">
       <v-col sm="12" md="8">
         <v-sheet height="80" class="pr-10 mt-5">
           <v-toolbar flat>
