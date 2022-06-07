@@ -16,7 +16,7 @@ const roomStore = {
     booking: {},
     focusDate: '',
     focusRoom: '',
-    bookedRoomLists: [],
+    roomBookingLists: [],
     availableBookingEvents: [],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green'],
     timetable: {
@@ -31,8 +31,8 @@ const roomStore = {
     focusDateSetter (state, date) {
       state.focusDate = date
     },
-    focusPlaceSetter (state, place) {
-      state.focusRoom = place
+    focusRoomSetter (state, room) {
+      state.focusRoom = room
     },
     bookingSetter (state, booking) {
       state.booking = booking

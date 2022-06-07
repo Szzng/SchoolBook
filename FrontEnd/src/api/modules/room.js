@@ -3,11 +3,11 @@ import Urls from '@/api/urls'
 import roomStore from '../../store/modules/roomStore'
 
 export default {
-  getBookedRoomLists () {
+  getRoomBookingLists () {
     myAxios
       .get(Urls.room_All)
       .then(response => {
-        roomStore.state.bookedRoomLists = response.data
+        roomStore.state.roomBookingLists = response.data
       })
       .catch(error => {
         console.log('getBookedRoomList GET error', error.response)
@@ -18,7 +18,7 @@ export default {
     myAxios
       .post(Urls.room_All, postData)
       .then(response => {
-        this.getBookedRoomLists()
+        this.getRoomBookingLists()
         component.dialog.bookRoom = false
       })
       .catch(error => {
@@ -26,25 +26,14 @@ export default {
       })
   },
 
-  getBookedRoomListByDate (date) {
-    myAxios
-      .get(Urls.room_ByDate(date))
-      .then(response => {
-        roomStore.state.bookedRoomLists = response.data
-      })
-      .catch(error => {
-        console.log('getBookedRoomListByDate GET error', error.response)
-      })
-  },
-
   DestroyBookedRoom (destroyId) {
     myAxios
       .delete(Urls.room_Destroy(destroyId))
       .then(response => {
-        this.getBookedRoomLists()
+        this.getRoomBookingLists()
       })
       .catch(error => {
-        console.log('Booktool POST error', error.response)
+        console.log('DestroyBookedRoom DELETE error', error.response)
       })
   },
 
@@ -63,7 +52,7 @@ export default {
     myAxios
       .get(Urls.room_BookingByDate(room, date))
       .then(response => {
-        roomStore.state.bookedRoomLists = response.data
+        roomStore.state.roomBookingLists = response.data
       })
       .catch(error => {
         console.log('getRoomBookingsByDate GET error', error.response)

@@ -17,6 +17,7 @@ new Vue({
   store,
   beforeCreate () {
     settingApi.getRooms()
+    settingApi.getTools()
   },
   components: { App },
   template: '<App/>'

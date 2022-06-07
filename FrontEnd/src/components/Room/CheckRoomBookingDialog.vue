@@ -82,7 +82,7 @@
             <v-col class="pa-0">
               <v-card-text>
                 <v-btn
-                  v-if="bookedRoomLists[period]"
+                  v-if="roomBookingLists[period]"
                   color="black"
                   width="100"
                   height="40"
@@ -93,7 +93,7 @@
                   @click="assertDestroyBooking(item)"
                 >
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
-                  {{ bookedRoomLists[period] }}
+                  {{ roomBookingLists[period] }}
                 </v-btn>
 
                 <v-btn
@@ -132,7 +132,7 @@ export default {
       'periods',
       'focusDate',
       'focusRoom',
-      'bookedRoomLists',
+      'roomBookingLists',
       'booking'
     ]),
 

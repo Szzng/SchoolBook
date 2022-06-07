@@ -54,7 +54,7 @@
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
             <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
-              {{ focusRoom }}</v-card-subtitle
+              {{ focusTool }}</v-card-subtitle
             >
           </v-card-title>
           <v-spacer></v-spacer>
@@ -77,17 +77,17 @@
               <v-card-text>
                 <v-chip-group column>
                   <v-chip
-                    v-for="(item, i) in bookedToolLists[period]"
+                    v-for="(booking, i) in toolBookingLists[period]"
                     :key="i"
-                    :color="colors[i]"
+                    :color="colors[period-1]"
                     outlined
                     class="white--text"
-                    @click="assertDestroyBooking(item)"
+                    @click="assertDestroyBooking(booking)"
                   >
                     <v-avatar left>
                       <v-icon>mdi-checkbox-marked-circle</v-icon>
                     </v-avatar>
-                    {{ item.booker }} ({{ item.quantity }}대)
+                    {{ booking.booker }} ({{ booking.quantity }}대)
                   </v-chip>
                 </v-chip-group>
               </v-card-text>
@@ -99,31 +99,31 @@
     </v-sheet>
 
     <BookToolDialog />
-    <DestroyToolBookingDialog :destroyItem="destroyItem" />
+    <DestroyToolBookingDialog :booking="bookingToDestory" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import BookToolDialog from '@/components/tool/BookToolDialog.vue'
-import DestroyToolBookingDialog from '@/components/tool/DestroyToolBookingDialog.vue'
+import BookToolDialog from '@/components/Tool/BookToolDialog.vue'
+import DestroyToolBookingDialog from '@/components/Tool/DestroyToolBookingDialog.vue'
 
 export default {
   components: { BookToolDialog, DestroyToolBookingDialog },
 
   data: () => ({
-    destroyItem: {},
-    colors: ['orange', 'pink', 'deep-purple', 'cyan', 'green', 'indigo']
+    bookingToDestory: {}
   }),
 
   computed: {
     ...mapState('toolStore', [
       'dialog',
       'periods',
-      'focusRoom',
+      'focusTool',
       'focusDate',
-      'bookedToolLists',
-      'left'
+      'toolBookingLists',
+      'left',
+      'colors'
     ]),
 
     selected () {
@@ -141,8 +141,8 @@ export default {
       this.dialog.bookTool = true
     },
 
-    assertDestroyBooking (item) {
-      this.destroyItem = item
+    assertDestroyBooking (booking) {
+      this.bookingToDestory = booking
       this.dialog.destroyToolBooking = true
     }
   }

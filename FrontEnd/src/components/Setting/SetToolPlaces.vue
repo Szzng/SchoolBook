@@ -1,131 +1,171 @@
 <template>
   <div class="mt-4">
     <v-sheet class="mx-16">
-      <span style="font-size: 18px" class="black--text font-weight-bold">
-        1. 현재 등록된 장소
-      </span>
-      <v-card outlined class="mt-1 mb-5">
-        <v-card-text>
-          <v-btn
-            v-for="place in rooms"
-            :key="place.name"
-            color="primary"
-            outlined
-            class="mx-1 my-1 white--text font-weight-bold"
-            @click="assertDestroyRoom(place.name)"
-          >
-            {{ place.name }}
-            <v-icon class="ml-2">mdi-close-circle-outline</v-icon>
-          </v-btn>
-        </v-card-text>
-      </v-card>
+      <v-row align="start" justify="center">
+        <v-col sm="12" md="6">
+          <v-card class="mt-1 mb-5">
+            <v-card-title>등록된 물품 · 교구 수정</v-card-title>
+            <v-card-text class="mt-3">
+              <v-card
+                v-for="tool in tools"
+                :key="tool.name"
+                outlined
+                class="py-2 mb-3"
+              >
+                <v-row align="center" justify="start">
+                  <v-col sm="12" md="4" class="pl-7">
+                    <span style="font-size: 18px; font-weight: bolder">
+                      {{ tool.name }}</span
+                    >
+                  </v-col>
 
-      <span style="font-size: 18px" class="black--text font-weight-bold">
-        2. 추가 등록
-      </span>
-      <v-card outlined class="mt-1 mb-5">
-        <v-card-text>
-          <v-form ref="form" lazy-validation>
-            <v-card>
-              <v-card-title>
-              추가로 등록할 교실(장소)은 모두 몇 개인가요?
-              </v-card-title>
-              <v-card-text>
-                <v-text-field
-                  v-model="placesCount"
-                  label="0 이상의 정수를 입력해주세요."
-                  filled
-                  dense
-                  hide-details
-                  :rules="placesCountRule"
-                ></v-text-field>
-              </v-card-text>
-            </v-card>
-
-            <v-row align="end" justify="start" class="my-5">
-              <v-col cols="3" v-for="i in range" :key="i">
-                <v-card>
-                  <v-card-subtitle>
-                    교실(장소){{ i + 1 }}의 이름을 입력하세요.
-                  </v-card-subtitle>
-                  <v-card-text>
-                    <v-text-field
-                      v-model="placesNames[i]"
-                      :label="`${i + 1}번째`"
+                  <v-col sm="12" md="8" class="text-right pr-6">
+                    <v-btn
+                      class="mr-2"
+                      width="70"
+                      height="45"
                       outlined
-                      hide-details
-                      :rules="placesNameRule"
-                    ></v-text-field>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-              <v-col class="text-right">
-                <v-btn
-                  :disabled="disabled"
-                  @click="save"
-                  class="primary"
-                  x-large
-                  >등록</v-btn
-                >
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card-text>
-      </v-card>
-    </v-sheet>
+                      color="indigo"
+                      elevation="2"
+                      @click="updateTool(tool.name)"
+                      >수정
+                      <v-icon>mdi-timetable</v-icon>
+                    </v-btn>
+                    <v-btn
+                      width="70"
+                      height="45"
+                      outlined
+                      color="secondary"
+                      elevation="2"
+                      @click="destroyTool(tool.name)"
+                      >삭제
+                      <v-icon>mdi-delete-alert-outline</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-card-text>
+          </v-card>
+        </v-col>
 
-    <DestroyRoomDialog :roomToDestroy="roomToDestroy" />
+        <v-col sm="12" md="6">
+          <v-card class="mt-1 mb-5">
+            <v-card-title class="mb-3">물품 · 교구 추가 등록</v-card-title>
+            <v-card-title>
+              <v-form ref="form" lazy-validation>
+                <v-row align="center" justify="start">
+                  <v-col sm="4" md="12" class="py-0">
+                    <v-text-field
+                      v-model="newTool.name"
+                      outlined
+                      label=" 1. 이름을 입력하세요. (특수 문자 불가)"
+                      :rules="nameRule"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col sm="4" md="12" class="py-0">
+                    <v-text-field
+                      v-model="newTool.quantity"
+                      outlined
+                      label="2. 총 수량을 입력하세요."
+                      type="number"
+                      :rules="quantityRule"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col sm="4" md="12" class="py-0">
+                    <v-text-field
+                      v-model="newTool.place"
+                      outlined
+                      label="3. 보관하는 장소를 입력하세요."
+                      :rules="placeRule"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col sm="12" md="12">
+                    <v-btn
+                      :disabled="disabled"
+                      outlined
+                      x-large
+                      block
+                      color="indigo"
+                      elevation="3"
+                      height="56"
+                      class="mb-3"
+                      @click="createTool"
+                      >등록
+                      <v-icon class="ml-1">mdi-hammer-wrench</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-form>
+            </v-card-title>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-sheet>
+    <DestroyToolDialog :tool="tool" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import api from '@/api/modules/setting'
-import DestroyRoomDialog from '@/components/Setting/DestroyRoomDialog.vue'
+import DestroyToolDialog from '@/components/Setting/DestroyToolDialog.vue'
 
 export default {
-  components: { DestroyRoomDialog },
+  components: {
+    DestroyToolDialog
+  },
 
   data: () => ({
-    roomToDestroy: '',
-    placesCount: 0,
-    placesNames: [],
-    placesCountRule: [
-      (v) => !!v || '교실(장소)의 개수를 적어주세요.',
+    tool: '',
+    newTool: { name: '', quantity: '', place: '' },
+    disabled: true,
+    nameRule: [
+      (v) => !!v || '이름을 입력하세요.',
+      (v) =>
+        !/[~!@#$%^&*()_+|<>?:{}/]/.test(v) || '특수문자를 사용할 수 없습니다.'
+    ],
+    quantityRule: [
+      (v) => !!v || '수량을 입력하세요.',
       (v) => (v && v >= 0) || '0보다 큰 수를 입력해주세요.'
     ],
-    placesNameRule: [(v) => !!v || '교실(장소)의 이름을 입력하세요.']
+    placeRule: [
+      (v) => !!v || '보관 장소를 입력하세요.',
+      (v) =>
+        !/[~!@#$%^&*()_+|<>?:{}/]/.test(v) || '특수문자를 사용할 수 없습니다.'
+    ]
   }),
 
-  computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'rooms']),
-    range () {
-      return [...Array(Number(this.placesCount)).keys()]
-    },
-
-    disabled () {
-      if (this.placesCount > 0) {
-        return false
-      } else {
-        return true
+  watch: {
+    newTool: {
+      deep: true,
+      handler () {
+        if (this.$refs.form.validate()) {
+          this.disabled = false
+        } else {
+          this.disabled = true
+        }
       }
     }
   },
 
+  computed: {
+    ...mapState('toolStore', ['dialog', 'periods', 'tools'])
+  },
+
   methods: {
-    save () {
-      if (this.$refs.form.validate()) {
-        const postData = {
-          rooms: this.placesNames
-        }
-        api.setRoomPlaces(postData)
-        this.$refs.form.reset()
-      }
+    updateTool (tool) {
+      this.tool = tool
+      this.dialog.updateTool = true
     },
 
-    assertDestroyRoom (room) {
-      this.roomToDestroy = room
-      this.dialog.destroyRoom = true
+    destroyTool (tool) {
+      this.tool = tool
+      this.dialog.destroyTool = true
+    },
+
+    createTool () {
+      api.createTool(this.newTool)
+      this.$refs.form.reset()
     }
   }
 }

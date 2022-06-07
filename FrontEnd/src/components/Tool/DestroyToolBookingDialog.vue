@@ -7,7 +7,7 @@
             <v-avatar left>
               <v-icon>mdi-close-circle-outline</v-icon>
             </v-avatar>
-            {{ destroyItem.booker }} ({{ destroyItem.quantity }}대)
+            {{ booking.booker }} ({{ booking.quantity }}대)
           </v-chip>
         </v-row>
         <v-row
@@ -37,7 +37,7 @@ import api from '@/api/modules/tool'
 
 export default {
   props: {
-    destroyItem: Object
+    booking: Object
   },
 
   data: () => ({
@@ -45,12 +45,12 @@ export default {
   }),
 
   computed: {
-    ...mapState('toolStore', ['dialog', 'focusRoom', 'focusDate'])
+    ...mapState('toolStore', ['dialog', 'focusTool', 'focusDate'])
   },
 
   methods: {
     destroyBooking () {
-      api.DestroyBookedtool(this.destroyItem.id, this.focusRoom, this.focusDate)
+      api.DestroyToolBooking(this.booking.id, this.focusTool, this.focusDate)
       this.dialog.destroyToolBooking = false
     }
   }

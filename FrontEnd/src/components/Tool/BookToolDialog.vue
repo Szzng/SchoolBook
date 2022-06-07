@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog
-      v-model="dialog.booktool"
+      v-model="dialog.bookTool"
       max-width="500"
       content-class="book-dialog"
       persistent
@@ -88,7 +88,7 @@ export default {
       'periods',
       'left',
       'focusDate',
-      'focusRoom',
+      'focusTool',
       'colors'
     ]),
     formatSelectedDate () {
@@ -124,7 +124,7 @@ export default {
 
   methods: {
     close () {
-      this.dialog.booktool = false
+      this.dialog.bookTool = false
       this.$refs.form.reset()
       this.$refs.form.resetValidation()
     },
@@ -135,13 +135,13 @@ export default {
       }
       if (this.period.length && this.$refs.form.validate()) {
         const postData = {
-          'time.date': this.focusDate,
-          'time.period': this.period,
-          'place.name': this.focusRoom,
-          booker: this.booker,
-          quantity: this.quantity
+          'tool': this.focusTool,
+          'date': this.focusDate,
+          'period': this.period,
+          'booker': this.booker,
+          'quantity': this.quantity
         }
-        api.Booktool(this, postData)
+        api.BookTool(this, postData)
         this.$refs.form.reset()
       }
     }

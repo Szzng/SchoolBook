@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-16 pt-4 ml-4">
+  <div class="ml-4">
     <v-row class="fill-height ml-3">
       <v-col sm="12" md="8">
         <v-sheet height="80" class="pr-10 mt-5">
@@ -88,7 +88,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'bookedRoomLists', 'focusRoom', 'availableBookingEvents', 'booking'])
+    ...mapState('roomStore', ['dialog', 'roomBookingLists', 'focusRoom', 'availableBookingEvents', 'booking'])
   },
 
   async created () {

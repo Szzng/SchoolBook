@@ -1,10 +1,14 @@
 <template>
   <div>
-    <v-row class="fill-height ml-5 mt-2">
-      <v-col sm="12" md="6">
-        <v-sheet height="80" class="pr-10">
+    <v-row class="fill-height ml-5">
+      <v-col sm="12" md="5">
+        <v-sheet height="80" class="pr-3">
           <v-toolbar flat>
+            <v-btn outlined color="grey darken-1" @click="setToday">
+              Today
+            </v-btn>
             <v-spacer></v-spacer>
+
             <v-btn
               fab
               text
@@ -13,12 +17,14 @@
               @click="$refs.calendar.prev()"
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
+
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusRoom}}
+              {{ $refs.calendar.title }}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusRoom}}
+              {{ initCalendarTitle }}
             </v-toolbar-title>
+
             <v-btn
               fab
               text
@@ -28,13 +34,9 @@
               ><v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              outlined
-              class="mr-0"
-              color="grey darken-2"
-              @click="setToday"
-            >
-              Today
+
+            <v-btn disabled text x-large class="pa-0">
+              {{ focusTool }}
             </v-btn>
           </v-toolbar>
         </v-sheet>
@@ -51,7 +53,7 @@
         </v-sheet>
       </v-col>
 
-      <v-col sm="12" md="6">
+      <v-col sm="12" md="7">
         <CheckToolBookingDialog />
       </v-col>
     </v-row>
@@ -59,7 +61,7 @@
 </template>
 
 <script>
-import CheckToolBookingDialog from '@/components/tool/CheckToolBookingDialog.vue'
+import CheckToolBookingDialog from '@/components/Tool/CheckToolBookingDialog.vue'
 import { mapState } from 'vuex'
 import api from '@/api/modules/tool'
 
@@ -72,7 +74,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('toolStore', ['dialog', 'focusRoom'])
+    ...mapState('toolStore', ['dialog', 'focusTool'])
   },
 
   async created () {
@@ -83,9 +85,7 @@ export default {
   methods: {
     checkToolBooking ({ date }) {
       this.$store.commit('toolStore/focusDateSetter', date)
-      api.getBookedtoolListByDate(this.focusRoom, date)
-      api.getLefttoolCounts(this.focusRoom, date)
-      this.dialog.checkToolBooking = true
+      api.getToolBookingsByDate(this.focusTool, date)
     },
     setToday () {
       this.$store.commit('toolStore/focusDateSetter', '')

@@ -5,9 +5,10 @@ import SettingTabs from '@/components/Setting/SettingTabs.vue'
 import SetRoomPlaces from '@/components/Setting/SetRoomPlaces.vue'
 import SetToolPlaces from '@/components/Setting/SetToolPlaces.vue'
 
-import ToolPlaceTabs from '@/components/Tool/ToolPlaceTabs.vue'
+import ToolTabs from '@/components/Tool/ToolTabs.vue'
 import ToolCalendar from '@/components/Tool/ToolCalendar.vue'
 
+import RoomTabs from '@/components/Room/RoomTabs.vue'
 import RoomCalendar from '@/components/Room/RoomCalendar.vue'
 
 Vue.use(Router)
@@ -26,17 +27,22 @@ export default new Router({
     },
 
     {
-      path: '/room/:place',
-      component: RoomCalendar,
-      props: true
-    },
-    {
       path: '/tool',
-      component: ToolPlaceTabs,
+      component: ToolTabs,
       props: true,
       children: [
-        { path: ':place', component: ToolCalendar, props: true }
+        { path: ':tool', component: ToolCalendar, props: true }
+      ]
+    },
+
+    {
+      path: '/room',
+      component: RoomTabs,
+      props: true,
+      children: [
+        { path: ':room', component: RoomCalendar, props: true }
       ]
     }
+
   ]
 })

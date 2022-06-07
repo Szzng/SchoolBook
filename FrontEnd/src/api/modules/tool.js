@@ -3,50 +3,50 @@ import Urls from '@/api/urls'
 import toolStore from '../../store/modules/toolStore'
 
 export default {
-  getBookedtoolListByDate (place, date) {
+  getToolBookingsByDate (tool, date) {
     myAxios
-      .get(Urls.tool_ByDate(place, date))
+      .get(Urls.tool_BookingByDate(tool, date))
       .then(response => {
-        toolStore.state.bookedToolLists = response.data
+        toolStore.state.toolBookingLists = response.data
+        this.getAvailableLeft(tool, date)
+        toolStore.state.dialog.checkToolBooking = true
       })
       .catch(error => {
-        console.log('getBookedtoolListByDate GET error', error.response)
+        console.log('getToolBookingsByDate GET error', error.response)
       })
   },
 
-  Booktool (component, postData) {
+  BookTool (component, postData) {
     myAxios
       .post(Urls.tool_All, postData)
       .then(response => {
-        this.getBookedtoolListByDate(postData['place.name'], postData['time.date'])
-        this.getLefttoolCounts(postData['place.name'], postData['time.date'])
-        component.dialog.booktool = false
+        this.getToolBookingsByDate(postData['tool'], postData['date'])
+        component.dialog.bookTool = false
       })
       .catch(error => {
-        console.log('Booktool POST error', error.response)
+        console.log('BookTool POST error', error.response)
       })
   },
 
-  DestroyBookedtool (destroyId, place, date) {
+  DestroyToolBooking (destroyId, tool, date) {
     myAxios
-      .delete(Urls.tool_Destroy(destroyId))
+      .delete(Urls.tool_DestroyBooking(destroyId))
       .then(response => {
-        this.getBookedtoolListByDate(place, date)
-        this.getLefttoolCounts(place, date)
+        this.getToolBookingsByDate(tool, date)
       })
       .catch(error => {
-        console.log('DestroyBookedtool DELETE error', error.response)
+        console.log('DestroyToolBooking DELETE error', error.response)
       })
   },
 
-  getLefttoolCounts (place, date) {
+  getAvailableLeft (tool, date) {
     myAxios
-      .get(Urls.tool_Left(place, date))
+      .get(Urls.tool_Left(tool, date))
       .then(response => {
         toolStore.state.left = response.data
       })
       .catch(error => {
-        console.log('getLefttoolCount GET error', error.response)
+        console.log('getAvailableLeft GET error', error.response)
       })
   }
 }

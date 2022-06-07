@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog.destroyRoom" max-width="500" persistent>
+    <v-dialog v-model="dialog.destroyTool" max-width="500" persistent>
       <v-card>
         <v-card-title>
           <v-row align="center" justify="center">
@@ -10,7 +10,7 @@
               x-large
               class="mx-1 mt-5 white--text font-weight-bold"
             >
-              {{ room }}
+              {{ tool }}
               <v-icon class="ml-1">mdi-progress-close</v-icon>
             </v-btn>
           </v-row>
@@ -31,7 +31,7 @@
           <v-btn color="error" class="white--text" @click="destroyPlace"
             >삭제</v-btn
           >
-          <v-btn @click="dialog.destroyRoom = false">취소</v-btn>
+          <v-btn @click="dialog.destroyTool = false">취소</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -45,7 +45,7 @@ import api from '@/api/modules/setting'
 
 export default {
   props: {
-    room: String
+    tool: String
   },
 
   data: () => ({
@@ -53,13 +53,13 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog'])
+    ...mapState('toolStore', ['dialog'])
   },
 
   methods: {
     destroyPlace () {
-      api.destroyRoom(this.room)
-      this.dialog.destroyRoom = false
+      api.destroyTool(this.tool)
+      this.dialog.destroyTool = false
     }
   }
 }

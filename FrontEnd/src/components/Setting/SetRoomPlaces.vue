@@ -50,7 +50,7 @@
 
         <v-col sm="12" md="6">
           <v-card class="mt-1 mb-5">
-            <v-card-title>추가 등록</v-card-title>
+            <v-card-title>교실 · 장소 추가 등록</v-card-title>
             <v-card-title>
               <v-row align="center" justify="start">
                 <v-col sm="6" md="12">
@@ -59,7 +59,6 @@
                       v-model="newRoom"
                       outlined
                       label="교실 · 장소 이름을 입력하세요. (특수 문자 불가)"
-                      hide-details
                       :rules="placeNameRule"
                     ></v-text-field>
                   </v-form>
@@ -113,7 +112,7 @@ export default {
     placeNameRule: [
       (v) => !!v || '이름을 입력하세요.',
       (v) =>
-        !/[~!@#$%^&*()_+|<>?:{}/]/.test(v) || '특수문자를 사용할 수 없습니다.'
+        !/[~!@#$%^&*()_+|<>?:{}/]/.test(v) || '특수문자는 사용할 수 없습니다.'
     ]
   }),
 
@@ -132,11 +131,6 @@ export default {
   },
 
   methods: {
-    updateRoom (room) {
-      this.room = room
-      this.dialog.updateRoom = true
-    },
-
     updateTimetable (room) {
       this.room = room
       api.getTimetable(this.room)

@@ -5,13 +5,14 @@ const toolStore = {
       checkToolBooking: false,
       bookTool: false,
       destroyToolBooking: false,
+      updateTool: false,
       destroyTool: false
     },
     periods: [1, 2, 3, 4, 5, 6],
-    rooms: [{ name: '전산실' }, { name: '준비물실' }],
+    tools: [],
     focusDate: '',
-    focusRoom: '',
-    bookedToolLists: [],
+    focusTool: '',
+    toolBookingLists: {},
     left: [],
     colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
   },
@@ -19,8 +20,8 @@ const toolStore = {
     focusDateSetter (state, date) {
       state.focusDate = date
     },
-    focusPlaceSetter (state, place) {
-      state.focusRoom = place
+    focusToolSetter (state, tool) {
+      state.focusTool = tool
     }
   },
   actions: {

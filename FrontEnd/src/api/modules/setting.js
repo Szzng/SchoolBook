@@ -1,8 +1,42 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
 import roomStore from '@/store/modules/roomStore'
+import toolStore from '@/store/modules/toolStore'
 
 export default {
+  createTool (postData) {
+    myAxios
+      .post(Urls.setting_Tool, postData)
+      .then(response => {
+        this.getTools()
+      })
+      .catch(error => {
+        console.log('createTool POST error', error.response)
+      })
+  },
+
+  getTools () {
+    myAxios
+      .get(Urls.setting_Tool)
+      .then(response => {
+        toolStore.state.tools = response.data
+      })
+      .catch(error => {
+        console.log('getTools GET error', error.response)
+      })
+  },
+
+  destroyTool (tool) {
+    myAxios
+      .delete(Urls.setting_DestroyTool, { data: { 'tool': tool } })
+      .then(response => {
+        this.getTools()
+      })
+      .catch(error => {
+        console.log('destroyTool DELETE error', error.response)
+      })
+  },
+
   createRoom (postData) {
     myAxios
       .post(Urls.setting_Room, postData)

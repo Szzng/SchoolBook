@@ -4,10 +4,8 @@ export default {
   Django_API: `${DjangoBase}api/`,
 
   /* Setting_Tool */
-  setting_toolPlaces: 'tools/setting/place/',
-  setting_DestroytoolPlace: (placeName) => {
-    return `tools/setting/place/${placeName}/`
-  },
+  setting_Tool: 'tools/setting/',
+  setting_DestroyTool: 'tools/setting/destroy/',
 
   /* Setting_Room */
   setting_Room: 'rooms/setting/',
@@ -19,21 +17,18 @@ export default {
 
   /* Tool */
   tool_All: 'tools/',
-  tool_ByDate: (place, date) => {
-    return `tools/${place}/${date}/`
+  tool_BookingByDate: (tool, date) => {
+    return `tools/${tool}/${date}/`
   },
-  tool_Destroy: (toolId) => {
-    return `tools/${toolId}/`
+  tool_DestroyBooking: (bookingId) => {
+    return `tools/${bookingId}/`
   },
-  tool_Left: (place, date) => {
-    return `tools/left/${place}/${date}/`
+  tool_Left: (tool, date) => {
+    return `tools/left/${tool}/${date}/`
   },
 
   /* Room */
   room_All: 'rooms/',
-  room_ByDate: (date) => {
-    return `rooms/${date}`
-  },
   room_Destroy: (roomId) => {
     return `rooms/destroy/${roomId}/`
   },

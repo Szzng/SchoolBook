@@ -29,7 +29,7 @@ export default {
   data: () => ({
     activeTab: null,
     tabs: [
-      { name: '물품 · 도구 설정', path: 'tool' },
+      { name: '물품 · 교구 설정', path: 'tool' },
       { name: '교실 · 장소 설정', path: 'room' }
     ]
   }),

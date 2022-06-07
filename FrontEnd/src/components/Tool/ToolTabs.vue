@@ -6,14 +6,14 @@
           <v-tabs v-model="activeTab" centered grow color="secondary">
             <v-tabs-slider></v-tabs-slider>
             <v-tab
-              class="black--text"
-              v-for="place in rooms"
-              :key="place.name"
-              :to="`/tool/${place.name}`"
+              class="indigo--text"
+              v-for="tool in tools"
+              :key="tool.name"
+              :to="`/tool/${tool.name}`"
               exact
-              @click="changeTab(place.name)"
+              @click="changeTab(tool.name)"
             >
-              {{ place.name }}
+              {{ tool.name }}
             </v-tab>
           </v-tabs>
         </v-col>
@@ -33,24 +33,22 @@ export default {
   }),
 
   mounted () {
-    this.activeTab = `/tool/${this.$route.params.place}`
-  },
-
-  computed: {
-    ...mapState('toolStore', ['rooms'])
+    this.activeTab = `/tool/${this.$route.params.tool}`
   },
 
   created () {
-    this.$store.commit(
-      'toolStore/focusPlaceSetter',
-      this.$route.params.place
-    )
+    this.activeTab = `/tool/${this.$route.params.tool}`
+    this.$store.commit('toolStore/focusToolSetter', this.$route.params.tool)
+  },
+
+  computed: {
+    ...mapState('toolStore', ['tools'])
   },
 
   methods: {
     changeTab (tabName) {
       this.$store.commit('toolStore/focusDateSetter', '')
-      this.$store.commit('toolStore/focusPlaceSetter', tabName)
+      this.$store.commit('toolStore/focusToolSetter', tabName)
     }
   }
 }
