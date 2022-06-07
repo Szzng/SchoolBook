@@ -2,14 +2,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import SettingTabs from '@/components/Setting/SettingTabs.vue'
-import SetFixedTimeTable from '@/components/Setting/SetFixedTimeTable.vue'
-import SetClassroomPlaces from '@/components/Setting/SetClassroomPlaces.vue'
-import ClassroomSettingTabs from '@/components/Setting/ClassroomSettingTabs.vue'
+import SetRoomPlaces from '@/components/Setting/SetRoomPlaces.vue'
+import SetToolPlaces from '@/components/Setting/SetToolPlaces.vue'
 
-import TabletsTabs from '@/components/Tablets/TabletsTabs.vue'
-import TabletsCalendar from '@/components/Tablets/CalendarByPlace.vue'
+import ToolTabs from '@/components/Tool/ToolTabs.vue'
+import ToolCalendar from '@/components/Tool/ToolCalendar.vue'
 
-import ClassRoomCalendar from '@/components/Classroom/CalendarByPlace.vue'
+import RoomTabs from '@/components/Room/RoomTabs.vue'
+import RoomCalendar from '@/components/Room/RoomCalendar.vue'
 
 Vue.use(Router)
 
@@ -21,31 +21,28 @@ export default new Router({
       component: SettingTabs,
       props: true,
       children: [
-        { path: 'tablets', component: SetClassroomPlaces },
-        {
-          path: 'classroom',
-          component: ClassroomSettingTabs,
-          props: true,
-          children: [
-            { path: 'place', component: SetClassroomPlaces },
-            { path: 'fixtimetable', component: SetFixedTimeTable }
-          ]
-        }
+        { path: 'tool', component: SetToolPlaces },
+        { path: 'room', component: SetRoomPlaces }
       ]
     },
 
     {
-      path: '/classroom/:place',
-      component: ClassRoomCalendar,
-      props: true
-    },
-    {
-      path: '/tablets',
-      component: TabletsTabs,
+      path: '/tool',
+      component: ToolTabs,
       props: true,
       children: [
-        { path: ':place', component: TabletsCalendar, props: true }
+        { path: ':tool', component: ToolCalendar, props: true }
+      ]
+    },
+
+    {
+      path: '/room',
+      component: RoomTabs,
+      props: true,
+      children: [
+        { path: ':room', component: RoomCalendar, props: true }
       ]
     }
+
   ]
 })

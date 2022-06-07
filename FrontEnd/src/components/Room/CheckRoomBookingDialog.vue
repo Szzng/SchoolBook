@@ -1,7 +1,7 @@
 <template>
   <div class="mt-16 pt-4 mr-10">
-    <v-sheet v-show="!selected" height="550" outlined class="mt-5">
-      <v-card class="pl-5" flat>
+    <v-sheet v-show="!selected" height="520" outlined>
+      <v-card class="pl-3" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1" style="font-size: 16px">
@@ -24,31 +24,47 @@
           <v-spacer></v-spacer>
         </v-card-actions>
 
-        <v-card v-for="period in periods" :key="period" flat class="my-0 py-0">
+        <v-card
+          v-for="period in periods"
+          :key="period"
+          flat
+          class="my-0 py-0"
+          height="83"
+        >
           <v-row align="center" justify="center">
-            <v-col sm="12" md="5">
-              <v-card-subtitle class="pb-3 black--text">
+            <v-col sm="5" md="5">
+              <v-card-subtitle class="pb-0 black--text">
                 {{ period }}교시
               </v-card-subtitle>
             </v-col>
 
             <v-col class="pa-0">
-              <v-card-text>
+              <v-card-text class="py-0">
                 <v-btn
-                  v-if="[1, 2, 3].includes(period)"
-                  color="black"
+                  v-if="[1, 2].includes(period)"
+                  disabled
                   width="100"
                   height="40"
                   class="font-weight-bold"
                   outlined
-                  disabled
+                >
+                  <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
+                  고정시간
+                </v-btn>
+                <v-btn
+                  v-if="[3, 4].includes(period)"
+                  color="grey darken-3"
+                  width="100"
+                  height="40"
+                  class="font-weight-bold"
+                  outlined
                 >
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
                   예약완료
                 </v-btn>
-                <v-btn v-else width="100" height="40" outlined color="primary">
+                <v-btn v-if="[5, 6].includes(period)" width="100" height="40" outlined color="primary">
                   <v-icon class="mr-1"> mdi-clock-plus-outline </v-icon>
-                  예약
+                  예약가능
                 </v-btn>
               </v-card-text>
             </v-col>
@@ -58,42 +74,48 @@
       </v-card>
     </v-sheet>
 
-    <v-sheet v-show="selected" height="550" outlined class="mt-5">
-      <v-card class="pl-5" flat>
+    <v-sheet v-show="selected" height="520" outlined>
+      <v-card class="pl-3" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
             <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
-              {{ focusPlace }}</v-card-subtitle
+              {{ focusRoom }}</v-card-subtitle
             >
           </v-card-title>
           <v-spacer></v-spacer>
         </v-card-actions>
 
-        <v-card v-for="period in periods" :key="period" flat class="my-0 py-0">
+        <v-card
+          v-for="period in periods"
+          :key="period"
+          flat
+          class="my-0 py-0"
+          height="83"
+        >
           <v-row align="center" justify="center">
-            <v-col sm="12" md="5">
-              <v-card-subtitle class="pb-3 black--text">
+            <v-col sm="5" md="5">
+              <v-card-subtitle class="pb-0 black--text">
                 {{ period }}교시
               </v-card-subtitle>
             </v-col>
 
             <v-col class="pa-0">
-              <v-card-text>
+              <v-card-text class="py-0">
                 <v-btn
-                  v-if="bookedRoomLists[period]"
-                  color="black"
+                  v-if="roomBookingLists[period]"
+                  :disabled="disabled(roomBookingLists[period].id)"
+                  color="grey darken-3"
                   width="100"
                   height="40"
                   class="font-weight-bold"
                   style="font-size: 16px"
                   outlined
-                  disabled
-                  @click="assertDestroyBooking(item)"
+                  @click="assertDestroyBooking( roomBookingLists[period] )"
                 >
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
-                  {{ bookedRoomLists[period] }}
+                  {{ roomBookingLists[period].booker }}
                 </v-btn>
 
                 <v-btn
@@ -105,7 +127,7 @@
                   @click="bookRoom(period)"
                 >
                   <v-icon class="mr-1"> mdi-clock-plus-outline </v-icon>
-                  예약
+                  예약가능
                 </v-btn>
               </v-card-text>
             </v-col>
@@ -115,28 +137,31 @@
       </v-card>
     </v-sheet>
 
-    <BookRoomDialog :eventBooking="eventBooking" />
+    <BookRoomDialog />
+    <DestroyRoomBookingDialog :booking="bookingToDestory" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import BookRoomDialog from '@/components/Classroom/BookRoomDialog.vue'
+import BookRoomDialog from '@/components/Room/BookRoomDialog.vue'
+import DestroyRoomBookingDialog from '@/components/Room/DestroyRoomBookingDialog.vue'
 
 export default {
-  components: { BookRoomDialog },
+  components: { BookRoomDialog, DestroyRoomBookingDialog },
 
   data: () => ({
-    eventBooking: {}
+    bookingToDestory: {}
   }),
 
   computed: {
-    ...mapState('classroomStore', [
+    ...mapState('roomStore', [
       'dialog',
       'periods',
       'focusDate',
-      'focusPlace',
-      'bookedRoomLists'
+      'focusRoom',
+      'roomBookingLists',
+      'booking'
     ]),
 
     selected () {
@@ -150,9 +175,26 @@ export default {
   },
 
   methods: {
+    disabled (bookingId) {
+      if (bookingId === 'fixed') {
+        return true
+      } else {
+        return false
+      }
+    },
+
     bookRoom (period) {
-      this.eventBooking = { name: period, start: this.focusDate }
+      this.$store.commit('roomStore/bookingSetter', {
+        name: period,
+        start: this.focusDate
+      })
+
       this.dialog.bookRoom = true
+    },
+
+    assertDestroyBooking (booking) {
+      this.bookingToDestory = booking
+      this.dialog.destroyRoomBooking = true
     }
   }
 }

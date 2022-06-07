@@ -3,44 +3,40 @@ const DjangoBase = 'http://127.0.0.1:8000/'
 export default {
   Django_API: `${DjangoBase}api/`,
 
-  /* Setting */
-  setting_TabletsPlaces: 'tablets/setting/place/',
-  setting_DestroyTabletsPlace: (placeName) => {
-    return `tablets/setting/place/${placeName}/`
-  },
-  setting_ClassroomPlaces: 'rooms/setting/place/',
-  setting_DestroyClassroomPlace: (placeName) => {
-    return `rooms/setting/place/${placeName}/`
-  },
-  setting_FixedTimeTable: 'rooms/setting/fixedtimetable/',
-  setting_ByPlaceFixedTimeTable: (placeName) => {
-    return `rooms/setting/fixedtimetable/${placeName}/`
+  /* Setting_Tool */
+  setting_Tool: 'tools/setting/',
+  setting_DestroyTool: 'tools/setting/destroy/',
+
+  /* Setting_Room */
+  setting_Room: 'rooms/setting/',
+  setting_DestroyRoom: 'rooms/setting/destroy/',
+  setting_UpdateTimetable: 'rooms/setting/timetable/',
+  setting_TimetableByRoom: (room) => {
+    return `rooms/setting/timetable/${room}/`
   },
 
-  /* Book Tablets */
-  tabletsAll: 'tablets/',
-  tabletsByDate: (place, date) => {
-    return `tablets/${place}/${date}/`
+  /* Tool */
+  tool_All: 'tools/',
+  tool_BookingByDate: (tool, date) => {
+    return `tools/${tool}/${date}/`
   },
-  tabletDestroy: (tabletId) => {
-    return `tablets/${tabletId}/`
+  tool_DestroyBooking: (bookingId) => {
+    return `tools/${bookingId}/`
   },
-  tabletLeft: (place, date) => {
-    return `tablets/left/${place}/${date}/`
+  tool_Left: (tool, date) => {
+    return `tools/left/${tool}/${date}/`
   },
 
-  /* Book Room */
-  roomAll: 'rooms/',
-  roomByDate: (date) => {
-    return `rooms/${date}`
+  /* Room */
+  room_All: 'rooms/',
+  room_BookingByDate: (room, date) => {
+    return `rooms/${room}/${date}/`
   },
-  roomDestroy: (roomId) => {
-    return `rooms/destroy/${roomId}/`
+  room_DestroyBooking: (bookingId) => {
+    return `rooms/${bookingId}/`
   },
-  roomAvailableBookingEvents: (place, date) => {
-    return `rooms/events/${place}/${date}/`
-  },
-  roomBookingByDate: (place, date) => {
-    return `rooms/${place}/${date}/`
+  room_AvailableEvents: (room, date) => {
+    return `rooms/events/${room}/${date}/`
   }
+
 }

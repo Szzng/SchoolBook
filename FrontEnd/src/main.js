@@ -16,7 +16,8 @@ new Vue({
   router,
   store,
   beforeCreate () {
-    settingApi.getClassroomPlaces()
+    settingApi.getRooms()
+    settingApi.getTools()
   },
   components: { App },
   template: '<App/>'

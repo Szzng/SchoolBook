@@ -1,10 +1,14 @@
 <template>
   <div>
-    <v-row class="fill-height ml-5 mt-2">
-      <v-col sm="12" md="6">
-        <v-sheet height="80" class="pr-10">
+    <v-row class="fill-height ml-5">
+      <v-col sm="12" md="5">
+        <v-sheet height="80" class="pr-3">
           <v-toolbar flat>
+            <v-btn outlined color="grey darken-1" @click="setToday">
+              Today
+            </v-btn>
             <v-spacer></v-spacer>
+
             <v-btn
               fab
               text
@@ -13,12 +17,14 @@
               @click="$refs.calendar.prev()"
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
+
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusPlace}}
+              {{ $refs.calendar.title }}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusPlace}}
+              {{ initCalendarTitle }}
             </v-toolbar-title>
+
             <v-btn
               fab
               text
@@ -28,43 +34,39 @@
               ><v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              outlined
-              class="mr-0"
-              color="grey darken-2"
-              @click="setToday"
-            >
-              Today
+
+            <v-btn disabled text x-large class="pa-0">
+              {{ focusTool }}
             </v-btn>
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="512" class="pr-8 ml-2">
+        <v-sheet height="520" class="pr-8 ml-2">
           <v-calendar
             ref="calendar"
-            v-model="$store.state.tabletsStore.focusDate"
+            v-model="$store.state.toolStore.focusDate"
             :weekdays="weekday"
             color="primary"
             type="month"
-            @click:date="checkTabletsBooking"
+            @click:date="checkToolBooking"
           ></v-calendar>
         </v-sheet>
       </v-col>
 
-      <v-col sm="12" md="6">
-        <CheckTabletsBookingDialog />
+      <v-col sm="12" md="7">
+        <CheckToolBookingDialog />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import CheckTabletsBookingDialog from '@/components/Tablets/CheckTabletsBookingDialog.vue'
+import CheckToolBookingDialog from '@/components/Tool/CheckToolBookingDialog.vue'
 import { mapState } from 'vuex'
-import api from '@/api/modules/tablets'
+import api from '@/api/modules/tool'
 
 export default {
-  components: { CheckTabletsBookingDialog },
+  components: { CheckToolBookingDialog },
 
   data: () => ({
     initCalendarTitle: '',
@@ -72,7 +74,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('tabletsStore', ['dialog', 'focusPlace'])
+    ...mapState('toolStore', ['dialog', 'focusTool'])
   },
 
   async created () {
@@ -81,15 +83,13 @@ export default {
   },
 
   methods: {
-    checkTabletsBooking ({ date }) {
-      this.$store.commit('tabletsStore/focusDateSetter', date)
-      api.getBookedTabletsListByDate(this.focusPlace, date)
-      api.getLeftTabletsCounts(this.focusPlace, date)
-      this.dialog.checkTabletsBooking = true
+    checkToolBooking ({ date }) {
+      this.$store.commit('toolStore/focusDateSetter', date)
+      api.getToolBookingsByDate(this.focusTool, date)
     },
     setToday () {
-      this.$store.commit('tabletsStore/focusDateSetter', '')
-      this.dialog.checkTabletsBooking = false
+      this.$store.commit('toolStore/focusDateSetter', '')
+      this.dialog.checkToolBooking = false
     }
   }
 }

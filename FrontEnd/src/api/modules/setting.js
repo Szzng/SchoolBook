@@ -1,72 +1,95 @@
 import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
-import tabletsStore from '../../store/modules/tabletsStore'
-import classroomStore from '../../store/modules/classroomStore'
+import roomStore from '@/store/modules/roomStore'
+import toolStore from '@/store/modules/toolStore'
 
 export default {
-  setTabletsPlaces (postData) {
+  createTool (postData) {
     myAxios
-      .post(Urls.setting_TabletsPlaces, postData)
+      .post(Urls.setting_Tool, postData)
       .then(response => {
-        tabletsStore.state.places = response.data
+        this.getTools()
       })
       .catch(error => {
-        console.log('setTabletsPlaces POST error', error.response)
+        console.log('createTool POST error', error.response)
       })
   },
 
-  setClassroomPlaces (postData) {
+  getTools () {
     myAxios
-      .post(Urls.setting_ClassroomPlaces, postData)
+      .get(Urls.setting_Tool)
       .then(response => {
-        classroomStore.state.places = response.data
+        toolStore.state.tools = response.data
       })
       .catch(error => {
-        console.log('setClassroomPlaces POST error', error.response)
+        console.log('getTools GET error', error.response)
       })
   },
 
-  getClassroomPlaces () {
+  destroyTool (tool) {
     myAxios
-      .get(Urls.setting_ClassroomPlaces)
+      .delete(Urls.setting_DestroyTool, { data: { 'tool': tool } })
       .then(response => {
-        classroomStore.state.places = response.data
+        this.getTools()
       })
       .catch(error => {
-        console.log('getClassroomPlaces GET error', error.response)
+        console.log('destroyTool DELETE error', error.response)
       })
   },
 
-  DestroyClassroomPlace (placeName) {
+  createRoom (postData) {
     myAxios
-      .delete(Urls.setting_DestroyClassroomPlace(placeName))
+      .post(Urls.setting_Room, postData)
       .then(response => {
-        this.getClassroomPlaces()
+        this.getRooms()
       })
       .catch(error => {
-        console.log('DestroyClassroomPlace DELETE error', error.response)
+        console.log('createRoom POST error', error.response)
       })
   },
 
-  getFixedTimeTable (component, placeName) {
+  getRooms () {
     myAxios
-      .get(Urls.setting_ByPlaceFixedTimeTable(placeName))
+      .get(Urls.setting_Room)
       .then(response => {
-        component.fixedTimeTable = response.data
+        roomStore.state.rooms = response.data
       })
       .catch(error => {
-        console.log('setFixedTimeTable GET error', error.response)
+        console.log('getRooms GET error', error.response)
       })
   },
 
-  setFixedTimeTable (component, postData) {
+  destroyRoom (room) {
     myAxios
-      .post(Urls.setting_FixedTimeTable, postData)
+      .delete(Urls.setting_DestroyRoom, { data: { 'room': room } })
       .then(response => {
-        this.getFixedTimeTable(component, postData.placeName)
+        this.getRooms()
       })
       .catch(error => {
-        console.log('setFixedTimeTable POST error', error.response)
+        console.log('destroyRoom DELETE error', error.response)
+      })
+  },
+
+  getTimetable (room) {
+    myAxios
+      .get(Urls.setting_TimetableByRoom(room))
+      .then(response => {
+        roomStore.state.timetable = response.data
+        roomStore.state.dialog.updateTimetable = true
+      })
+      .catch(error => {
+        console.log('getTimetable GET error', error.response)
+      })
+  },
+
+  updateTimetable (postData) {
+    myAxios
+      .post(Urls.setting_UpdateTimetable, postData)
+      .then(response => {
+        this.getTimetable(postData.room)
+      })
+      .catch(error => {
+        console.log('updateTimetable POST error', error.response)
       })
   }
 

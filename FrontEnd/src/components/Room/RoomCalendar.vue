@@ -1,10 +1,19 @@
 <template>
-  <div class="mt-16 pt-4 ml-4">
-    <v-row class="fill-height ml-3">
+  <div>
+    <v-row class="fill-height ml-5">
       <v-col sm="12" md="8">
-        <v-sheet height="80" class="pr-10 mt-5">
+        <v-sheet height="80" class="pr-5">
           <v-toolbar flat>
+            <v-btn
+              outlined
+              class="mr-0"
+              color="grey darken-2"
+              @click="setToday"
+            >
+              Today
+            </v-btn>
             <v-spacer></v-spacer>
+
             <v-btn
               fab
               text
@@ -13,11 +22,12 @@
               @click="$refs.calendar.prev()"
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
+
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusPlace}}
+              {{ $refs.calendar.title }}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusPlace}}
+              {{ initCalendarTitle }}
             </v-toolbar-title>
             <v-btn
               fab
@@ -28,21 +38,17 @@
               ><v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              outlined
-              class="mr-0"
-              color="grey darken-2"
-              @click="setToday"
-            >
-              Today
+
+            <v-btn disabled text x-large class="pa-0">
+              {{ focusRoom }}
             </v-btn>
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="550" class="pr-10">
+        <v-sheet height="520" class="pr-8 ml-2">
           <v-calendar
             ref="calendar"
-            v-model="$store.state.classroomStore.focusDate"
+            v-model="$store.state.roomStore.focusDate"
             :weekdays="weekday"
             color="primary"
             type="month"
@@ -59,19 +65,19 @@
       <v-col sm="12" md="4">
         <CheckRoomBookingDialog />
       </v-col>
-
     </v-row>
-    <BookRoomDialog :eventBooking="eventBooking" />
+
+    <BookRoomDialog />
     <DestroyRoomBookingDialog :eventDestroying="eventDestroying" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import CheckRoomBookingDialog from '@/components/Classroom/CheckRoomBookingDialog.vue'
-import BookRoomDialog from '@/components/Classroom/BookRoomDialog.vue'
-import DestroyRoomBookingDialog from '@/components/Classroom/DestroyRoomBookingDialog.vue'
-import api from '@/api/modules/classroom'
+import CheckRoomBookingDialog from '@/components/Room/CheckRoomBookingDialog.vue'
+import BookRoomDialog from '@/components/Room/BookRoomDialog.vue'
+import DestroyRoomBookingDialog from '@/components/Room/DestroyRoomBookingDialog.vue'
+import api from '@/api/modules/room'
 
 export default {
   components: {
@@ -83,33 +89,38 @@ export default {
   data: () => ({
     initCalendarTitle: '',
     focus: '',
-    eventBooking: {},
     eventDestroying: {},
     weekday: [1, 2, 3, 4, 5]
   }),
 
   computed: {
-    ...mapState('classroomStore', ['dialog', 'bookedRoomLists', 'focusPlace', 'availableBookingEvents'])
+    ...mapState('roomStore', [
+      'dialog',
+      'roomBookingLists',
+      'focusRoom',
+      'availableBookingEvents',
+      'booking'
+    ])
   },
 
   async created () {
     await this.$nextTick()
     this.initCalendarTitle = this.$refs.calendar.title
-    api.getAvailableBookingEvents(this, this.focusPlace, this.$refs.calendar.start)
+    api.getAvailableEvents(this.focusRoom, this.$refs.calendar.start)
   },
 
   methods: {
     changed (info) {
-      api.getAvailableBookingEvents(this, this.focusPlace, info.start.date)
+      api.getAvailableEvents(this.focusRoom, info.start.date)
     },
     checkRoomBooking ({ date }) {
-      this.$store.commit('classroomStore/focusDateSetter', date)
-      api.getRoomBookingsByDate(this.focusPlace, date)
+      this.$store.commit('roomStore/focusDateSetter', date)
+      api.getRoomBookingsByDate(this.focusRoom, date)
       this.dialog.checkRoomBooking = true
     },
 
     bookRoom ({ nativeEvent, event }) {
-      this.eventBooking = event
+      this.$store.commit('roomStore/bookingSetter', event)
       this.dialog.bookRoom = true
     },
 
@@ -119,7 +130,7 @@ export default {
     },
 
     setToday () {
-      this.$store.commit('classroomStore/focusDateSetter', '')
+      this.$store.commit('roomStore/focusDateSetter', '')
       this.focus = ''
     },
     formatInterval (interval) {
@@ -136,19 +147,15 @@ export default {
 >>> .v-event {
   max-width: 12%;
   height: 22% !important;
-  border-radius: 100%;
-  margin-right: 1px;
-  margin-left: 0.4em;
-  margin-top:0.9em;
+  margin-right: 2px;
+  margin-left: 6px;
+  margin-top: 0.9em;
   float: left;
-  text-align: center;
   font-size: 15px;
+  font-weight: bold;
 }
 
-/* >>> .pl-1 {
-  font-size: 20px;
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-left: 0px;
-} */
+>>> .pl-1 {
+  margin-left: 2px;
+}
 </style>

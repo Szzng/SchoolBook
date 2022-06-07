@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog
-      v-model="dialog.bookTablets"
+      v-model="dialog.bookTool"
       max-width="500"
       content-class="book-dialog"
       persistent
@@ -32,10 +32,10 @@
           </v-row>
 
           <v-text-field
-            v-model="borrower"
+            v-model="booker"
             label="학년-반"
             required
-            :rules="borrowerRule"
+            :rules="bookerRule"
             outlined
             color="primary"
             class="mt-12 pt-2 px-3"
@@ -69,26 +69,26 @@
 
 <script>
 import { mapState } from 'vuex'
-import api from '@/api/modules/tablets'
+import api from '@/api/modules/tool'
 
 export default {
   data: () => ({
     period: [],
-    borrower: '',
+    booker: '',
     quantity: 0,
-    borrowerRule: [
+    bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
     ]
   }),
 
   computed: {
-    ...mapState('tabletsStore', [
+    ...mapState('toolStore', [
       'dialog',
       'periods',
       'left',
       'focusDate',
-      'focusPlace',
+      'focusTool',
       'colors'
     ]),
     formatSelectedDate () {
@@ -124,7 +124,7 @@ export default {
 
   methods: {
     close () {
-      this.dialog.bookTablets = false
+      this.dialog.bookTool = false
       this.$refs.form.reset()
       this.$refs.form.resetValidation()
     },
@@ -135,13 +135,13 @@ export default {
       }
       if (this.period.length && this.$refs.form.validate()) {
         const postData = {
-          'time.date': this.focusDate,
-          'time.period': this.period,
-          'place.name': this.focusPlace,
-          borrower: this.borrower,
-          quantity: this.quantity
+          'tool': this.focusTool,
+          'date': this.focusDate,
+          'period': this.period,
+          'booker': this.booker,
+          'quantity': this.quantity
         }
-        api.BookTablets(this, postData)
+        api.BookTool(this, postData)
         this.$refs.form.reset()
       }
     }
