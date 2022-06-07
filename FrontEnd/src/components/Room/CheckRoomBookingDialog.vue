@@ -1,7 +1,7 @@
 <template>
   <div class="mt-16 pt-4 mr-10">
-    <v-sheet v-show="!selected" height="550" outlined class="mt-5">
-      <v-card class="pl-5" flat>
+    <v-sheet v-show="!selected" height="520" outlined>
+      <v-card class="pl-3" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1" style="font-size: 16px">
@@ -24,16 +24,22 @@
           <v-spacer></v-spacer>
         </v-card-actions>
 
-        <v-card v-for="period in periods" :key="period" flat class="my-0 py-0">
+        <v-card
+          v-for="period in periods"
+          :key="period"
+          flat
+          class="my-0 py-0"
+          height="83"
+        >
           <v-row align="center" justify="center">
             <v-col sm="12" md="5">
-              <v-card-subtitle class="pb-3 black--text">
+              <v-card-subtitle class="pb-0 black--text">
                 {{ period }}교시
               </v-card-subtitle>
             </v-col>
 
             <v-col class="pa-0">
-              <v-card-text>
+              <v-card-text class="py-0">
                 <v-btn
                   v-if="[1, 2, 3].includes(period)"
                   color="black"
@@ -58,8 +64,8 @@
       </v-card>
     </v-sheet>
 
-    <v-sheet v-show="selected" height="550" outlined class="mt-5">
-      <v-card class="pl-5" flat>
+    <v-sheet v-show="selected" height="520" outlined>
+      <v-card class="pl-3" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1"
@@ -71,16 +77,22 @@
           <v-spacer></v-spacer>
         </v-card-actions>
 
-        <v-card v-for="period in periods" :key="period" flat class="my-0 py-0">
+        <v-card
+          v-for="period in periods"
+          :key="period"
+          flat
+          class="my-0 py-0"
+          height="83"
+        >
           <v-row align="center" justify="center">
             <v-col sm="12" md="5">
-              <v-card-subtitle class="pb-3 black--text">
+              <v-card-subtitle class="pb-0 black--text">
                 {{ period }}교시
               </v-card-subtitle>
             </v-col>
 
             <v-col class="pa-0">
-              <v-card-text>
+              <v-card-text class="py-0">
                 <v-btn
                   v-if="roomBookingLists[period]"
                   color="black"

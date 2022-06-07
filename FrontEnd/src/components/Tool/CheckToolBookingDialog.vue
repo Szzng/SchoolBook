@@ -1,6 +1,6 @@
 <template>
   <div class="mt-16 pt-4 mr-10">
-    <v-sheet v-show="!selected" outlined min-height="512">
+    <v-sheet v-show="!selected" outlined min-height="520">
       <v-card class="pl-3" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
@@ -15,7 +15,7 @@
           :key="period"
           flat
           class="my-0 py-0"
-          min-height="82"
+          min-height="83"
         >
           <v-row align="center">
             <v-col sm="12" md="3">
@@ -53,7 +53,7 @@
       </v-card>
     </v-sheet>
 
-    <v-sheet v-show="selected" outlined min-height="512">
+    <v-sheet v-show="selected" outlined min-height="520">
       <v-card class="pl-3" flat>
         <v-card-actions class="mb-5">
           <v-spacer></v-spacer>
@@ -75,7 +75,7 @@
           :key="period"
           flat
           class="my-0 py-0"
-          min-height="82"
+          min-height="83"
         >
           <v-row align="center">
             <v-col sm="12" md="3">

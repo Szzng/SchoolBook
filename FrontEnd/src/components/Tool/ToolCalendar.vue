@@ -41,7 +41,7 @@
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="512" class="pr-8 ml-2">
+        <v-sheet height="520" class="pr-8 ml-2">
           <v-calendar
             ref="calendar"
             v-model="$store.state.toolStore.focusDate"

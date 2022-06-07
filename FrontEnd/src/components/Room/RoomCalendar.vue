@@ -2,9 +2,18 @@
   <div>
     <v-row class="fill-height ml-5">
       <v-col sm="12" md="8">
-        <v-sheet height="80" class="pr-10 mt-5">
+        <v-sheet height="80" class="pr-5">
           <v-toolbar flat>
+            <v-btn
+              outlined
+              class="mr-0"
+              color="grey darken-2"
+              @click="setToday"
+            >
+              Today
+            </v-btn>
             <v-spacer></v-spacer>
+
             <v-btn
               fab
               text
@@ -13,11 +22,12 @@
               @click="$refs.calendar.prev()"
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
+
             <v-toolbar-title v-if="$refs.calendar">
-              {{ $refs.calendar.title }} {{focusRoom}}
+              {{ $refs.calendar.title }}
             </v-toolbar-title>
             <v-toolbar-title v-else>
-              {{ initCalendarTitle }} {{focusRoom}}
+              {{ initCalendarTitle }}
             </v-toolbar-title>
             <v-btn
               fab
@@ -28,18 +38,14 @@
               ><v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
             <v-spacer></v-spacer>
-            <v-btn
-              outlined
-              class="mr-0"
-              color="grey darken-2"
-              @click="setToday"
-            >
-              Today
+
+            <v-btn disabled text x-large class="pa-0">
+              {{ focusRoom }}
             </v-btn>
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="550" class="pr-10">
+        <v-sheet height="520" class="pr-8 ml-2">
           <v-calendar
             ref="calendar"
             v-model="$store.state.roomStore.focusDate"
@@ -88,7 +94,13 @@ export default {
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'roomBookingLists', 'focusRoom', 'availableBookingEvents', 'booking'])
+    ...mapState('roomStore', [
+      'dialog',
+      'roomBookingLists',
+      'focusRoom',
+      'availableBookingEvents',
+      'booking'
+    ])
   },
 
   async created () {
@@ -137,7 +149,7 @@ export default {
   height: 22% !important;
   margin-right: 2px;
   margin-left: 6px;
-  margin-top:0.9em;
+  margin-top: 0.9em;
   float: left;
   font-size: 15px;
   font-weight: bold;
