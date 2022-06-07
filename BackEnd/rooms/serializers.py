@@ -6,14 +6,14 @@ class RoomSerializer(serializers.Serializer):
 
 
 class FixedTimeTableSerializer(serializers.Serializer):
-    place = RoomSerializer()
+    room = RoomSerializer()
     weekday = serializers.IntegerField(required=True)
     period = serializers.IntegerField(required=True)
-    borrower = serializers.CharField(required=True)
+    booker = serializers.CharField(required=True)
 
 
 class EmptyTimeTableSerializer(serializers.Serializer):
-    place = RoomSerializer()
+    room = RoomSerializer()
     weekday = serializers.IntegerField(required=True)
     period = serializers.IntegerField(required=True)
 
@@ -27,4 +27,4 @@ class AvailableEventSerializer(serializers.Serializer):
 class RoomBookingSerializer(serializers.Serializer):
     timetable = EmptyTimeTableSerializer()
     date = serializers.DateField(required=True)
-    borrower = serializers.CharField(required=True)
+    booker = serializers.CharField(required=True)

@@ -6,7 +6,7 @@
           <v-tabs v-model="activeTab" centered grow color="secondary">
             <v-tabs-slider></v-tabs-slider>
             <v-tab
-              class="black--text"
+              class="secondary--text"
               v-for="room in rooms"
               :key="room.name"
               :to="`/room/${room.name}`"
@@ -55,11 +55,7 @@ export default {
       var year = today.getFullYear()
       var month = ('0' + (today.getMonth() + 1)).slice(-2)
       var day = ('0' + today.getDate()).slice(-2)
-      api.getAvailableEvents(
-        this,
-        roomName,
-        year + '-' + month + '-' + day
-      )
+      api.getAvailableEvents(roomName, year + '-' + month + '-' + day)
     }
   }
 }

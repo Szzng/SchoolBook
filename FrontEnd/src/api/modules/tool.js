@@ -28,9 +28,9 @@ export default {
       })
   },
 
-  DestroyToolBooking (destroyId, tool, date) {
+  DestroyToolBooking (bookingId, tool, date) {
     myAxios
-      .delete(Urls.tool_DestroyBooking(destroyId))
+      .delete(Urls.tool_DestroyBooking(bookingId))
       .then(response => {
         this.getToolBookingsByDate(tool, date)
       })

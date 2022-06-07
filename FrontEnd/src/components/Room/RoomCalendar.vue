@@ -106,12 +106,12 @@ export default {
   async created () {
     await this.$nextTick()
     this.initCalendarTitle = this.$refs.calendar.title
-    api.getAvailableEvents(this, this.focusRoom, this.$refs.calendar.start)
+    api.getAvailableEvents(this.focusRoom, this.$refs.calendar.start)
   },
 
   methods: {
     changed (info) {
-      api.getAvailableEvents(this, this.focusRoom, info.start.date)
+      api.getAvailableEvents(this.focusRoom, info.start.date)
     },
     checkRoomBooking ({ date }) {
       this.$store.commit('roomStore/focusDateSetter', date)

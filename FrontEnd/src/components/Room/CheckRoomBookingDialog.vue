@@ -32,7 +32,7 @@
           height="83"
         >
           <v-row align="center" justify="center">
-            <v-col sm="12" md="5">
+            <v-col sm="5" md="5">
               <v-card-subtitle class="pb-0 black--text">
                 {{ period }}교시
               </v-card-subtitle>
@@ -41,20 +41,30 @@
             <v-col class="pa-0">
               <v-card-text class="py-0">
                 <v-btn
-                  v-if="[1, 2, 3].includes(period)"
-                  color="black"
+                  v-if="[1, 2].includes(period)"
+                  disabled
                   width="100"
                   height="40"
                   class="font-weight-bold"
                   outlined
-                  disabled
+                >
+                  <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
+                  고정시간
+                </v-btn>
+                <v-btn
+                  v-if="[3, 4].includes(period)"
+                  color="grey darken-3"
+                  width="100"
+                  height="40"
+                  class="font-weight-bold"
+                  outlined
                 >
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
                   예약완료
                 </v-btn>
-                <v-btn v-else width="100" height="40" outlined color="primary">
+                <v-btn v-if="[5, 6].includes(period)" width="100" height="40" outlined color="primary">
                   <v-icon class="mr-1"> mdi-clock-plus-outline </v-icon>
-                  예약
+                  예약가능
                 </v-btn>
               </v-card-text>
             </v-col>
@@ -85,7 +95,7 @@
           height="83"
         >
           <v-row align="center" justify="center">
-            <v-col sm="12" md="5">
+            <v-col sm="5" md="5">
               <v-card-subtitle class="pb-0 black--text">
                 {{ period }}교시
               </v-card-subtitle>
@@ -95,17 +105,17 @@
               <v-card-text class="py-0">
                 <v-btn
                   v-if="roomBookingLists[period]"
-                  color="black"
+                  :disabled="disabled(roomBookingLists[period].id)"
+                  color="grey darken-3"
                   width="100"
                   height="40"
                   class="font-weight-bold"
                   style="font-size: 16px"
                   outlined
-                  disabled
-                  @click="assertDestroyBooking(item)"
+                  @click="assertDestroyBooking( roomBookingLists[period] )"
                 >
                   <v-icon class="mr-1">mdi-checkbox-marked-circle</v-icon>
-                  {{ roomBookingLists[period] }}
+                  {{ roomBookingLists[period].booker }}
                 </v-btn>
 
                 <v-btn
@@ -117,7 +127,7 @@
                   @click="bookRoom(period)"
                 >
                   <v-icon class="mr-1"> mdi-clock-plus-outline </v-icon>
-                  예약
+                  예약가능
                 </v-btn>
               </v-card-text>
             </v-col>
@@ -128,15 +138,21 @@
     </v-sheet>
 
     <BookRoomDialog />
+    <DestroyRoomBookingDialog :booking="bookingToDestory" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import BookRoomDialog from '@/components/Room/BookRoomDialog.vue'
+import DestroyRoomBookingDialog from '@/components/Room/DestroyRoomBookingDialog.vue'
 
 export default {
-  components: { BookRoomDialog },
+  components: { BookRoomDialog, DestroyRoomBookingDialog },
+
+  data: () => ({
+    bookingToDestory: {}
+  }),
 
   computed: {
     ...mapState('roomStore', [
@@ -159,6 +175,14 @@ export default {
   },
 
   methods: {
+    disabled (bookingId) {
+      if (bookingId === 'fixed') {
+        return true
+      } else {
+        return false
+      }
+    },
+
     bookRoom (period) {
       this.$store.commit('roomStore/bookingSetter', {
         name: period,
@@ -166,6 +190,13 @@ export default {
       })
 
       this.dialog.bookRoom = true
+    },
+
+    assertDestroyBooking (booking) {
+      this.bookingToDestory = booking
+      console.log(1, booking)
+      console.log(2, this.bookingToDestory)
+      this.dialog.destroyRoomBooking = true
     }
   }
 }

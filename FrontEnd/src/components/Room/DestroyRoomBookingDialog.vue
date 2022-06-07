@@ -1,14 +1,22 @@
 <template>
   <div>
-    <v-dialog v-model="dialog.destroyRoomBooking " max-width="400" persistent>
+    <v-dialog
+      v-model="dialog.destroyRoomBooking"
+      max-width="400"
+      persistent
+    >
       <v-card>
         <v-row align="center" justify="center">
-          <v-chip v-if="eventDestroying.name" color="red darken-2" class="white--text mt-10">
-            <v-avatar left>
-              <v-icon>mdi-close-circle-outline</v-icon>
-            </v-avatar>
-            {{ eventDestroying.name }}반 ({{ eventDestroying.start.substr(0, 10)}} {{ eventDestroying.start.substr(11,1)}}교시)
-          </v-chip>
+          <v-btn
+            color="red darken-1"
+            width="100"
+            height="40"
+            class="font-weight-bold white--text mt-10"
+            style="font-size: 16px"
+          >
+            <v-icon class="mr-1">mdi-close-circle-outline</v-icon>
+            {{ booking.booker }}
+          </v-btn>
         </v-row>
         <v-row
           align="center"
@@ -37,20 +45,16 @@ import api from '@/api/modules/room'
 
 export default {
   props: {
-    eventDestroying: Object
+    booking: Object
   },
 
-  data: () => ({
-    destroy: false
-  }),
-
   computed: {
-    ...mapState('roomStore', ['dialog'])
+    ...mapState('roomStore', ['dialog', 'focusRoom', 'focusDate'])
   },
 
   methods: {
     destroyBooking () {
-      api.DestroyBookedRoom(this.eventDestroying.id)
+      api.DestroyRoomBooking(this.booking.id, this.focusRoom, this.focusDate)
       this.dialog.destroyRoomBooking = false
     }
   }

@@ -29,13 +29,14 @@ export default {
 
   /* Room */
   room_All: 'rooms/',
-  room_Destroy: (roomId) => {
-    return `rooms/destroy/${roomId}/`
+  room_BookingByDate: (room, date) => {
+    return `rooms/${room}/${date}/`
+  },
+  room_DestroyBooking: (bookingId) => {
+    return `rooms/${bookingId}/`
   },
   room_AvailableEvents: (room, date) => {
     return `rooms/events/${room}/${date}/`
-  },
-  room_BookingByDate: (room, date) => {
-    return `rooms/${room}/${date}/`
   }
+
 }

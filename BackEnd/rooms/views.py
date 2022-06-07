@@ -75,7 +75,8 @@ class RoomBookingListCreate(ListCreateAPIView):
         weekday = dt.datetime.strptime(request.data['date'], '%Y-%m-%d').weekday()
         emptyTimetable = EmptyTimeTable.objects.get(room=request.data['room'], weekday=weekday,
                                                     period=request.data['period'])
-        AvailableEvent.objects.filter(timetable=emptyTimetable, date=request.data['date']).delete()
+        AvailableEvent.objects.filter(timetable=emptyTimetable, start=request.data['date'],
+                                      name=str(request.data['period'])).delete()
 
         booking = RoomBooking.objects.create(
             timetable=emptyTimetable,
@@ -93,10 +94,10 @@ class RoomBookingRetrieve(RetrieveAPIView):
 
         data = {1: '', 2: '', 3: '', 4: '', 5: '', 6: ''}
         for booking in bookings:
-            data[booking.timetable.period] = booking.booker
+            data[booking.timetable.period] = {'id': booking.id, 'booker': booking.booker}
 
         for period in timetable:
-            data[period.period] = period.booker
+            data[period.period] = {'id': 'fixed', 'booker': period.booker}
 
         return Response(data)
 
@@ -106,7 +107,7 @@ class RoomBookingDestroy(DestroyAPIView):
         roomBooking = RoomBooking.objects.get(id=kwargs['bookingId'])
         AvailableEvent.objects.create(
             timetable=roomBooking.timetable,
-            date=roomBooking.date,
+            start=roomBooking.date,
             name=roomBooking.timetable.period
         )
         roomBooking.delete()
