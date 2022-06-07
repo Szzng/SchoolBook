@@ -29,7 +29,7 @@
                       elevation="2"
                       @click="updateTool(tool.name)"
                       >수정
-                      <v-icon>mdi-timetable</v-icon>
+                      <v-icon>mdi-cog-sync-outline</v-icon>
                     </v-btn>
                     <v-btn
                       width="70"
