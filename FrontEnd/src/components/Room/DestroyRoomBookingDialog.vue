@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-dialog
+      v-if="booking"
       v-model="dialog.destroyRoomBooking"
       max-width="400"
       persistent

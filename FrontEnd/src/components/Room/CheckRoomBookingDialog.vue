@@ -194,8 +194,6 @@ export default {
 
     assertDestroyBooking (booking) {
       this.bookingToDestory = booking
-      console.log(1, booking)
-      console.log(2, this.bookingToDestory)
       this.dialog.destroyRoomBooking = true
     }
   }
