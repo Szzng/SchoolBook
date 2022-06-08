@@ -5,7 +5,7 @@
         <v-card-title>
           <v-row align="center" justify="center">
             <v-btn
-              color="primary"
+              color="secondary"
               outlined
               x-large
               class="mx-1 mt-5 white--text font-weight-bold"
@@ -28,7 +28,7 @@
         </v-card-text>
         <v-card-actions class="pb-6">
           <v-spacer></v-spacer>
-          <v-btn color="error" class="white--text" @click="destroyPlace"
+          <v-btn color="error" class="white--text" @click="destroyTool"
             >삭제</v-btn
           >
           <v-btn @click="dialog.destroyTool = false">취소</v-btn>
@@ -48,16 +48,12 @@ export default {
     tool: String
   },
 
-  data: () => ({
-    destroy: false
-  }),
-
   computed: {
     ...mapState('toolStore', ['dialog'])
   },
 
   methods: {
-    destroyPlace () {
+    destroyTool () {
       api.destroyTool(this.tool)
       this.dialog.destroyTool = false
     }
