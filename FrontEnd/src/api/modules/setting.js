@@ -4,20 +4,9 @@ import roomStore from '@/store/modules/roomStore'
 import toolStore from '@/store/modules/toolStore'
 
 export default {
-  createTool (postData) {
-    myAxios
-      .post(Urls.setting_Tool, postData)
-      .then(response => {
-        this.getTools()
-      })
-      .catch(error => {
-        console.log('createTool POST error', error.response)
-      })
-  },
-
   getTools () {
     myAxios
-      .get(Urls.setting_Tool)
+      .get(Urls.setting_Tool_ListCreate)
       .then(response => {
         toolStore.state.tools = response.data
       })
@@ -26,14 +15,48 @@ export default {
       })
   },
 
+  createTool (postData) {
+    myAxios
+      .post(Urls.setting_Tool_ListCreate, postData)
+      .then(response => {
+        this.getTools()
+      })
+      .catch(error => {
+        console.log('createTool POST error', error.response)
+      })
+  },
+
+  getTool (component, tool) {
+    myAxios
+      .get(Urls.setting_Tool_RetrieveUpdateDestory(tool))
+      .then(response => {
+        component.tool = response.data
+        component.dialog.updateTool = true
+      })
+      .catch(error => {
+        console.log('getTool GET error', error.response)
+      })
+  },
+
   destroyTool (tool) {
     myAxios
-      .delete(Urls.setting_DestroyTool, { data: { 'tool': tool } })
+      .delete(Urls.setting_Tool_RetrieveUpdateDestory(tool))
       .then(response => {
         this.getTools()
       })
       .catch(error => {
         console.log('destroyTool DELETE error', error.response)
+      })
+  },
+
+  updateTool (updateData, tool) {
+    myAxios
+      .put(Urls.setting_Tool_RetrieveUpdateDestory(tool), updateData)
+      .then(response => {
+        alert('수정완료')
+      })
+      .catch(error => {
+        console.log('updateTool patch error', error.response)
       })
   },
 

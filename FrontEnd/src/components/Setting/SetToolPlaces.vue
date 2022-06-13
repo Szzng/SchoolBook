@@ -102,6 +102,7 @@
       </v-row>
     </v-sheet>
     <DestroyToolDialog :tool="tool" />
+    <UpdateToolDialog :tool="tool" />
   </div>
 </template>
 
@@ -109,14 +110,16 @@
 import { mapState } from 'vuex'
 import api from '@/api/modules/setting'
 import DestroyToolDialog from '@/components/Setting/DestroyToolDialog.vue'
+import UpdateToolDialog from '@/components/Setting/UpdateToolDialog.vue'
 
 export default {
   components: {
-    DestroyToolDialog
+    DestroyToolDialog,
+    UpdateToolDialog
   },
 
   data: () => ({
-    tool: '',
+    tool: {},
     newTool: { name: '', quantity: '', place: '' },
     disabled: true,
     nameRule: [
@@ -154,12 +157,11 @@ export default {
 
   methods: {
     updateTool (tool) {
-      this.tool = tool
-      this.dialog.updateTool = true
+      api.getTool(this, tool)
     },
 
     destroyTool (tool) {
-      this.tool = tool
+      this.tool.name = tool
       this.dialog.destroyTool = true
     },
 

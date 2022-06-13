@@ -5,7 +5,7 @@ app_name = 'api/tools'
 
 urlpatterns = [
     path('setting/', views.ToolListCreate.as_view()),
-    path('setting/destroy/', views.ToolDestroy.as_view()),
+    path('setting/<str:pk>/', views.ToolRetrieveUpdateDestroy.as_view()),
 
     path('', views.ToolBookingListCreate.as_view()),
     path('<int:bookingId>/', views.ToolBookingDestroy.as_view()),

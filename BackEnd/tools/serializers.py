@@ -1,16 +1,18 @@
 from rest_framework import serializers
 
-
-class ToolSerializer(serializers.Serializer):
-    name = serializers.CharField(required=True)
-    quantity = serializers.IntegerField(required=True)
-    place = serializers.CharField(required=True)
+from tools.models import Tool, Period
 
 
-class PeriodSerializer(serializers.Serializer):
-    id = serializers.CharField(read_only=True)
-    date = serializers.DateField(required=True)
-    period = serializers.IntegerField(required=True)
+class ToolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tool
+        fields = '__all__'
+
+
+class PeriodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Period
+        fields = '__all__'
 
 
 class ToolBookingSerializer(serializers.Serializer):

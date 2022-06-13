@@ -10,7 +10,7 @@
               x-large
               class="mx-1 mt-5 white--text font-weight-bold"
             >
-              {{ tool }}
+              {{ tool.name }}
               <v-icon class="ml-1">mdi-progress-close</v-icon>
             </v-btn>
           </v-row>
@@ -45,7 +45,7 @@ import api from '@/api/modules/setting'
 
 export default {
   props: {
-    tool: String
+    tool: Object
   },
 
   computed: {
@@ -54,7 +54,7 @@ export default {
 
   methods: {
     destroyTool () {
-      api.destroyTool(this.tool)
+      api.destroyTool(this.tool.name)
       this.dialog.destroyTool = false
     }
   }

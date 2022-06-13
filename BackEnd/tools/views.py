@@ -1,4 +1,5 @@
-from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, DestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveAPIView, DestroyAPIView, \
+    RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -21,13 +22,10 @@ class ToolListCreate(ListCreateAPIView):
         )
         return Response(status=status.HTTP_201_CREATED)
 
+class ToolRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
+    queryset = Tool.objects.all()
+    serializer_class = ToolSerializer
 
-class ToolDestroy(DestroyAPIView):
-    def destroy(self, request, *args, **kwargs):
-        tool = Tool.objects.get(name=request.data['tool'])
-        tool.delete()
-
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ToolBookingListCreate(ListCreateAPIView):

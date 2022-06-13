@@ -4,8 +4,10 @@ export default {
   Django_API: `${DjangoBase}api/`,
 
   /* Setting_Tool */
-  setting_Tool: 'tools/setting/',
-  setting_DestroyTool: 'tools/setting/destroy/',
+  setting_Tool_ListCreate: 'tools/setting/',
+  setting_Tool_RetrieveUpdateDestory: (tool) => {
+    return `tools/setting/${tool}/`
+  },
 
   /* Setting_Room */
   setting_Room: 'rooms/setting/',
