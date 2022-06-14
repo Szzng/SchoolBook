@@ -1,54 +1,55 @@
 import random
-
-from django.contrib.auth.models import (
-    BaseUserManager,
-    AbstractBaseUser,
-    PermissionsMixin,
-)
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 
 def create_school_code():
-    school_code = random.randint(1000, 9999)
-    while School.objects.filter(code=school_code).exists():
-        school_code = random.randint(1000, 9999)
-    return school_code
+    code = random.randint(100, 9999)
+    while School.objects.filter(code=code).exists():
+        code = random.randint(100, 9999)
+    return code
 
 
-class School(models.Model):
-    code = models.PositiveBigIntegerField(primary_key=True, default=create_school_code)
-    name = models.CharField(max_length=30, unique=True,)
-
-
-class MyUserManager(BaseUserManager):
+class SchoolUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, school, email, password):
-        if not email:
-            raise ValueError("이메일 주소를 입력해주세요.")
-        if not school:
-            raise ValueError("학교를 입력해주세요.")
+    def create_user(self, name, password):
+        if not name:
+            raise ValueError("학교명을 입력해주세요.")
 
-        schoolObject = School.objects.create(name=school)
-        user = self.model(school=schoolObject, email=self.normalize_email(email))
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+        school = self.model(name=name)
+        school.code = create_school_code()
+        school.password = make_password(password)
+        school.save(using=self._db)
+        return school
 
-    def create_superuser(self, school, email, password):
-        user = self.create_user(school=school, email=email, password=password)
-        user.is_superuser = True
-        user.save(using=self._db)
-        return user
+    def create_superuser(self, code, password):
+        school = self.model(name='SuperUser', code=code)
+        school.password = make_password(password)
+        school.is_staff = True
+        school.is_superuser = True
+        school.save(using=self._db)
+        return school
 
 
-class User(AbstractBaseUser):
-    objects = MyUserManager()
+class School(AbstractBaseUser, PermissionsMixin):
+    objects = SchoolUserManager()
 
-    school = models.OneToOneField(School, related_name='school', on_delete=models.CASCADE)
-    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=30)
+    code = models.PositiveBigIntegerField(primary_key=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    USERNAME_FIELD = "school"
+    USERNAME_FIELD = "code"
+
+    def __str__(self):
+        return self.name + '/' + str(self.code)
+
+
+class Ip(models.Model):
+    ip = models.CharField(max_length=16, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

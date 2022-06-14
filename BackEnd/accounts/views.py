@@ -16,10 +16,14 @@ class RegisterView(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save()
+        school = serializer.save()
         headers = self.get_success_headers(serializer.data)
 
-        return Response(status=status.HTTP_204_NO_CONTENT, headers=headers)
+        return Response(
+            status=status.HTTP_204_NO_CONTENT,
+            data={'name': school.name, 'code': school.code},
+            headers=headers
+        )
 
 
 class LoginView(GenericAPIView):
