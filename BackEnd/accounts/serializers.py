@@ -14,10 +14,13 @@ class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         model = School
         fields = '__all__'
+        read_only_fields = (
+            "code",
+        )
 
 
 class RegisterSerializer(serializers.Serializer):
-    school = SchoolSerializer()
+    school = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     password1 = serializers.CharField(style={"input_type": "password"})
     password2 = serializers.CharField(style={"input_type": "password"})
