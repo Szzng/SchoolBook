@@ -21,15 +21,29 @@
         <v-tab to="/setting">기본 설정</v-tab>
       </v-tabs>
 
+      <v-btn @click="dialog.school=true" class="primary" fab height="50" width="50">
+        <v-icon>mdi-town-hall</v-icon>
+      </v-btn>
+
+     <SchoolDialog />
     </v-app-bar>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import SchoolDialog from '@/components/General/SchoolDialog.vue'
+
 export default {
+  components: {SchoolDialog},
+
   data: () => ({
     activeTab: null
   }),
+
+  computed: {
+    ...mapState('generalStore', ['dialog'])
+  },
 
   mounted () {
     console.log(this.activeTab)

@@ -18,7 +18,7 @@
             </v-col>
             <v-col cols="3" class="text-right pt-0 mr-2">
               <v-btn @click="save" class="primary" large> 완료 </v-btn>
-              <v-btn @click="dialog.updateTimetable = false" large outlined> 취소 </v-btn>
+              <v-btn @click="dialog.updateTimetable = false" large outlined> 닫기 </v-btn>
             </v-col>
           </v-row>
 
