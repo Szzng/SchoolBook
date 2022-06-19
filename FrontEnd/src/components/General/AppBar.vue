@@ -18,7 +18,7 @@
         <v-tab to="/">Home</v-tab>
         <v-tab to="/tool" class="indigo--text">물품 · 교구</v-tab>
         <v-tab to="/room" class="secondary--text">교실 · 장소</v-tab>
-        <v-tab to="/setting">기본 설정</v-tab>
+        <v-tab to="/setting/tool">기본 설정</v-tab>
       </v-tabs>
 
       <v-btn @click="dialog.school=true" class="primary" fab height="50" width="50">
