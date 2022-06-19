@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog.school" max-width="1200" persistent>
       <v-card class="px-3 pb-8">
         <v-row justify="end">
-          <v-btn text @click="close" class="mt-4 pr-0">
+          <v-btn text @click="close" class="mt-5 pr-2">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-row>
