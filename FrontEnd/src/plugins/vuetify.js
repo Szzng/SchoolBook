@@ -11,10 +11,10 @@ const opts = {
       light: {
         primary: '#BA68C8',
         secondary: '#C2185B',
-        accent: '#54B1CE',
-        error: '#F4512D',
-        info: '#5067B7',
-        success: '#51C169',
+        accent: '#7B1FA2',
+        error: '#FF5252',
+        // info: '#7B1FA2',
+        success: '#3F51B5',
         warning: '#F29930'
       }
     }

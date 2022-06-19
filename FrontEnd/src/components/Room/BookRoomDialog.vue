@@ -16,7 +16,7 @@
         <v-row align="center" justify="center" class="mt-0">
           <v-card-title class="pb-0"
             >{{ formatSelectedDate }} {{ booking.name }}교시
-            <v-card-subtitle class="purple--text pl-1 pb-3">{{
+            <v-card-subtitle class="accent--text pl-1 pb-3">{{
               focusRoom
             }}</v-card-subtitle>
           </v-card-title>

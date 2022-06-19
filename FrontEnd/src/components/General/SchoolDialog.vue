@@ -11,7 +11,7 @@
         <v-row justify="center" align="center">
           <v-col sm="12" md="6">
             <v-card outlined min-height="350">
-              <v-card-title class="indigo--text font-weight-bold pb-0">
+              <v-card-title class="success--text font-weight-bold pb-0">
                 <v-icon class="mr-1" color="indigo" large>
                   mdi-human-greeting
                 </v-icon>
@@ -61,7 +61,7 @@
 
           <v-col sm="12" md="6">
             <v-card outlined min-height="350">
-              <v-card-title class="purple--text font-weight-bold pb-0">
+              <v-card-title class="accent--text font-weight-bold pb-0">
                 <v-icon class="mr-1" color="purple darken-2" large
                   >mdi-account-search</v-icon
                 >

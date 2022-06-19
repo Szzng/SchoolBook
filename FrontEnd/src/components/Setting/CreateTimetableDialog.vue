@@ -11,7 +11,7 @@
                   >{{ room }}</span
                 >의 정해진 시간표를 입력하세요.
                 <v-card-subtitle
-                  class="indigo--text font-weight-bold pa-0 ma-0 pl-1 mt-1"
+                  class="success--text font-weight-bold pa-0 ma-0 pl-1 mt-1"
                   >(빈 시간은 빈칸으로 두세요.)</v-card-subtitle
                 >
               </v-card-title>

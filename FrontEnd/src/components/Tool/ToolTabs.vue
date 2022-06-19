@@ -6,7 +6,7 @@
           <v-tabs v-model="activeTab" centered grow color="secondary">
             <v-tabs-slider></v-tabs-slider>
             <v-tab
-              class="indigo--text"
+              class="success--text"
               v-for="tool in tools"
               :key="tool.name"
               :to="`/tool/${tool.name}`"
