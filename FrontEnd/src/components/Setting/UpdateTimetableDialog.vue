@@ -7,7 +7,7 @@
             <v-col class="pt-0">
               <v-card-title>
                 <span
-                  style="font-weight: bolder; font-size: 22px; color: indigo"
+                  style="font-weight: bolder; font-size: 22px; color: success"
                   >{{ room }}</span
                 >의 정해진 시간표를 입력하세요.
                 <v-card-subtitle

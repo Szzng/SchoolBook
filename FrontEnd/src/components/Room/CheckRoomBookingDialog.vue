@@ -53,7 +53,7 @@
                 </v-btn>
                 <v-btn
                   v-if="[3, 4].includes(period)"
-                  color="indigo darken-2"
+                  color="success darken-2"
                   width="100"
                   height="40"
                   class="font-weight-bold"
@@ -113,7 +113,7 @@
                 <v-btn
                   v-if="roomBookingLists[period]"
                   :disabled="disabled(roomBookingLists[period].id)"
-                  color="indigo darken-2"
+                  color="success darken-2"
                   width="100"
                   height="40"
                   class="font-weight-bold"

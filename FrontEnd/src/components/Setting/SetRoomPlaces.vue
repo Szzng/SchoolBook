@@ -25,7 +25,7 @@
                       width="120"
                       height="45"
                       outlined
-                      color="indigo"
+                      color="success"
                       elevation="2"
                       @click="updateTimetable(place.name)"
                       >기본 시간표
@@ -69,7 +69,7 @@
                     outlined
                     x-large
                     block
-                    color="indigo"
+                    color="success"
                     elevation="3"
                     @click="createTimetable"
                     >기본 시간표 등록
@@ -153,7 +153,7 @@ export default {
 <style scoped>
 .v-card__title {
   font-size: 19px;
-  color: indigo;
+  color: success;
   font-weight: bolder;
 }
 </style>

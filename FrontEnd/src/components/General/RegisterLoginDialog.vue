@@ -12,7 +12,7 @@
           <v-col sm="12" md="6">
             <v-card outlined min-height="350">
               <v-card-title class="success--text font-weight-bold pb-0">
-                <v-icon class="mr-1" color="indigo" large>
+                <v-icon class="mr-1" color="success" large>
                   mdi-human-greeting
                 </v-icon>
                 새로 오셨나요?
@@ -40,11 +40,11 @@
                     label="학교 이름을 입력하세요."
                     required
                     outlined
-                    color="indigo"
+                    color="success"
                     :rules="nameRule"
                   ></v-text-field>
                   <v-btn
-                    color="indigo"
+                    color="success"
                     x-large
                     block
                     class="font-weight-bold white--text"

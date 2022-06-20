@@ -25,7 +25,7 @@
                       width="70"
                       height="45"
                       outlined
-                      color="indigo"
+                      color="success"
                       elevation="2"
                       @click="updateTool(tool.name)"
                       >수정
@@ -85,7 +85,7 @@
                       outlined
                       x-large
                       block
-                      color="indigo"
+                      color="success"
                       elevation="3"
                       height="56"
                       class="mb-3"
@@ -176,7 +176,7 @@ export default {
 <style scoped>
 .v-card__title {
   font-size: 19px;
-  color: indigo;
+  color: success;
   font-weight: bolder;
 }
 </style>

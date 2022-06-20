@@ -3,7 +3,7 @@
     <v-dialog v-model="dialog.destroyToolBooking " max-width="400" persistent>
       <v-card>
         <v-row align="center" justify="center">
-          <v-chip color="red darken-1" class="white--text mt-10">
+          <v-chip color="error" class="white--text mt-10">
             <v-avatar left>
               <v-icon>mdi-close-circle-outline</v-icon>
             </v-avatar>
