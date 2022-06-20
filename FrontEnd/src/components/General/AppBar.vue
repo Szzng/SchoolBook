@@ -16,7 +16,7 @@
         v-model="activeTab"
         centered
         class="pl-n12 black--text"
-        color="primary"
+        color="accent"
       >
         <v-tabs-slider></v-tabs-slider>
         <v-tab to="/">환영합니다</v-tab>
