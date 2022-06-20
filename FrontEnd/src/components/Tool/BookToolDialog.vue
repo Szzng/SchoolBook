@@ -78,7 +78,7 @@ export default {
     quantity: 0,
     bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
-      (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
+      (v) => (v && v.length <= 4) || '예약자는 4글자 이하로 적어주세요.'
     ]
   }),
 
