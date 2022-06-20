@@ -3,7 +3,7 @@
     <v-container>
       <v-row class="fill-height mx-12 mt-10">
         <v-col cols="12">
-          <v-tabs v-model="activeTab" centered grow color="secondary">
+          <v-tabs v-model="activeTab" centered grow color="primary">
             <v-tabs-slider></v-tabs-slider>
             <v-tab
               class="black--text"
