@@ -3,7 +3,7 @@
     <v-sheet class="mx-16">
       <v-row align="start" justify="center">
         <v-col sm="12" md="6">
-          <v-card class="mt-1 mb-5">
+          <v-card class="mt-1 mb-5" outlined>
             <v-card-title>등록된 물품 · 교구 수정</v-card-title>
             <v-card-text class="mt-3">
               <v-card
@@ -49,7 +49,7 @@
         </v-col>
 
         <v-col sm="12" md="6">
-          <v-card class="mt-1 mb-5">
+          <v-card class="mt-1 mb-5" outlined>
             <v-card-title class="mb-3">물품 · 교구 추가 등록</v-card-title>
             <v-card-title>
               <v-form ref="form" lazy-validation>

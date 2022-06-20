@@ -3,7 +3,7 @@
     <v-sheet class="mx-16">
       <v-row align="start" justify="center">
         <v-col sm="12" md="6">
-          <v-card class="mt-1 mb-5">
+          <v-card class="mt-1 mb-5" outlined>
             <v-card-title>등록된 교실 · 장소 수정</v-card-title>
             <v-card-text class="mt-3">
               <v-card
@@ -49,7 +49,7 @@
         </v-col>
 
         <v-col sm="12" md="6">
-          <v-card class="mt-1 mb-5">
+          <v-card class="mt-1 mb-5" outlined>
             <v-card-title>교실 · 장소 추가 등록</v-card-title>
             <v-card-title>
               <v-row align="center" justify="start">
