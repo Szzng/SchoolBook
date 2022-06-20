@@ -6,6 +6,7 @@ import App from './App'
 import router from './router'
 import store from './store'
 import settingApi from '@/api/modules/setting'
+import accountsApi from '@/api/modules/accounts'
 
 Vue.config.productionTip = false
 
@@ -18,6 +19,7 @@ new Vue({
   beforeCreate () {
     settingApi.getRooms()
     settingApi.getTools()
+    accountsApi.getSchoolDetail()
   },
   components: { App },
   template: '<App/>'

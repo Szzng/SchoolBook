@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="dialog.school" max-width="1200" persistent>
+    <v-dialog v-model="dialog.login" max-width="1200" persistent>
       <v-card class="px-3 pb-8">
         <v-row justify="end">
           <v-btn text @click="close" class="mt-5 pr-2">
@@ -62,7 +62,7 @@
           <v-col sm="12" md="6">
             <v-card outlined min-height="350">
               <v-card-title class="accent--text font-weight-bold pb-0">
-                <v-icon class="mr-1" color="purple darken-2" large
+                <v-icon class="mr-1" color="accent" large
                   >mdi-account-search</v-icon
                 >
                 이미 가입된 학교인가요?
@@ -93,7 +93,7 @@
                     :rules="nameRule"
                   ></v-text-field>
                   <v-btn
-                    color="purple darken-2"
+                    color="accent"
                     x-large
                     block
                     class="font-weight-bold white--text"
@@ -141,7 +141,7 @@ export default {
 
   methods: {
     close () {
-      this.dialog.school = false
+      this.dialog.login = false
       this.$refs.registerform.reset()
       this.$refs.loginform.reset()
       this.$refs.registerform.resetValidation()

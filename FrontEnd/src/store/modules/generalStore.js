@@ -3,10 +3,11 @@ const generalStore = {
   state: {
     dialog: {
       success: false,
-      school: false
+      login: false,
+      logout: false
     },
     successMsg: '',
-    school: {}
+    school: {name: 'Guest'}
   }
 }
 

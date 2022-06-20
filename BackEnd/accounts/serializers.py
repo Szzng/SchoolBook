@@ -53,12 +53,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class JWTSerializer(serializers.Serializer):
-    school = serializers.SerializerMethodField()
     access_token = serializers.CharField()
     refresh_token = serializers.CharField()
     access_token_expiration = serializers.DateTimeField()
     refresh_token_expiration = serializers.DateTimeField()
-
-    def get_school(self, obj):
-        school = SchoolSerializer(obj["school"], context=self.context).data
-        return school

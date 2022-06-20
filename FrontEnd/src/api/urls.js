@@ -6,6 +6,8 @@ export default {
   /* Accounts */
   accounts_Register: 'accounts/register/',
   accounts_Login: 'accounts/login/',
+  accounts_Logout: 'accounts/logout/',
+  account_Detail: 'accounts/detail/',
 
   /* Setting_Tool */
   setting_Tool_ListCreate: 'tools/setting/',
