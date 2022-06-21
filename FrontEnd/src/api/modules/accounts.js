@@ -33,10 +33,26 @@ export default {
       .post(Urls.accounts_Login, postData)
       .then(response => {
         localStorage.setItem('access_token', response.data['access_token'])
+        localStorage.setItem('refresh_token', response.data['refresh_token'])
         this.getSchoolDetail()
       })
       .catch(error => {
         console.log('login POST error', error.response)
+      })
+  },
+
+  refreshToken () {
+    console.log('refreshToken')
+    myAxios
+      .get(Urls.accounts_Login)
+      .then(response => {
+        localStorage.setItem('access_token', response.data['access_token'])
+        localStorage.setItem('refresh_token', response.data['refresh_token'])
+        console.log(localStorage.getItem('access_token'))
+        this.getSchoolDetail()
+      })
+      .catch(error => {
+        console.log('refreshToken GET error', error.response)
       })
   },
 
@@ -45,6 +61,7 @@ export default {
       .get(Urls.accounts_Logout)
       .then(response => {
         localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
         generalStore.state.school = { name: 'Guest' }
         generalStore.state.dialog.logout = false
         router.push('/')

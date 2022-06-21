@@ -10,7 +10,7 @@ def assert_login(func):
         access_token = request.META.get('HTTP_AUTHORIZATION', None)
 
         if access_token is None:
-            return JsonResponse({'messaege': 'NEED_LOGIN'}, status=401)
+            return JsonResponse({'message': 'NEED_LOGIN'}, status=401)
 
         try:
             payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=settings.JWT_ALGORITHM)

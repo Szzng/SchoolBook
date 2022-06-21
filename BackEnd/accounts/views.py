@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -10,6 +11,7 @@ from datetime import timedelta
 from rest_framework.views import APIView
 
 from .decorators import assert_login
+from .models import School
 from .serializers import RegisterSerializer, LoginSerializer, JWTSerializer, SchoolSerializer
 
 
@@ -37,20 +39,26 @@ class LoginView(GenericAPIView):
 
     school = None
     access_token = None
-    access_token_expiration = timezone.now() + timedelta(hours=2)
+    access_token_expiration = None
     refresh_token = None
-    refresh_token_expiration = timezone.now() + timedelta(days=7)
+    refresh_token_expiration = None
 
-    def generate_jwt_token(self):
-        access_payload = {"name": self.school.name, "exp": self.access_token_expiration}
-        self.access_token = jwt.encode(
-            access_payload, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM
-        )
+    def generate_jwt_token(self, token):
+        if token == 'access':
+            token_expiration = timezone.now() + timedelta(hours=2)
+        elif token == 'refresh':
+            token_expiration = timezone.now() + timedelta(days=7)
+        else:
+            raise Exception('Invalid Token Type')
 
-        refresh_payload = {"name": self.school.name, "exp": self.refresh_token_expiration}
-        self.refresh_token = jwt.encode(
-            refresh_payload, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM
-        )
+        payload = {"name": self.school.name, "exp": token_expiration}
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
+
+        return token, token_expiration
+
+    def set_jwt_token(self):
+        self.access_token, self.access_token_expiration = self.generate_jwt_token('access')
+        self.refresh_token, self.refresh_token_expiration = self.generate_jwt_token('refresh')
 
     def get_response(self):
         data = {
@@ -67,9 +75,27 @@ class LoginView(GenericAPIView):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         self.school = serializer.validated_data
-        self.generate_jwt_token()
-
+        self.set_jwt_token()
         return self.get_response()
+
+    def get(self, request, *args, **kwargs):
+        self.refresh_token = request.META.get('HTTP_AUTHORIZATION', None)
+        if self.refresh_token is None:
+            return JsonResponse({'message': 'NEED_LOGIN'}, status=401)
+        try:
+            payload = jwt.decode(self.refresh_token, settings.SECRET_KEY, algorithms=settings.JWT_ALGORITHM)
+            self.school = School.objects.get(name=payload['name'])
+            self.access_token, self.access_token_expiration = self.generate_jwt_token('access')
+            return self.get_response()
+
+        except jwt.ExpiredSignatureError:
+            return JsonResponse({'message': 'NEED_LOGIN'}, status=401)
+
+        except jwt.exceptions.DecodeError:
+            return JsonResponse({'message': 'INVALID_TOKEN'}, status=401)
+
+        except School.DoesNotExist:
+            return JsonResponse({'message': 'INVALID_SCHOOL'}, status=401)
 
 
 class LogoutView(GenericAPIView):

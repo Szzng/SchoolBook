@@ -17,9 +17,9 @@ new Vue({
   router,
   store,
   beforeCreate () {
+    accountsApi.getSchoolDetail()
     settingApi.getRooms()
     settingApi.getTools()
-    accountsApi.getSchoolDetail()
   },
   components: { App },
   template: '<App/>'
