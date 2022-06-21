@@ -25,6 +25,6 @@ def assert_login(func):
             return JsonResponse({'message': 'INVALID_TOKEN'}, status=401)
 
         except School.DoesNotExist:
-            return JsonResponse({'message': 'INVALID_School'}, status=401)
+            return JsonResponse({'message': 'INVALID_SCHOOL'}, status=401)
 
     return wrapper

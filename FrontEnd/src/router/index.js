@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Home from '@/components/General/Home.vue'
+
 import SettingTabs from '@/components/Setting/SettingTabs.vue'
 import SetRoomPlaces from '@/components/Setting/SetRoomPlaces.vue'
 import SetToolPlaces from '@/components/Setting/SetToolPlaces.vue'
@@ -16,6 +18,10 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/',
+      component: Home
+    },
     {
       path: '/setting',
       component: SettingTabs,

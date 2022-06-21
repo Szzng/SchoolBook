@@ -6,11 +6,12 @@
       clipped-left
       style="border-bottom: 1px solid #d2d2d2 !important"
     >
-      <a href="/"
-        ><v-toolbar-title style="color: #7b1fa2"
-          >School Book</v-toolbar-title
-        ></a
-      >
+      <a href="/">
+        <v-toolbar-title class="mt-1" style="color: #7b1fa2">
+          <span style="font-size: 23px">스쿨북</span>
+          <v-icon large class="ml-0 mb-3" color="accent">mdi-town-hall</v-icon>
+        </v-toolbar-title>
+      </a>
 
       <v-tabs
         v-model="activeTab"
@@ -20,8 +21,12 @@
       >
         <v-tabs-slider></v-tabs-slider>
         <v-tab to="/">환영합니다</v-tab>
-        <v-tab :disabled="guest" to="/tool" class="success--text">물품 · 교구</v-tab>
-        <v-tab :disabled="guest" to="/room" class="secondary--text">교실 · 장소</v-tab>
+        <v-tab :disabled="guest" to="/tool" class="success--text"
+          >물품 · 교구</v-tab
+        >
+        <v-tab :disabled="guest" to="/room" class="secondary--text"
+          >교실 · 장소</v-tab
+        >
         <v-tab :disabled="guest" to="/setting/tool">기본 설정</v-tab>
       </v-tabs>
 
@@ -54,7 +59,9 @@ export default {
     guest () {
       if (this.school.name === 'Guest') {
         return true
-      } else { return false }
+      } else {
+        return false
+      }
     }
   },
 

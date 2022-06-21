@@ -1,4 +1,5 @@
 import myAxios from '@/api/AxiosInstanceController'
+import router from '@/router'
 import Urls from '@/api/urls'
 import generalStore from '@/store/modules/generalStore'
 
@@ -46,6 +47,7 @@ export default {
         localStorage.removeItem('access_token')
         generalStore.state.school = { name: 'Guest' }
         generalStore.state.dialog.logout = false
+        router.push('/')
       })
       .catch(error => {
         console.log('logout GET error.response', error.response)
