@@ -6,7 +6,7 @@
           <v-icon class="mr-2" large color="accent"
             >mdi-google-classroom</v-icon
           >
-          예약제를 운영할 교실 · 장소를 등록하고 관리하세요.
+          교실 · 장소 등록 및 관리
           <v-icon class="ml-2" large color="accent"
             >mdi-google-classroom</v-icon
           >
@@ -63,7 +63,7 @@
                 {{ place.name }}</v-card-title
               >
             </v-row>
-            <v-row justify="center" align="center" class="mb-3">
+            <v-row justify="center" align="center" class="mb-3 mt-5">
               <v-btn
                 class="mr-2"
                 width="120"
@@ -120,6 +120,7 @@ export default {
     disabled: true,
     placeNameRule: [
       (v) => !!v || '이름을 입력하세요.',
+      (v) => (v && v.length <= 5) || '이름은 5글자 이하로 적어주세요.',
       (v) =>
         !/[~!@#$%^&*()_+|<>?:{}/]/.test(v) || '특수문자는 사용할 수 없습니다.'
     ]
