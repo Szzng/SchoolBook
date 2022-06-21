@@ -3,7 +3,9 @@
     <v-card class="mx-10 mt-5" flat>
       <v-row justify="center" align="center">
         <v-card-title style="font-size: 22px" class="accent--text">
-          <v-icon class="mr-2" large color="accent">mdi-tablet-cellphone</v-icon>
+          <v-icon class="mr-2" large color="accent"
+            >mdi-tablet-cellphone</v-icon
+          >
           물품 · 교구 등록 및 관리
           <v-icon class="ml-2" large color="accent"
             >mdi-tablet-cellphone</v-icon
@@ -13,7 +15,7 @@
     </v-card>
 
     <v-card class="my-10" outlined>
-      <v-card-title class="">
+      <v-card-title>
         <v-row align="center" justify="center" class="ml-0 mr-7">
           <v-col sm="6" md="11" class="pb-0">
             <v-form ref="form" lazy-validation>
@@ -66,7 +68,13 @@
 
     <v-card class="my-10" flat>
       <v-row>
-        <v-col v-for="tool in tools" :key="tool.name" class="py-2 mb-3">
+        <v-col
+          sm="6"
+          md="4"
+          v-for="tool in tools"
+          :key="tool.name"
+          class="my-3"
+        >
           <v-card outlined class="py-3 px-2">
             <v-row justify="center" align="center">
               <v-card-title style="font-size: 20px; font-weight: bolder">
