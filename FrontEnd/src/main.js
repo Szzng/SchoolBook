@@ -5,22 +5,15 @@ import vuetify from '@/plugins/vuetify'
 import App from './App'
 import router from './router'
 import store from './store'
-import settingApi from '@/api/modules/setting'
-import accountsApi from '@/api/modules/accounts'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
   vuetify,
   el: '#inspire',
   router,
   store,
-  beforeCreate () {
-    accountsApi.getSchoolDetail()
-    settingApi.getRooms()
-    settingApi.getTools()
-  },
+  // beforeCreate () {},
   components: { App },
   template: '<App/>'
 }).$mount('#inspire')

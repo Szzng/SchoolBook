@@ -8,12 +8,24 @@
 
 <script>
 import AppBar from './components/General/AppBar.vue'
+import api from '@/api/modules/accounts'
+import generalStore from '@/store/modules/generalStore'
 
 export default {
   name: 'App',
 
   components: {
     AppBar
+  },
+
+  created () {
+    api.login(this.$route.params.code)
+  },
+
+  watch: {
+    '$route' (to, from) {
+      generalStore.state.code = to.params.code
+    }
   }
 }
 </script>

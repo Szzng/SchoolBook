@@ -1,7 +1,10 @@
 from rest_framework import serializers
 
+from accounts.serializers import SchoolSerializer
+
 
 class RoomSerializer(serializers.Serializer):
+    school = SchoolSerializer()
     name = serializers.CharField(required=True)
 
 

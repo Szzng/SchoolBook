@@ -1,9 +1,12 @@
 from rest_framework import serializers
 
+from accounts.serializers import SchoolSerializer
 from tools.models import Tool, Period
 
 
 class ToolSerializer(serializers.ModelSerializer):
+    school = SchoolSerializer()
+
     class Meta:
         model = Tool
         fields = '__all__'

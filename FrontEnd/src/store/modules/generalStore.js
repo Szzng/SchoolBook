@@ -7,7 +7,9 @@ const generalStore = {
       logout: false
     },
     successMsg: '',
-    school: {name: 'Guest'}
+    access: {token: '', exp: ''},
+    school: { name: 'Guest', code: '' },
+    code: ''
   }
 }
 

@@ -1,7 +1,7 @@
 // import Vue from 'vue'
 import axios from 'axios'
 import Urls from '@/api/urls'
-import accountsApi from '@/api/modules/accounts'
+import generalStore from '@/store/modules/generalStore'
 
 function createAxiosInstance (baseUrl, timeOut) {
   const axiosInstance = axios.create({
@@ -14,9 +14,10 @@ function createAxiosInstance (baseUrl, timeOut) {
 function setInterceptors (instance) {
   instance.interceptors.request.use(
     function (config) {
-      const accessToken = localStorage.getItem('access_token')
-      if (accessToken) {
-        config.headers['Authorization'] = accessToken
+      const code = generalStore.state.code
+      console.log(code)
+      if (code) {
+        config.headers['Authorization'] = code
       }
       return config
     },
@@ -32,9 +33,9 @@ function setInterceptors (instance) {
       return response
     },
     function (error) {
-      if (error.response.data.message === 'EXPIRED_TOKEN') {
-        accountsApi.refreshToken()
-      }
+      // if (error.response.data.message === 'EXPIRED_TOKEN') {
+      //   accountsApi.refreshToken()
+      // }
 
       // Vue.$log.error('!intercept error!', error)
       // Vue.$log.error('status : ', error.response.status)

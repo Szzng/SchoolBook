@@ -16,21 +16,20 @@
                   mdi-human-greeting
                 </v-icon>
                 새로 오셨나요?
-                <v-card-subtitle class="pb-0 pt-2">
-                  안전한 사이트 이용을 위해
-                  <strong>회원 가입 시 학교 IP 주소가 자동으로 등록</strong
-                  >됩니다.<br />
-                  이미 등록된 IP 주소는 변경 불가하니,
-                  <strong>학교 컴퓨터를 이용하여 가입해주세요!</strong>
+                <v-card-subtitle class="pb-0 pt-5">
+                  <strong
+                    >회원 가입 시 학교별로 고유한 링크가 자동으로 발급</strong
+                  >됩니다. 한 번 발급된 링크는 다시 확인할 수 없으니,
+                  <strong>꼭 발급되는 링크를 복사하여 저장해주세요!</strong>
                 </v-card-subtitle>
               </v-card-title>
 
               <v-form ref="registerform" lazy-validation>
-                <v-card-text class="pt-1">
+                <v-card-text class="pt-0">
                   <v-checkbox
-                    v-model="ipCheck1"
-                    label="학교 컴퓨터를 이용하여 가입하고 있습니다."
-                    class="mycheckbox ml-1 mb-2"
+                    v-model="urlCheck"
+                    label="아하! 지금 발급되는 학교 링크를 복사하여 저장해두어야 하는군요?!"
+                    class="mycheckbox ml-1 mb-2 mt-2"
                     color="secondary"
                     :rules="ipRule"
                   >
@@ -51,7 +50,7 @@
                     style="font-size: 23px"
                     @click="register"
                   >
-                    우리 학교 등록
+                    우리 학교 링크 발급
                     <v-icon class="ml-3">mdi-bank-check</v-icon>
                   </v-btn>
                 </v-card-text>
@@ -66,27 +65,21 @@
                   >mdi-account-search</v-icon
                 >
                 이미 가입된 학교인가요?
-                <v-card-subtitle class="pb-0 pt-2">
+                <v-card-subtitle class="pb-0 pt-5">
                   안전한 사이트 이용을 위해
-                  <strong>회원 가입 시 등록된 학교 IP 주소와 일치</strong>해야
-                  합니다.<br />
-                  <strong>학교 컴퓨터를 이용하여 로그인해주세요!</strong>
+                  <strong>회원 가입 시 발급된 학교 링크</strong>로 접속해주세요.
+                  <strong
+                    >아무도 학교 링크를 모른다면, 다시 회원 가입하여 설정해야
+                    합니다.</strong
+                  >
                 </v-card-subtitle>
               </v-card-title>
 
               <v-form ref="loginform" lazy-validation>
-                <v-card-text class="pt-1">
-                  <v-checkbox
-                    v-model="ipCheck2"
-                    label="학교 컴퓨터를 이용하여 로그인하고 있습니다."
-                    class="mycheckbox ml-1 mb-2"
-                    color="secondary"
-                    :rules="ipRule"
-                  >
-                  </v-checkbox>
+                <v-card-text class="pt-16">
                   <v-text-field
                     v-model="loginName"
-                    label="가입된 학교 이름을 입력하세요."
+                    label="회원 가입 시 발급된 학교 링크를 입력하세요."
                     required
                     outlined
                     color="primary"
@@ -124,8 +117,7 @@ export default {
   data: () => ({
     registerName: '',
     loginName: '',
-    ipCheck1: false,
-    ipCheck2: false,
+    urlCheck: false,
     ipRule: [(v) => !!v || 'IP 주소를 위한 확인이 필요합니다.'],
     nameRule: [
       (v) => !!v || '학교 이름을 입력하세요.',
