@@ -14,6 +14,7 @@ class Tool(models.Model):
 
 
 class Period(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     id = models.CharField(max_length=20, primary_key=True)
     date = models.DateField()
     period = models.PositiveSmallIntegerField(verbose_name="교시",

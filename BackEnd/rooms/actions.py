@@ -3,9 +3,9 @@ import calendar
 
 
 def eventsCreated(room, year_month):
-    events = AvailableEvent.objects.filter(timetable__room=room,
+    events = AvailableEvent.objects.filter(timetable__room=room.id,
                                            start__contains=year_month).exists()
-    bookings = RoomBooking.objects.filter(timetable__room=room,
+    bookings = RoomBooking.objects.filter(timetable__room=room.id,
                                           date__contains=year_month).exists()
 
     return events or bookings
@@ -15,7 +15,7 @@ def createEvents(room, year, month):
     monthcalendar = calendar.monthcalendar(int(year), int(month))
 
     for weekday in range(5):
-        emptyPeriodsByWeekDay = EmptyTimeTable.objects.filter(room=room, weekday=weekday)
+        emptyPeriodsByWeekDay = EmptyTimeTable.objects.filter(room=room.id, weekday=weekday)
         daysOnWeekday = list(map(lambda x: x[weekday], monthcalendar))
 
         for day in daysOnWeekday:
