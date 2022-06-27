@@ -9,7 +9,7 @@
               class="success--text"
               v-for="tool in tools"
               :key="tool.name"
-              :to="`/tool/${tool.name}`"
+              :to="{path: `/${$store.state.generalStore.code}/tool/${tool.name}`}"
               exact
               @click="changeTab(tool.name)"
             >
@@ -31,10 +31,6 @@ export default {
   data: () => ({
     activeTab: null
   }),
-
-  mounted () {
-    this.activeTab = `/tool/${this.$route.params.tool}`
-  },
 
   created () {
     this.activeTab = `/tool/${this.$route.params.tool}`

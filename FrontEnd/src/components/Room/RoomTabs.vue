@@ -9,7 +9,7 @@
               class="secondary--text"
               v-for="room in rooms"
               :key="room.name"
-              :to="`/room/${room.name}`"
+              :to="{path: `/${$store.state.generalStore.code}/room/${room.name}`}"
               exact
               @click="changeTab(room.name)"
             >
@@ -32,10 +32,6 @@ export default {
   data: () => ({
     activeTab: null
   }),
-
-  mounted () {
-    this.activeTab = `/room/${this.$route.params.room}`
-  },
 
   computed: {
     ...mapState('roomStore', ['rooms'])

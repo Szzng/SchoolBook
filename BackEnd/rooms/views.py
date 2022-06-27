@@ -107,7 +107,7 @@ class RoomBookingRetrieve(RetrieveAPIView):
         weekday = dt.datetime.strptime(kwargs['date'], '%Y-%m-%d').weekday()
         room = get_object_or_404(Room, **{'school': request.user, 'name': kwargs['room']})
         timetable = FixedTimeTable.objects.filter(room=room.id, weekday=weekday).order_by('period')
-        bookings = RoomBooking.objects.filter(timetable=timetable.id, date=kwargs['date'])
+        bookings = RoomBooking.objects.filter(timetable__room_id=room.id, date=kwargs['date'])
 
         data = {1: '', 2: '', 3: '', 4: '', 5: '', 6: ''}
         for booking in bookings:
