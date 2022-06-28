@@ -18,18 +18,18 @@ Vue.use(Router)
 export default new Router({
   mode: 'history',
   routes: [
-    { path: '/',
-      component: Home},
     {
-      path: '/:code',
+      path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      children: [
+        { path: ':code', component: Home }
+      ]
     },
     {
       path: '/:code/setting',
       name: 'setting',
       component: SettingTabs,
-      props: true,
       children: [
         { path: 'tool', name: 'settingTool', component: SetTool },
         { path: 'room', name: 'settingRoom', component: SetRoom }
@@ -40,9 +40,8 @@ export default new Router({
       path: '/:code/tool',
       name: 'tool',
       component: ToolTabs,
-      props: true,
       children: [
-        { path: ':tool', component: ToolCalendar, props: true }
+        { path: ':tool', component: ToolCalendar }
       ]
     },
 
@@ -50,9 +49,8 @@ export default new Router({
       path: '/:code/room',
       name: 'room',
       component: RoomTabs,
-      props: true,
       children: [
-        { path: ':room', component: RoomCalendar, props: true }
+        { path: ':room', component: RoomCalendar }
       ]
     }
 

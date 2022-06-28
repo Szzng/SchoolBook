@@ -19,7 +19,10 @@ export default {
   },
 
   created () {
-    api.login(this.$route.params.code)
+    if (this.$route.params.code) {
+      api.login(this.$route.params.code)
+      generalStore.state.code = this.$route.params.code
+    }
   },
 
   watch: {

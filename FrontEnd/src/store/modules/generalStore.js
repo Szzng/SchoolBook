@@ -8,8 +8,8 @@ const generalStore = {
     },
     successMsg: '',
     access: {token: '', exp: ''},
-    school: { name: 'Guest', code: '' },
-    code: ''
+    school: { name: 'Guest' },
+    code: ' '
   }
 }
 

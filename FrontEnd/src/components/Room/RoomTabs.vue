@@ -38,7 +38,7 @@ export default {
   },
 
   created () {
-    this.activeTab = `/room/${this.$route.params.room}`
+    this.activeTab = `/${this.$store.state.generalStore.code}/room/${this.$route.params.room}`
     this.$store.commit('roomStore/focusRoomSetter', this.$route.params.room)
   },
 

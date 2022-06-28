@@ -33,7 +33,7 @@ export default {
   }),
 
   created () {
-    this.activeTab = `/tool/${this.$route.params.tool}`
+    this.activeTab = `/${this.$store.state.generalStore.code}/tool/${this.$route.params.tool}`
     this.$store.commit('toolStore/focusToolSetter', this.$route.params.tool)
   },
 

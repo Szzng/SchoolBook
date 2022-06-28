@@ -20,14 +20,14 @@
         color="primary"
       >
         <v-tabs-slider></v-tabs-slider>
-        <v-tab :to="{name: 'home'}">환영합니다</v-tab>
-        <v-tab :disabled="guest" :to="{name: 'tool'}" class="success--text"
+        <v-tab :to="`/${$store.state.generalStore.code}`">환영합니다</v-tab>
+        <v-tab :disabled="guest" :to="{ name: 'tool', params: {code: $store.state.generalStore.code} }" class="success--text"
           >물품 · 교구</v-tab
         >
-        <v-tab :disabled="guest" :to="{name: 'room'}" class="secondary--text"
+        <v-tab :disabled="guest" :to="{ name: 'room', params: {code: $store.state.generalStore.code} }" class="secondary--text"
           >교실 · 장소</v-tab
         >
-        <v-tab :disabled="guest" :to="{name: 'setting'}">기본 설정</v-tab>
+        <v-tab :disabled="guest" :to="{ name: 'setting', params: {code: $store.state.generalStore.code} }">기본 설정</v-tab>
       </v-tabs>
 
       <v-btn @click="account" class="white--text accent">
