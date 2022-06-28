@@ -38,19 +38,19 @@ export default new Router({
 
     {
       path: '/:code/tool',
-      name: 'tool',
+      name: 'tools',
       component: ToolTabs,
       children: [
-        { path: ':tool', component: ToolCalendar }
+        { path: ':tool', name: 'tool', component: ToolCalendar }
       ]
     },
 
     {
       path: '/:code/room',
-      name: 'room',
+      name: 'rooms',
       component: RoomTabs,
       children: [
-        { path: ':room', component: RoomCalendar }
+        { path: ':room', name: 'room', component: RoomCalendar }
       ]
     }
 
