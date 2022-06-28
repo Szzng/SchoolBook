@@ -15,14 +15,12 @@ function setInterceptors (instance) {
   instance.interceptors.request.use(
     function (config) {
       const code = generalStore.state.code
-      console.log(code)
       if (code) {
         config.headers['Authorization'] = code
       }
       return config
     },
     function (error) {
-      console.log(error)
       return Promise.reject(error)
     }
   )
@@ -33,14 +31,17 @@ function setInterceptors (instance) {
       return response
     },
     function (error) {
+      // ErrorController(error)
+
       // if (error.response.data.message === 'EXPIRED_TOKEN') {
       //   accountsApi.refreshToken()
       // }
+      generalStore.state.errorMsg = error.response.data.detail
+      generalStore.state.dialog.error = true
 
       // Vue.$log.error('!intercept error!', error)
       // Vue.$log.error('status : ', error.response.status)
       // Vue.$log.error('message : ', error.response.data.message)
-      // ErrorController(error)
       return Promise.reject(error.response)
     })
 

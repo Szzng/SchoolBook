@@ -2,28 +2,28 @@
   <div>
     <v-dialog
       :retain-focus="false"
-      v-model="dialog.success"
+      v-model="dialog.error"
       max-width="550"
       persistent
     >
       <v-card class="px-3 py-5" min-height="200">
         <v-row justify="center" align="center" class="pt-4">
-          <v-icon class="ml-1" color="success" large>mdi-human-handsup </v-icon>
+          <v-icon class="ml-1" color="error" large>mdi-alert-outline </v-icon>
         </v-row>
 
         <v-row justify="center" align="center" class="pt-0 pb-3">
-        <v-card-title class="success--text text-center">
-          {{ successMsg }}
+        <v-card-title class="error--text text-center">
+          {{ errorMsg }}
         </v-card-title>
         </v-row>
 
         <v-card-actions class="pb-3">
           <v-btn
             block
-            color="success"
+            color="error"
             class="white--text"
             x-large
-            @click="dialog.success = false"
+            @click="dialog.error = false"
           >
             확인
           </v-btn>
@@ -37,7 +37,7 @@ import { mapState } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('generalStore', ['dialog', 'successMsg'])
+    ...mapState('generalStore', ['dialog', 'errorMsg'])
   }
 }
 </script>

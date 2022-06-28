@@ -3,31 +3,36 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css">
     <AppBar />
     <router-view/>
+    <ErrorDialog/>
+    <SuccessDialog/>
   </v-app>
 </template>
 
 <script>
 import AppBar from './components/General/AppBar.vue'
+import ErrorDialog from './components/General/ErrorDialog.vue'
+import SuccessDialog from './components/General/SuccessDialog.vue'
 import api from '@/api/modules/accounts'
-import generalStore from '@/store/modules/generalStore'
 
 export default {
   name: 'App',
 
   components: {
-    AppBar
+    AppBar,
+    ErrorDialog,
+    SuccessDialog
   },
 
   created () {
     if (this.$route.params.code) {
+      this.$store.state.generalStore.code = this.$route.params.code
       api.login(this.$route.params.code)
-      generalStore.state.code = this.$route.params.code
     }
   },
 
   watch: {
     '$route' (to, from) {
-      generalStore.state.code = to.params.code
+      this.$store.state.generalStore.code = to.params.code
     }
   }
 }
