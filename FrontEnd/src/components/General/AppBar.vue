@@ -6,7 +6,7 @@
       clipped-left
       style="border-bottom: 1px solid #d2d2d2 !important"
     >
-      <a href="/">
+      <a :href="`/${$store.state.generalStore.code}`">
         <v-toolbar-title class="mt-1 ml-1" style="color: #7b1fa2">
           <span style="font-size: 23px">스쿨북</span>
           <v-icon large class="ml-0 mb-3" color="accent">mdi-town-hall</v-icon>
