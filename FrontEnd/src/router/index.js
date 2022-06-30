@@ -13,6 +13,8 @@ import ToolCalendar from '@/components/Tool/ToolCalendar.vue'
 import RoomTabs from '@/components/Room/RoomTabs.vue'
 import RoomCalendar from '@/components/Room/RoomCalendar.vue'
 
+import NotFound from '@/components/General/NotFound.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -20,10 +22,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'homes',
       component: Home,
       children: [
-        { path: ':code', component: Home }
+        { path: ':code', name: 'home', component: Home }
       ]
     },
     {
@@ -52,7 +54,12 @@ export default new Router({
       children: [
         { path: ':room', name: 'room', component: RoomCalendar }
       ]
-    }
+    },
 
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
+    }
   ]
 })

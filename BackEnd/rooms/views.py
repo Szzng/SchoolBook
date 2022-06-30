@@ -21,7 +21,10 @@ class RoomListCreate(ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         if Room.objects.filter(school=request.user, name=request.data['room']).exists():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={'detail': '이미 등록된 이름입니다.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         room = Room.objects.create(
             school=request.user,
@@ -81,23 +84,31 @@ class RoomBookingCreate(CreateAPIView):
         weekday = dt.datetime.strptime(request.data['date'], '%Y-%m-%d').weekday()
         room = get_object_or_404(Room, **{'school': request.user, 'name': request.data['room']})
 
-        emptyTimetable = EmptyTimeTable.objects.get(
-            room=room.id,
-            weekday=weekday,
-            period=request.data['period']
-        )
+        emptyTimetable = get_object_or_404(EmptyTimeTable, {
+            'room': room.id,
+            'weekday': weekday,
+            'period': request.data['period']
+        })
 
-        AvailableEvent.objects.filter(
-            timetable=emptyTimetable,
-            start=request.data['date'],
-            name=str(request.data['period'])
-        ).delete()
+        try:
+            RoomBooking.objects.get(timetable=emptyTimetable, date=request.data['date'])
+            return Response(
+                data={'detail': '이미 예약 완료된 시간입니다.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        except:
+            booking = RoomBooking.objects.create(
+                timetable=emptyTimetable,
+                date=request.data['date'],
+                booker=request.data['booker'],
+            )
 
-        booking = RoomBooking.objects.create(
-            timetable=emptyTimetable,
-            date=request.data['date'],
-            booker=request.data['booker'],
-        )
+            AvailableEvent.objects.filter(
+                timetable=emptyTimetable,
+                start=request.data['date'],
+                name=str(request.data['period'])
+            ).delete()
+
         return Response(self.serializer_class(booking).data)
 
 
@@ -131,6 +142,7 @@ class RoomBookingDestroy(DestroyAPIView):
         roomBooking.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 @method_decorator(assert_school_code, name='retrieve')
 class AvailableEventByMonthRetrieve(RetrieveAPIView):

@@ -21,7 +21,10 @@ class ToolListCreate(ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         if Tool.objects.filter(school=request.user, name=request.data['name']).exists():
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                data={'detail': '이미 등록된 이름입니다.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         Tool.objects.create(
             school=request.user,
@@ -63,14 +66,14 @@ class ToolBookingCreate(CreateAPIView):
                 id=request.data['date'] + '-' + str(i)
             )
 
+            decreaseLeft(tool, period, request.data['quantity'])
+
             ToolBooking.objects.create(
                 tool=tool,
                 period=period,
                 booker=request.data['booker'],
                 quantity=request.data['quantity']
             )
-
-            decreaseLeft(tool, period, request.data['quantity'])
 
         data = {
             'school': request.user.name,
@@ -97,6 +100,7 @@ class ToolBookingRetrieve(RetrieveAPIView):
                 ).values('id', 'booker', 'quantity'))
 
         return Response(data)
+
 
 @method_decorator(assert_school_code, name='destroy')
 class ToolBookingDestroy(DestroyAPIView):
