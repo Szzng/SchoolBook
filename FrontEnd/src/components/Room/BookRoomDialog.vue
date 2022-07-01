@@ -16,7 +16,7 @@
         <v-row align="center" justify="center" class="mt-0">
           <v-card-title class="pb-0"
             >{{ formatSelectedDate }} {{ booking.name }}교시
-            <v-card-subtitle class="purple--text pl-1 pb-3">{{
+            <v-card-subtitle class="accent--text pl-1 pb-3">{{
               focusRoom
             }}</v-card-subtitle>
           </v-card-title>
@@ -60,7 +60,7 @@ export default {
     booker: '',
     bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
-      (v) => (v && v.length <= 10) || '예약자는 10글자 이하로 적어주세요.'
+      (v) => (v && v.length <= 4) || '예약자는 4글자 이하로 적어주세요.'
     ]
   }),
 

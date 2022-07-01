@@ -11,7 +11,7 @@ export default {
         toolStore.state.tools = response.data
       })
       .catch(error => {
-        console.log('getTools GET error', error.response)
+        console.log('getTools GET error', error)
       })
   },
 
@@ -20,9 +20,6 @@ export default {
       .post(Urls.setting_Tool_ListCreate, postData)
       .then(response => {
         this.getTools()
-      })
-      .catch(error => {
-        console.log('createTool POST error', error.response)
       })
   },
 
@@ -34,7 +31,7 @@ export default {
         component.dialog.updateTool = true
       })
       .catch(error => {
-        console.log('getTool GET error', error.response)
+        console.log('getTool GET error', error)
       })
   },
 
@@ -45,7 +42,7 @@ export default {
         this.getTools()
       })
       .catch(error => {
-        console.log('destroyTool DELETE error', error.response)
+        console.log('destroyTool DELETE error', error)
       })
   },
 
@@ -56,7 +53,7 @@ export default {
         alert('수정완료')
       })
       .catch(error => {
-        console.log('updateTool patch error', error.response)
+        console.log('updateTool patch error', error)
       })
   },
 
@@ -67,7 +64,7 @@ export default {
         this.getRooms()
       })
       .catch(error => {
-        console.log('createRoom POST error', error.response)
+        console.log('createRoom POST error', error)
       })
   },
 
@@ -78,7 +75,7 @@ export default {
         roomStore.state.rooms = response.data
       })
       .catch(error => {
-        console.log('getRooms GET error', error.response)
+        console.log('getRooms GET error', error)
       })
   },
 
@@ -89,7 +86,7 @@ export default {
         this.getRooms()
       })
       .catch(error => {
-        console.log('destroyRoom DELETE error', error.response)
+        console.log('destroyRoom DELETE error', error)
       })
   },
 
@@ -101,7 +98,7 @@ export default {
         roomStore.state.dialog.updateTimetable = true
       })
       .catch(error => {
-        console.log('getTimetable GET error', error.response)
+        console.log('getTimetable GET error', error)
       })
   },
 
@@ -112,7 +109,7 @@ export default {
         this.getTimetable(postData.room)
       })
       .catch(error => {
-        console.log('updateTimetable POST error', error.response)
+        console.log('updateTimetable POST error', error)
       })
   }
 

@@ -5,20 +5,15 @@ import vuetify from '@/plugins/vuetify'
 import App from './App'
 import router from './router'
 import store from './store'
-import settingApi from '@/api/modules/setting'
 
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
 new Vue({
   vuetify,
   el: '#inspire',
   router,
   store,
-  beforeCreate () {
-    settingApi.getRooms()
-    settingApi.getTools()
-  },
+  // beforeCreate () {},
   components: { App },
   template: '<App/>'
 }).$mount('#inspire')

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from accounts.serializers import SchoolSerializer
 from tools.models import Tool, Period
 
 

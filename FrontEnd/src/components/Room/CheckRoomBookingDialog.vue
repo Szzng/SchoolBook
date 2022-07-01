@@ -7,14 +7,14 @@
           <v-card-title class="pl-0 pt-1" style="font-size: 16px">
             <span
               >달력에서<span
-                class="indigo--text"
+                class="success--text"
                 style="font-size: 18px; font-weight: bold"
               >
                 예약 날짜</span
               >
               또는
               <span
-                class="indigo--text"
+                class="success--text"
                 style="font-size: 18px; font-weight: bold"
                 >교시</span
               >
@@ -53,7 +53,7 @@
                 </v-btn>
                 <v-btn
                   v-if="[3, 4].includes(period)"
-                  color="indigo darken-2"
+                  color="success darken-2"
                   width="100"
                   height="40"
                   class="font-weight-bold"
@@ -87,7 +87,7 @@
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
-            <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
+            <v-card-subtitle class="accent--text ma-0 pa-0 pl-1 pt-2">
               {{ focusRoom }}</v-card-subtitle
             >
           </v-card-title>
@@ -113,7 +113,7 @@
                 <v-btn
                   v-if="roomBookingLists[period]"
                   :disabled="disabled(roomBookingLists[period].id)"
-                  color="indigo darken-2"
+                  color="success darken-2"
                   width="100"
                   height="40"
                   class="font-weight-bold"

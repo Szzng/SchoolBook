@@ -3,6 +3,12 @@ const DjangoBase = 'http://127.0.0.1:8000/'
 export default {
   Django_API: `${DjangoBase}api/`,
 
+  /* Accounts */
+  accounts_Register: 'accounts/register/',
+  accounts_Login: (code) => { return `accounts/login/${code}` },
+  accounts_Logout: 'accounts/logout/',
+  accounts_Info: 'accounts/detail/',
+
   /* Setting_Tool */
   setting_Tool_ListCreate: 'tools/setting/',
   setting_Tool_RetrieveUpdateDestory: (tool) => {

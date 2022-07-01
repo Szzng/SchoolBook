@@ -9,7 +9,7 @@
       <v-card>
         <v-row align="center" justify="center">
           <v-btn
-            color="red darken-1"
+            color="error"
             width="100"
             height="40"
             class="font-weight-bold white--text mt-10"

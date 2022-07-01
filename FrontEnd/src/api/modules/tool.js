@@ -3,6 +3,18 @@ import Urls from '@/api/urls'
 import toolStore from '../../store/modules/toolStore'
 
 export default {
+  BookTool (component, postData) {
+    myAxios
+      .post(Urls.tool_All, postData)
+      .then(response => {
+        this.getToolBookingsByDate(postData['tool'], postData['date'])
+        component.dialog.bookTool = false
+      })
+      .catch(error => {
+        console.log('BookTool POST error', error)
+      })
+  },
+
   getToolBookingsByDate (tool, date) {
     myAxios
       .get(Urls.tool_BookingByDate(tool, date))
@@ -12,19 +24,7 @@ export default {
         toolStore.state.dialog.checkToolBooking = true
       })
       .catch(error => {
-        console.log('getToolBookingsByDate GET error', error.response)
-      })
-  },
-
-  BookTool (component, postData) {
-    myAxios
-      .post(Urls.tool_All, postData)
-      .then(response => {
-        this.getToolBookingsByDate(postData['tool'], postData['date'])
-        component.dialog.bookTool = false
-      })
-      .catch(error => {
-        console.log('BookTool POST error', error.response)
+        console.log('getToolBookingsByDate GET error', error)
       })
   },
 
@@ -35,7 +35,7 @@ export default {
         this.getToolBookingsByDate(tool, date)
       })
       .catch(error => {
-        console.log('DestroyToolBooking DELETE error', error.response)
+        console.log('DestroyToolBooking DELETE error', error)
       })
   },
 
@@ -46,7 +46,7 @@ export default {
         toolStore.state.left = response.data
       })
       .catch(error => {
-        console.log('getAvailableLeft GET error', error.response)
+        console.log('getAvailableLeft GET error', error)
       })
   }
 }

@@ -10,7 +10,7 @@ export default {
         roomStore.state.roomBookingLists = response.data
       })
       .catch(error => {
-        console.log('getRoomBookingsByDate GET error', error.response)
+        console.log('getRoomBookingsByDate GET error', error)
       })
   },
 
@@ -23,7 +23,7 @@ export default {
         component.dialog.bookRoom = false
       })
       .catch(error => {
-        console.log('BookRoom POST error', error.response)
+        console.log('BookRoom POST error', error)
       })
   },
 
@@ -35,7 +35,7 @@ export default {
         this.getAvailableEvents(room, date)
       })
       .catch(error => {
-        console.log('DestroyRoomBooking DELETE error', error.response)
+        console.log('DestroyRoomBooking DELETE error', error)
       })
   },
 
@@ -46,7 +46,7 @@ export default {
         roomStore.state.availableBookingEvents = response.data
       })
       .catch(error => {
-        console.log('getAvailableEvents GET error', error.response)
+        console.log('getAvailableEvents GET error', error)
       })
   }
 }

@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Home from '@/components/General/Home.vue'
+
 import SettingTabs from '@/components/Setting/SettingTabs.vue'
-import SetRoomPlaces from '@/components/Setting/SetRoomPlaces.vue'
-import SetToolPlaces from '@/components/Setting/SetToolPlaces.vue'
+import SetRoom from '@/components/Setting/SetRoom.vue'
+import SetTool from '@/components/Setting/SetTool.vue'
 
 import ToolTabs from '@/components/Tool/ToolTabs.vue'
 import ToolCalendar from '@/components/Tool/ToolCalendar.vue'
@@ -11,38 +13,53 @@ import ToolCalendar from '@/components/Tool/ToolCalendar.vue'
 import RoomTabs from '@/components/Room/RoomTabs.vue'
 import RoomCalendar from '@/components/Room/RoomCalendar.vue'
 
+import NotFound from '@/components/General/NotFound.vue'
+
 Vue.use(Router)
 
 export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/setting',
+      path: '/',
+      name: 'homes',
+      component: Home,
+      children: [
+        { path: ':code', name: 'home', component: Home }
+      ]
+    },
+    {
+      path: '/:code/setting',
+      name: 'setting',
       component: SettingTabs,
-      props: true,
       children: [
-        { path: 'tool', component: SetToolPlaces },
-        { path: 'room', component: SetRoomPlaces }
+        { path: 'tool', name: 'settingTool', component: SetTool },
+        { path: 'room', name: 'settingRoom', component: SetRoom }
       ]
     },
 
     {
-      path: '/tool',
+      path: '/:code/tool',
+      name: 'tools',
       component: ToolTabs,
-      props: true,
       children: [
-        { path: ':tool', component: ToolCalendar, props: true }
+        { path: ':tool', name: 'tool', component: ToolCalendar }
       ]
     },
 
     {
-      path: '/room',
+      path: '/:code/room',
+      name: 'rooms',
       component: RoomTabs,
-      props: true,
       children: [
-        { path: ':room', component: RoomCalendar, props: true }
+        { path: ':room', name: 'room', component: RoomCalendar }
       ]
-    }
+    },
 
+    {
+      path: '*',
+      name: 'NotFound',
+      component: NotFound
+    }
   ]
 })

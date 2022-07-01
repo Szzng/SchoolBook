@@ -21,7 +21,7 @@
             <v-col sm="12" md="3">
               <v-card-subtitle class="pb-1 pl-6 black--text">
                 {{ period }}교시
-                <span class="purple--text">+ 잔여 대수</span>
+                <span class="accent--text">+ 잔여 대수</span>
               </v-card-subtitle>
             </v-col>
 
@@ -59,7 +59,7 @@
           <v-spacer></v-spacer>
           <v-card-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
-            <v-card-subtitle class="purple--text ma-0 pa-0 pl-1 pt-2">
+            <v-card-subtitle class="accent--text ma-0 pa-0 pl-1 pt-2">
               {{ focusTool }}</v-card-subtitle
             >
           </v-card-title>
@@ -81,7 +81,7 @@
             <v-col sm="12" md="3">
               <v-card-subtitle class="pb-1 pl-6 black--text">
                 {{ period }}교시
-                <span class="purple--text">+ {{ left[period - 1] }}대</span>
+                <span class="accent--text">+ {{ left[period - 1] }}대</span>
               </v-card-subtitle>
             </v-col>
 
