@@ -84,7 +84,7 @@ class RoomBookingCreate(CreateAPIView):
         weekday = dt.datetime.strptime(request.data['date'], '%Y-%m-%d').weekday()
         room = get_object_or_404(Room, **{'school': request.user, 'name': request.data['room']})
 
-        emptyTimetable = get_object_or_404(EmptyTimeTable, {
+        emptyTimetable = get_object_or_404(EmptyTimeTable, **{
             'room': room.id,
             'weekday': weekday,
             'period': request.data['period']
