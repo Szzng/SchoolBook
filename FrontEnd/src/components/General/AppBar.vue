@@ -35,7 +35,7 @@
         <v-icon class="ml-2">mdi-town-hall</v-icon>
       </v-btn>
 
-      <RegisterLoginDialog />
+      <RegisterDialog />
       <LogoutDialog />
     </v-app-bar>
   </div>
@@ -43,11 +43,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import RegisterLoginDialog from '@/components/General/RegisterLoginDialog.vue'
+import RegisterDialog from '@/components/General/RegisterDialog.vue'
 import LogoutDialog from '@/components/General/LogoutDialog.vue'
 
 export default {
-  components: { RegisterLoginDialog, LogoutDialog },
+  components: { RegisterDialog, LogoutDialog },
 
   data: () => ({
     activeTab: null
@@ -82,7 +82,7 @@ export default {
   methods: {
     account () {
       if (this.school.name === 'Guest') {
-        this.dialog.login = true
+        this.dialog.register = true
       } else {
         this.dialog.logout = true
       }

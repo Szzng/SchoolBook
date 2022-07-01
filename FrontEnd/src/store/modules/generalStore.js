@@ -4,7 +4,8 @@ const generalStore = {
     dialog: {
       success: false,
       error: false,
-      login: false,
+      registerSuccess: false,
+      register: false,
       logout: false
     },
     successMsg: '',
@@ -12,6 +13,12 @@ const generalStore = {
     access: {token: '', exp: ''},
     school: { name: 'Guest' },
     code: ' '
+  },
+
+  mutations: {
+    successMsgSetter (state, msg) {
+      state.successMsg = msg
+    }
   }
 }
 

@@ -12,7 +12,7 @@
         </v-row>
 
         <v-row justify="center" align="center" class="pt-0 pb-3">
-        <v-card-title class="success--text text-center">
+        <v-card-title class="success--text">
           {{ successMsg }}
         </v-card-title>
         </v-row>

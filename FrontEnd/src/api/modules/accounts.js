@@ -5,12 +5,13 @@ import generalStore from '@/store/modules/generalStore'
 import settingApi from '@/api/modules/setting'
 
 export default {
-  register (postData) {
+  register (postData, component) {
     myAxios
       .post(Urls.accounts_Register, postData)
       .then(response => {
-        generalStore.state.successMsg = '학교가 등록되었습니다. ' + response.data.name + '의 학교 링크 ' + response.data.code + '로 접속해주세요.'
-        generalStore.state.dialog.success = true
+        component.name = response.data.name
+        component.code = response.data.code
+        generalStore.state.dialog.registerSuccess = true
       })
       .catch(error => {
         console.log('register POST error', error)
@@ -29,7 +30,7 @@ export default {
       .catch(error => {
         console.log('login GET error', error)
       })
-  },
+  }
 
   // refreshToken () {
   //   console.log(Request.Cookies)
@@ -42,7 +43,7 @@ export default {
   //     .catch(error => {
   //       console.log('refreshToken GET error', error)
   //       if (error.data.message === 'NEED_LOGIN') {
-  //         generalStore.state.dialog.login = true
+  //         generalStore.state.dialog.register = true
   //       }
   //     })
   // },
@@ -54,17 +55,17 @@ export default {
   //   this.getUser()
   // },
 
-  getUser () {
-    myAxios
-      .get(Urls.accounts_Info)
-      .then(response => {
-        generalStore.state.school = response.data
-        generalStore.state.dialog.login = false
-      })
-      .catch(error => {
-        console.log('getUser GET error', error)
-      })
-  }
+  // getUser () {
+  //   myAxios
+  //     .get(Urls.accounts_Info)
+  //     .then(response => {
+  //       generalStore.state.school = response.data
+  //       generalStore.state.dialog.register = false
+  //     })
+  //     .catch(error => {
+  //       console.log('getUser GET error', error)
+  //     })
+  // }
 
   // logout () {
   //   myAxios
