@@ -1,11 +1,26 @@
 from rest_framework import serializers
-
-from accounts.serializers import SchoolSerializer
+from rest_framework.exceptions import ValidationError
 
 
 class RoomSerializer(serializers.Serializer):
-    school = SchoolSerializer()
     name = serializers.CharField(required=True)
+
+
+class RoomTimetableSerializer(serializers.Serializer):
+    room = serializers.CharField(required=True)
+    timetable = serializers.DictField(required=True, child=serializers.ListField())
+
+    def validate(self, data):
+        if len(data['room']) > 5:
+            raise ValidationError({'detail': "이름은 5글자 이하로 적어주세요."})
+
+        if len(data['timetable']) != 5:
+            raise ValidationError({'detail': '시간표 형식이 올바르지 않습니다.'})
+
+        for i in data['timetable'].values():
+            if len(i) != 6:
+                raise ValidationError({'detail': '시간표 형식이 올바르지 않습니다.'})
+        return data
 
 
 class FixedTimeTableSerializer(serializers.Serializer):
@@ -22,7 +37,6 @@ class EmptyTimeTableSerializer(serializers.Serializer):
 
 
 class AvailableEventSerializer(serializers.Serializer):
-    # timetable = EmptyTimeTableSerializer()
     date = serializers.DateField(required=True)
     name = serializers.CharField(required=True)
 

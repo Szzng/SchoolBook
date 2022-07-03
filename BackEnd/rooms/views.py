@@ -8,7 +8,7 @@ import datetime as dt
 from accounts.decorators import assert_school_code
 from .actions import eventsCreated, createEvents, saveTimetable
 from .models import Room, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableEvent
-from .serializers import RoomBookingSerializer, FixedTimeTableSerializer, RoomSerializer
+from .serializers import RoomBookingSerializer, FixedTimeTableSerializer, RoomSerializer, RoomTimetableSerializer
 
 
 @method_decorator(assert_school_code, name='list')
@@ -20,7 +20,11 @@ class RoomListCreate(ListCreateAPIView):
         return Room.objects.filter(school=self.request.user.code).order_by('name')
 
     def create(self, request, *args, **kwargs):
-        if Room.objects.filter(school=request.user, name=request.data['room']).exists():
+        serializer = RoomTimetableSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        if Room.objects.filter(school=request.user, name=data['room']).exists():
             return Response(
                 data={'detail': '이미 등록된 이름입니다.'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -28,9 +32,9 @@ class RoomListCreate(ListCreateAPIView):
 
         room = Room.objects.create(
             school=request.user,
-            name=request.data['room']
+            name=data['room']
         )
-        saveTimetable(room, request.data['timetable'])
+        saveTimetable(room, data['timetable'])
 
         return Response(status=status.HTTP_201_CREATED)
 
@@ -46,14 +50,16 @@ class RoomDestroy(DestroyAPIView):
 
 @method_decorator(assert_school_code, name='create')
 class TimetableCreate(CreateAPIView):
-    serializer_class = FixedTimeTableSerializer
-
     def create(self, request, *args, **kwargs):
-        room = get_object_or_404(Room, **{'school': request.user, 'name': request.data['room']})
+        serializer = RoomTimetableSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        room = get_object_or_404(Room, **{'school': request.user, 'name': data['room']})
         FixedTimeTable.objects.filter(room=room.id).delete()
         EmptyTimeTable.objects.filter(room=room.id).delete()
 
-        timetable = request.data['timetable']
+        timetable = data['timetable']
         saveTimetable(room, timetable)
         return Response(status=status.HTTP_201_CREATED)
 
