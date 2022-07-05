@@ -7,8 +7,7 @@ import datetime as dt
 from accounts.decorators import assert_school_code
 from .actions import createEvents, saveTimetable
 from .models import Room, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableEvent, CreatedEvents
-from .serializers import RoomBookingSerializer, FixedTimeTableSerializer, RoomSerializer, RoomTimetableSerializer, \
-    RoomBookingCreateSerializer
+from .serializers import RoomBookingSerializer, RoomSerializer, RoomTimetableSerializer, RoomBookingCreateSerializer
 
 
 @method_decorator(assert_school_code, name='list')

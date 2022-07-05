@@ -23,13 +23,6 @@ class RoomTimetableSerializer(serializers.Serializer):
         return data
 
 
-class FixedTimeTableSerializer(serializers.Serializer):
-    room = RoomSerializer()
-    weekday = serializers.IntegerField(required=True)
-    period = serializers.IntegerField(required=True)
-    booker = serializers.CharField(required=True)
-
-
 class EmptyTimeTableSerializer(serializers.Serializer):
     room = RoomSerializer()
     weekday = serializers.IntegerField(required=True)
