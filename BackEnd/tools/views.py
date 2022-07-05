@@ -20,7 +20,11 @@ class ToolListCreate(ListCreateAPIView):
         return Tool.objects.filter(school=self.request.user.code).order_by('name')
 
     def create(self, request, *args, **kwargs):
-        if Tool.objects.filter(school=request.user, name=request.data['name']).exists():
+        serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        if Tool.objects.filter(school=request.user, name=data['name']).exists():
             return Response(
                 data={'detail': '이미 등록된 이름입니다.'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -28,9 +32,9 @@ class ToolListCreate(ListCreateAPIView):
 
         Tool.objects.create(
             school=request.user,
-            name=request.data['name'],
-            quantity=request.data['quantity'],
-            place=request.data['place']
+            name=data['name'],
+            quantity=data['quantity'],
+            place=data['place']
         )
 
         return Response(status=status.HTTP_201_CREATED)
@@ -53,33 +57,35 @@ class ToolRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
 
 @method_decorator(assert_school_code, name='create')
 class ToolBookingCreate(CreateAPIView):
-    serializer_class = ToolBookingSerializer
-
     def create(self, request, *args, **kwargs):
-        tool = get_object_or_404(Tool, **{'school': request.user, 'name': request.data['tool']})
+        serializer = ToolBookingSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
 
-        for i in request.data['period']:
+        tool = get_object_or_404(Tool, **{'school': request.user, 'name': data['tool']})
+
+        for i in data['period']:
             period, created = Period.objects.get_or_create(
                 school=request.user,
-                date=request.data['date'],
+                date=data['date'],
                 period=i,
-                id=request.data['date'] + '-' + str(i)
+                id=data['date'] + '-' + str(i)
             )
 
-            decreaseLeft(tool, period, request.data['quantity'])
+            decreaseLeft(tool, period, data['quantity'])
 
             ToolBooking.objects.create(
                 tool=tool,
                 period=period,
-                booker=request.data['booker'],
-                quantity=request.data['quantity']
+                booker=data['booker'],
+                quantity=data['quantity']
             )
 
         data = {
             'school': request.user.name,
             'tool': tool.name,
-            'period': request.data['period'],
-            'quantity': request.data['quantity']
+            'period': data['period'],
+            'quantity': data['quantity']
         }
 
         return Response(data, status=status.HTTP_201_CREATED)

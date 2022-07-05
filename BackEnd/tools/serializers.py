@@ -1,23 +1,46 @@
 from rest_framework import serializers
-
-from accounts.serializers import SchoolSerializer
-from tools.models import Tool, Period
-
-
-class ToolSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tool
-        fields = '__all__'
+from rest_framework.exceptions import ValidationError
+import datetime as dt
 
 
-class PeriodSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Period
-        fields = '__all__'
+class ToolSerializer(serializers.Serializer):
+    name = serializers.CharField(required=True)
+    quantity = serializers.IntegerField(required=True)
+    place = serializers.CharField(required=True)
+
+    def validate(self, data):
+        if len(data['name']) > 5:
+            raise ValidationError({'detail': '이름은 5글자 이하로 적어주세요.'})
+
+        if data['quantity'] <= 0:
+            raise ValidationError({'detail': '수량은 0보다 큰 수를 입력해주세요.'})
+
+        if len(data['place']) > 5:
+            raise ValidationError({'detail': '보관 장소는 5글자 이하로 적어주세요.'})
+        return data
 
 
 class ToolBookingSerializer(serializers.Serializer):
-    tool = ToolSerializer()
-    period = PeriodSerializer()
+    tool = serializers.CharField(required=True)
+    period = serializers.ListField(required=True)
+    date = serializers.CharField(required=True)
     booker = serializers.CharField(required=True)
     quantity = serializers.IntegerField(required=True)
+
+    def validate(self, data):
+        for i in data['period']:
+            if (i <= 0) or (i > 6):
+                raise ValidationError({'detail': "예약 교시를 확인하세요."})
+
+        try:
+            dt.datetime.strptime(data['date'], '%Y-%m-%d')
+        except:
+            raise ValidationError({'detail': "날짜 형식이 올바르지 않습니다."})
+
+        if len(data['booker']) > 4:
+            raise ValidationError({'detail': "예약자는 4글자 이하로 적어주세요."})
+
+        if data['quantity'] <= 0:
+            raise ValidationError({'detail': '0보다 큰 수를 입력해주세요.'})
+
+        return data

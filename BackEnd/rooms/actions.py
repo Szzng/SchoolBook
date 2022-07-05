@@ -1,17 +1,13 @@
-from .models import EmptyTimeTable, AvailableEvent, RoomBooking, FixedTimeTable
+from .models import EmptyTimeTable, AvailableEvent, FixedTimeTable, CreatedEvents
 import calendar
 
 
-def eventsCreated(room, year_month):
-    events = AvailableEvent.objects.filter(timetable__room=room.id,
-                                           start__contains=year_month).exists()
-    bookings = RoomBooking.objects.filter(timetable__room=room.id,
-                                          date__contains=year_month).exists()
+def createEvents(room, year, month, year_month):
+    if CreatedEvents.objects.filter(room=room.id, date=year_month).exists():
+        return
 
-    return events or bookings
+    CreatedEvents.objects.create(room=room, date=year_month)
 
-
-def createEvents(room, year, month):
     monthcalendar = calendar.monthcalendar(int(year), int(month))
 
     for weekday in range(5):

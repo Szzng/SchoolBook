@@ -1,6 +1,4 @@
-from rest_framework import status
-from rest_framework.response import Response
-
+from rest_framework.exceptions import ValidationError
 from .models import LeftTool
 
 
@@ -22,12 +20,9 @@ def increaseLeft(tool, period, quantity):
 
 def decreaseLeft(tool, period, quantity):
     left = getLeft(tool, period) - int(quantity)
-
+    
     if left < 0:
-        return Response(
-            data={'detail': '대여 수량을 확인하세요.'},
-            status=status.HTTP_400_BAD_REQUEST
-        )
+        raise ValidationError({'detail': str(period.period) + '교시의 대여 가능한 수량을 확인하세요.'})
 
     left = min(left, tool.quantity)
     left = max(left, 0)
