@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+import datetime as dt
 
 
 class RoomSerializer(serializers.Serializer):
@@ -41,6 +42,14 @@ class RoomBookingCreateSerializer(serializers.Serializer):
     booker = serializers.CharField(required=True)
 
     def validate(self, data):
+        if (data['period'] <= 0) or (data['period'] > 6):
+            raise ValidationError({'detail': "예약 교시를 확인하세요."})
+
+        try:
+            dt.datetime.strptime(data['date'], '%Y-%m-%d')
+        except:
+            raise ValidationError({'detail': "날짜 형식이 올바르지 않습니다."})
+
         if len(data['booker']) > 4:
             raise ValidationError({'detail': "예약자는 4글자 이하로 적어주세요."})
         return data
