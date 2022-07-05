@@ -4,11 +4,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 import datetime as dt
-
 from accounts.decorators import assert_school_code
-from .actions import eventsCreated, createEvents, saveTimetable
-from .models import Room, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableEvent
-from .serializers import RoomBookingSerializer, FixedTimeTableSerializer, RoomSerializer, RoomTimetableSerializer
+from .actions import createEvents, saveTimetable
+from .models import Room, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableEvent, CreatedEvents
+from .serializers import RoomBookingSerializer, FixedTimeTableSerializer, RoomSerializer, RoomTimetableSerializer, \
+    RoomBookingCreateSerializer
 
 
 @method_decorator(assert_school_code, name='list')
@@ -58,6 +58,7 @@ class TimetableCreate(CreateAPIView):
         room = get_object_or_404(Room, **{'school': request.user, 'name': data['room']})
         FixedTimeTable.objects.filter(room=room.id).delete()
         EmptyTimeTable.objects.filter(room=room.id).delete()
+        CreatedEvents.objects.filter(room=room.id).delete()
 
         timetable = data['timetable']
         saveTimetable(room, timetable)
@@ -84,20 +85,22 @@ class TimetableRetrieve(RetrieveAPIView):
 
 @method_decorator(assert_school_code, name='create')
 class RoomBookingCreate(CreateAPIView):
-    serializer_class = RoomBookingSerializer
-
     def create(self, request, *args, **kwargs):
-        weekday = dt.datetime.strptime(request.data['date'], '%Y-%m-%d').weekday()
-        room = get_object_or_404(Room, **{'school': request.user, 'name': request.data['room']})
+        serializer = RoomBookingCreateSerializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        weekday = dt.datetime.strptime(data['date'], '%Y-%m-%d').weekday()
+        room = get_object_or_404(Room, **{'school': request.user, 'name': data['room']})
 
         emptyTimetable = get_object_or_404(EmptyTimeTable, **{
             'room': room.id,
             'weekday': weekday,
-            'period': request.data['period']
+            'period': data['period']
         })
 
         try:
-            RoomBooking.objects.get(timetable=emptyTimetable, date=request.data['date'])
+            RoomBooking.objects.get(timetable=emptyTimetable, date=data['date'])
             return Response(
                 data={'detail': '이미 예약 완료된 시간입니다.'},
                 status=status.HTTP_400_BAD_REQUEST
@@ -105,17 +108,17 @@ class RoomBookingCreate(CreateAPIView):
         except:
             booking = RoomBooking.objects.create(
                 timetable=emptyTimetable,
-                date=request.data['date'],
-                booker=request.data['booker'],
+                date=data['date'],
+                booker=data['booker'],
             )
 
             AvailableEvent.objects.filter(
                 timetable=emptyTimetable,
-                start=request.data['date'],
-                name=str(request.data['period'])
+                start=data['date'],
+                name=str(data['period'])
             ).delete()
 
-        return Response(self.serializer_class(booking).data)
+        return Response(RoomBookingSerializer(booking).data)
 
 
 @method_decorator(assert_school_code, name='retrieve')
@@ -153,13 +156,11 @@ class RoomBookingDestroy(DestroyAPIView):
 @method_decorator(assert_school_code, name='retrieve')
 class AvailableEventByMonthRetrieve(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
+        room = get_object_or_404(Room, **{'school': request.user, 'name': kwargs['room']})
         year = kwargs['date'][:4]
         month = kwargs['date'][5:7]
         year_month = year + '-' + month
-        room = get_object_or_404(Room, **{'school': request.user, 'name': kwargs['room']})
-
-        if not eventsCreated(room, year_month):
-            createEvents(room, year, month)
+        createEvents(room, year, month, year_month)
 
         events = AvailableEvent.objects.filter(
             timetable__room=room.id,

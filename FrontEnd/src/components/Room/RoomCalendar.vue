@@ -106,7 +106,6 @@ export default {
   async created () {
     await this.$nextTick()
     this.initCalendarTitle = this.$refs.calendar.title
-    api.getAvailableEvents(this.focusRoom, this.$refs.calendar.start)
   },
 
   methods: {

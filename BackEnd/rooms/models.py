@@ -33,7 +33,15 @@ class RoomBooking(models.Model):
         return self.booker
 
 
+class CreatedEvents(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    date = models.CharField(max_length=10)
+
+
 class AvailableEvent(models.Model):
     timetable = models.ForeignKey(EmptyTimeTable, on_delete=models.CASCADE)
     name = models.CharField(max_length=5)
     start = models.DateField()
+
+    def __str__(self):
+        return str(self.start) + '-' + self.name

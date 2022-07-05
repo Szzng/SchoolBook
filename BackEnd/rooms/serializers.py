@@ -41,7 +41,19 @@ class AvailableEventSerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
 
 
+class RoomBookingCreateSerializer(serializers.Serializer):
+    date = serializers.CharField(required=True)
+    period = serializers.IntegerField(required=True)
+    room = serializers.CharField(required=True)
+    booker = serializers.CharField(required=True)
+
+    def validate(self, data):
+        if len(data['booker']) > 4:
+            raise ValidationError({'detail': "예약자는 4글자 이하로 적어주세요."})
+        return data
+
 class RoomBookingSerializer(serializers.Serializer):
     timetable = EmptyTimeTableSerializer()
     date = serializers.DateField(required=True)
     booker = serializers.CharField(required=True)
+
