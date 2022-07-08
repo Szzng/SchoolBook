@@ -1,90 +1,59 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from faker import Faker
-
-from Factories.Userfactory import UserFactory
+from accounts.models import School, generate_school_code
+from Tests.Factories.Userfactory import UserFactory
+from django.db.utils import IntegrityError
 
 
 class RegisterTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.UserModel = get_user_model()
+        cls.UserModel = School
         cls.faker = Faker()
-        cls.testEmail = cls.faker.email()
-        cls.testPassword = cls.faker.password()
+        cls.testName = cls.faker.word()
         cls.registerUrl = "/api/accounts/register/"
 
     def test_register_사용자는_회원가입을_할_수_있다(self):
-        response = self.client.post(
-            self.registerUrl,
-            {
-                "email": self.testEmail,
-                "password1": self.testPassword,
-                "password2": self.testPassword,
-            },
-        )
-        self.assertEqual(response.status_code, 204)
-        self.assertTrue(self.UserModel.objects.filter(email=self.testEmail).exists())
+        response = self.client.post(self.registerUrl, {"name": self.testName})
+        self.assertTrue(self.UserModel.objects.filter(name=self.testName).exists())
+        code = self.UserModel.objects.get(name=self.testName).code
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data, {
+            'name': self.testName,
+            'code': code
+        })
 
-    def test_register_이메일은_중복될_수_없다(self):
-        alreadyExistsEmail = self.faker.email()
-        UserFactory(email=alreadyExistsEmail)
+    def test_register_학교_코드는_중복될_수_없다(self):
+        alreadyExistsCode = generate_school_code()
+        UserFactory(name=self.testName, code=alreadyExistsCode)
         self.assertTrue(
-            self.UserModel.objects.filter(email=alreadyExistsEmail).exists()
+            self.UserModel.objects.filter(code=alreadyExistsCode).exists()
         )
 
-        response = self.client.post(
-            self.registerUrl,
-            {
-                "email": alreadyExistsEmail,
-                "password1": self.testPassword,
-                "password2": self.testPassword,
-            },
-        )
+        with self.assertRaises(IntegrityError) as context:
+            UserFactory(name=self.testName, code=alreadyExistsCode)
+        self.assertTrue('UNIQUE constraint failed' in str(context.exception))
 
-        self.assertEqual(response.status_code, 400)
+    def test_register_학교_이름은_3글자_이상이어야_한다(self):
+        nameLess3letters = '2자'
+        nameOver3lertters = '3글자'
 
-    def test_register_이메일은_형식을_지켜야_한다(self):
-        notEmail = self.faker.name()
+        response1 = self.client.post(self.registerUrl, {"name": nameLess3letters})
+        response2 = self.client.post(self.registerUrl, {"name": nameOver3lertters})
 
-        response = self.client.post(
-            self.registerUrl,
-            {
-                "email": notEmail,
-                "password1": self.testPassword,
-                "password2": self.testPassword,
-            },
-        )
+        self.assertEqual(response1.status_code, 400)
+        self.assertEqual(response2.status_code, 201)
+        self.assertFalse(self.UserModel.objects.filter(name=nameLess3letters).exists())
+        self.assertTrue(self.UserModel.objects.filter(name=nameOver3lertters).exists())
 
-        self.assertEqual(response.status_code, 400)
+    def test_register_학교_이름은_특수문자를_포함하지_않아야_한다(self):
+        nameWithSpecialCharacter = '승쨩초등학교123@'
+        nameWithOutSpecialCharacter = '승쨩초등학교123'
 
-    def test_register_비밀번호는_8자_이상이어야_한다(self):
-        less8Password = "7letter"
+        response1 = self.client.post(self.registerUrl, {"name": nameWithSpecialCharacter})
+        response2 = self.client.post(self.registerUrl, {"name": nameWithOutSpecialCharacter})
 
-        response = self.client.post(
-            self.registerUrl,
-            {
-                "email": self.testEmail,
-                "password1": less8Password,
-                "password2": less8Password,
-            },
-        )
-
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(self.UserModel.objects.filter(email=self.testEmail).exists())
-
-    def test_register_비밀번호_두_개는_서로_일치해야_한다(self):
-        password1 = self.testPassword
-        differentPassword = self.faker.password()
-
-        response = self.client.post(
-            self.registerUrl,
-            {
-                "email": self.testEmail,
-                "password1": password1,
-                "password2": differentPassword,
-            },
-        )
-
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(self.UserModel.objects.filter(email=self.testEmail).exists())
+        self.assertEqual(response1.status_code, 400)
+        self.assertEqual(response2.status_code, 201)
+        self.assertFalse(self.UserModel.objects.filter(name=nameWithSpecialCharacter).exists())
+        self.assertTrue(self.UserModel.objects.filter(name=nameWithOutSpecialCharacter).exists())
