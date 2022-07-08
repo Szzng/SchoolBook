@@ -13,10 +13,14 @@ class SchoolSerializer(serializers.ModelSerializer):
 class RegisterSerializer(serializers.Serializer):
     name = serializers.CharField(required=True)
 
-    def validate_name(self, name):
-        if len(name) < 3:
+    def validate(self, data):
+        if len(data['name']) < 3:
             raise ValidationError({'detail': '학교 이름은 3글자 이상이어야 합니다.'})
-        return name
+
+        if not data['name'].isalnum():
+            raise ValidationError({'detail': '학교 이름에는 특수문자가 포함될 수 없습니다.'})
+
+        return data
 
     def save(self):
         school = School(name=self.validated_data["name"])
