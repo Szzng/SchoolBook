@@ -64,7 +64,7 @@ class ToolBookingCreate(CreateAPIView):
             period, created = Period.objects.get_or_create(
                 school=request.user,
                 date=data['date'],
-                period=i,
+                period=int(i),
                 id=data['date'] + '-' + str(i)
             )
 
