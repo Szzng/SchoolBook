@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 import datetime as dt
 
-from tools.models import Tool
+from tools.models import Tool, ToolBooking
 
 
 class ToolSerializer(serializers.ModelSerializer):
@@ -31,27 +31,29 @@ class ToolSerializer(serializers.ModelSerializer):
         return data
 
 
-class ToolBookingSerializer(serializers.Serializer):
+class ToolBookingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ToolBooking
+        exclude = ('id',)
+
     tool = serializers.CharField(required=True)
     period = serializers.ListField(required=True)
     date = serializers.CharField(required=True)
-    booker = serializers.CharField(required=True)
-    quantity = serializers.IntegerField(required=True)
 
     def validate(self, data):
         for i in data['period']:
             if (int(i) <= 0) or (int(i) > 6):
                 raise ValidationError({'detail': "예약 교시를 확인하세요."})
 
-        try:
-            dt.datetime.strptime(data['date'], '%Y-%m-%d')
-        except:
-            raise ValidationError({'detail': "날짜 형식이 올바르지 않습니다."})
-
         if len(data['booker']) > 4:
             raise ValidationError({'detail': "예약자는 4글자 이하로 적어주세요."})
 
         if data['quantity'] <= 0:
             raise ValidationError({'detail': '0보다 큰 수를 입력해주세요.'})
+
+        try:
+            dt.datetime.strptime(data['date'], '%Y-%m-%d')
+        except:
+            raise ValidationError({'detail': "날짜 형식이 올바르지 않습니다."})
 
         return data

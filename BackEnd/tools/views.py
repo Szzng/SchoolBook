@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from accounts.decorators import assert_school_code
 from tools.actions import increaseLeft, getLeft, decreaseLeft
-from tools.models import Period, ToolBooking, Tool
+from tools.models import ToolBooking, Tool
 from tools.serializers import ToolSerializer, ToolBookingSerializer
 
 
@@ -54,52 +54,45 @@ class ToolRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
 @method_decorator(assert_school_code, name='create')
 class ToolBookingCreate(CreateAPIView):
     def create(self, request, *args, **kwargs):
+        tool = get_object_or_404(Tool, **{'school': request.user, 'name': self.request.data['tool']})
         serializer = ToolBookingSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        tool = get_object_or_404(Tool, **{'school': request.user, 'name': data['tool']})
-
         for i in data['period']:
-            period, created = Period.objects.get_or_create(
-                school=request.user,
-                date=data['date'],
-                period=int(i),
-                id=data['date'] + '-' + str(i)
-            )
-
-            decreaseLeft(tool, period, data['quantity'])
-
             ToolBooking.objects.create(
                 tool=tool,
-                period=period,
+                date=data['date'],
+                period=int(i),
                 booker=data['booker'],
                 quantity=data['quantity']
             )
+            decreaseLeft(tool, data['date'] + '-' + str(i), data['quantity'])
 
-        data = {
-            'school': request.user.name,
+        responseData = {
             'tool': tool.name,
+            'date': data['date'],
             'period': data['period'],
+            'booker': data['booker'],
             'quantity': data['quantity']
         }
 
-        return Response(data, status=status.HTTP_201_CREATED)
+        return Response(responseData, status=status.HTTP_201_CREATED)
 
 
 @method_decorator(assert_school_code, name='retrieve')
-class ToolBookingRetrieve(RetrieveAPIView):
+class ToolBookingsByDate(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         tool = get_object_or_404(Tool, **{'school': request.user, 'name': kwargs['tool']})
-        periods = Period.objects.filter(school=request.user, id__contains=kwargs['date']).order_by('id')
+        bookings = ToolBooking.objects.filter(tool=tool.id, date=kwargs['date'])
 
-        data = {}
-        for period in periods:
-            data[period.period] = list(
-                ToolBooking.objects.filter(
-                    tool=tool.id,
-                    period=period.id
-                ).values('id', 'booker', 'quantity'))
+        data = {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+        for booking in bookings:
+            data[booking.period].append({
+                'id': booking.id,
+                'booker': booking.booker,
+                'quantity': booking.quantity
+            })
 
         return Response(data)
 
@@ -114,13 +107,11 @@ class ToolBookingDestroy(DestroyAPIView):
 
 
 @method_decorator(assert_school_code, name='retrieve')
-class AvailableLeftRetrieve(RetrieveAPIView):
+class LeftQuantityRetrieve(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         tool = get_object_or_404(Tool, **{'school': request.user, 'name': kwargs['tool']})
-        periods = Period.objects.filter(school=request.user, id__contains=kwargs['date']).order_by('id')
-
         lefts = [tool.quantity] * 6
-        for period in periods:
-            lefts[period.period - 1] = getLeft(tool, period)
+        for i in range(6):
+            lefts[i] = getLeft(tool, kwargs['date']+'-'+str(i+1))
 
         return Response(lefts)
