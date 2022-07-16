@@ -2,15 +2,20 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 import datetime as dt
 
+from tools.models import Tool
 
-class ToolSerializer(serializers.Serializer):
-    name = serializers.CharField(required=True)
-    quantity = serializers.IntegerField(required=True)
-    place = serializers.CharField(required=True)
+
+class ToolSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tool
+        exclude = ('id', 'school')
 
     def validate(self, data):
         if len(data['name']) > 5:
             raise ValidationError({'detail': '이름은 5글자 이하로 적어주세요.'})
+
+        if not data['name'].isalnum():
+            raise ValidationError({'detail': '이름에는 특수문자가 포함될 수 없습니다.'})
 
         if data['quantity'] <= 0:
             raise ValidationError({'detail': '수량은 0보다 큰 수를 입력해주세요.'})
