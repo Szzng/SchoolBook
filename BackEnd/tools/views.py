@@ -20,15 +20,11 @@ class ToolListCreate(ListCreateAPIView):
         return Tool.objects.filter(school=self.request.user.code).order_by('name')
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=self.request.data)
+        requestData = self.request.data.copy()
+        requestData['school'] = request.user.code
+        serializer = self.get_serializer(data=requestData)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-
-        if Tool.objects.filter(school=request.user, name=data['name']).exists():
-            return Response(
-                data={'detail': '이미 등록된 이름입니다.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
         Tool.objects.create(
             school=request.user,

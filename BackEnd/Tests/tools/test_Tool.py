@@ -23,7 +23,8 @@ class ToolTestCase(TestCase):
         tools = ToolFactory.create_batch(10, school=self.school)
         toolsList = []
         for tool in tools:
-            toolsList.append(dict([('name', tool.name), ('quantity', tool.quantity), ('place', tool.place)]))
+            toolsList.append(dict([('school', self.school.name), ('name', tool.name), ('quantity', tool.quantity),
+                                   ('place', tool.place)]))
         toolsList = sorted(toolsList, key=lambda x: x['name'])
 
         response = self.client.get(self.listCreateUrl)
@@ -35,7 +36,8 @@ class ToolTestCase(TestCase):
         tools = ToolFactory.create_batch(10, school=self.school)
         toolsList = []
         for tool in tools:
-            toolsList.append(dict([('name', tool.name), ('quantity', tool.quantity), ('place', tool.place)]))
+            toolsList.append(dict([('school', self.school.name), ('name', tool.name), ('quantity', tool.quantity),
+                                   ('place', tool.place)]))
         toolsList = sorted(toolsList, key=lambda x: x['name'])
 
         response = self.client.get(self.listCreateUrl,
@@ -77,6 +79,7 @@ class ToolTestCase(TestCase):
 
         self.assertEqual(response.status_code, 401)
         self.assertNotEqual(response.data, {
+            'school': self.school.name,
             'name': tool.name,
             'quantity': tool.quantity,
             'place': tool.place
@@ -90,6 +93,7 @@ class ToolTestCase(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, {
+            'school': self.school.name,
             'name': tool.name,
             'quantity': tool.quantity,
             'place': tool.place
@@ -157,7 +161,7 @@ class ToolTestCase(TestCase):
         }, **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.data, {'detail': '이미 등록된 이름입니다.'})
+        self.assertIn('이미 등록된 이름입니다.', response.data['detail'])
 
     def test_tool_교구_이름은_5글자_이하이어야_한다(self):
         name5letters = '다섯글자임'
