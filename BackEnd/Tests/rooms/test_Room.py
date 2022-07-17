@@ -2,7 +2,7 @@ from django.test import TestCase
 from faker import Faker
 from Tests.Factories.Roomfactory import RoomFactory
 from accounts.models import School
-from rooms.models import Room
+from rooms.models import Room, FixedTimeTable
 
 
 class RoomTestCase(TestCase):
@@ -23,6 +23,8 @@ class RoomTestCase(TestCase):
 
         cls.listCreateUrl = "/api/rooms/setting/"
         cls.destoryUrl = "/api/rooms/setting/destroy/"
+        cls.timetableUpdateUrl = "/api/rooms/setting/timetable/"
+        cls.timetableRetrieveUrl = f"/api/rooms/setting/timetable/{cls.testName}/"
 
     '''CRUD TEST'''
 
@@ -105,6 +107,39 @@ class RoomTestCase(TestCase):
             school=room.school.code,
             name=room.name
         ).exists())
+
+    def test_room_올바른_학교_링크로_접속한_사용자는_기본_시간표를_수정할_수_있다(self):
+        data = {'room': self.testName, 'timetable': self.timetable}
+        self.client.post(self.listCreateUrl, data,
+                         content_type='application/json',
+                         **{'HTTP_AUTHORIZATION': self.school.code})
+        self.assertEqual(0, FixedTimeTable.objects.filter(booker='4-7').count())
+
+        updateData = {'room': self.testName,
+                      'timetable': {
+                          0: ['4-7', '', '', '', '', '4-7'],
+                          1: ['', '4-7', '', '', '4-7', ''],
+                          2: ['', '', '4-7', '', '', ''],
+                          3: ['', '', '', '4-7', '', ''],
+                          4: ['4-7', '', '', '', '4-7', '']
+                      }}
+        response = self.client.post(self.timetableUpdateUrl, updateData,
+                                    content_type='application/json',
+                                    **{'HTTP_AUTHORIZATION': self.school.code})
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(8, FixedTimeTable.objects.filter(booker='4-7').count())
+
+    def test_room_올바른_학교_링크로_접속한_사용자는_기본_시간표를_조회할_수_있다(self):
+        data = {'room': self.testName, 'timetable': self.timetable}
+        self.client.post(self.listCreateUrl, data,
+                         content_type='application/json',
+                         **{'HTTP_AUTHORIZATION': self.school.code})
+
+        response = self.client.get(self.timetableRetrieveUrl,
+                                   **{'HTTP_AUTHORIZATION': self.school.code})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, data['timetable'])
 
     '''Validation TEST'''
 

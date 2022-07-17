@@ -25,15 +25,15 @@ def createEvents(room, year, month, year_month):
 
 
 def saveTimetable(room, timetable):
-    for weekday, classList in timetable.items():
+    for weekday, classes in timetable.items():
         for period in range(6):
-            className = classList[period]
-            if (className is not None) and (len(className) >= 1):
+            booker = classes[period]
+            if (booker is not None) and (len(booker) >= 1):
                 FixedTimeTable.objects.create(
                     room=room,
                     weekday=weekday,
                     period=period + 1,
-                    booker=className
+                    booker=booker
                 )
             else:
                 EmptyTimeTable.objects.create(

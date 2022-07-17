@@ -44,7 +44,7 @@ class RoomDestroy(DestroyAPIView):
 
 
 @method_decorator(assert_school_code, name='create')
-class TimetableCreate(CreateAPIView):
+class TimetableUpdate(CreateAPIView):
     def create(self, request, *args, **kwargs):
         serializer = RoomTimetableSerializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
@@ -55,8 +55,7 @@ class TimetableCreate(CreateAPIView):
         EmptyTimeTable.objects.filter(room=room.id).delete()
         CreatedEvents.objects.filter(room=room.id).delete()
 
-        timetable = data['timetable']
-        saveTimetable(room, timetable)
+        saveTimetable(room, data['timetable'])
         return Response(status=status.HTTP_201_CREATED)
 
 
