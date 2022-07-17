@@ -19,15 +19,11 @@ class RoomListCreate(ListCreateAPIView):
         return Room.objects.filter(school=self.request.user.code).order_by('name')
 
     def create(self, request, *args, **kwargs):
-        serializer = RoomTimetableSerializer(data=self.request.data)
+        requestData = self.request.data.copy()
+        requestData['school'] = request.user.code
+        serializer = RoomTimetableSerializer(data=requestData)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-
-        if Room.objects.filter(school=request.user, name=data['room']).exists():
-            return Response(
-                data={'detail': '이미 등록된 이름입니다.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
         room = Room.objects.create(
             school=request.user,
