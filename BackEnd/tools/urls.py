@@ -9,6 +9,6 @@ urlpatterns = [
 
     path('', views.ToolBookingCreate.as_view()),
     path('<int:bookingId>/', views.ToolBookingDestroy.as_view()),
-    path('<str:tool>/<str:date>/', views.ToolBookingRetrieve.as_view()),
-    path('left/<str:tool>/<str:date>/', views.AvailableLeftRetrieve.as_view()),
+    path('<str:tool>/<str:date>/', views.ToolBookingsByDate.as_view()),
+    path('left/<str:tool>/<str:date>/', views.LeftQuantityRetrieve.as_view()),
 ]

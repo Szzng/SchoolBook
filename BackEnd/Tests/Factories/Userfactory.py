@@ -1,7 +1,7 @@
 import factory
-import accounts.models
+from accounts.models import School
 
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = accounts.models.School
+        model = School
