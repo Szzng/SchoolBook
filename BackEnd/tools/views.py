@@ -65,7 +65,8 @@ class ToolBookingCreate(CreateAPIView):
                 date=data['date'],
                 period=int(i),
                 booker=data['booker'],
-                quantity=data['quantity']
+                quantity=data['quantity'],
+                password=data['password']
             )
             decreaseLeft(tool, data['date'] + '-' + str(i), data['quantity'])
 
@@ -74,7 +75,8 @@ class ToolBookingCreate(CreateAPIView):
             'date': data['date'],
             'period': data['period'],
             'booker': data['booker'],
-            'quantity': data['quantity']
+            'quantity': data['quantity'],
+            'password': data['password']
         }
 
         return Response(responseData, status=status.HTTP_201_CREATED)
@@ -101,7 +103,12 @@ class ToolBookingsByDate(RetrieveAPIView):
 class ToolBookingDestroy(DestroyAPIView):
     def destroy(self, request, *args, **kwargs):
         booking = ToolBooking.objects.get(id=kwargs['bookingId'])
-        increaseLeft(booking.tool, booking.period, booking.quantity)
+
+        if booking.password != request.data['password']:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'detail': '잘못된 비밀번호입니다.'})
+
+        increaseLeft(booking.tool, str(booking.date) + '-' + str(booking.period), booking.quantity)
         booking.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -110,8 +117,8 @@ class ToolBookingDestroy(DestroyAPIView):
 class LeftQuantityRetrieve(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         tool = get_object_or_404(Tool, **{'school': request.user, 'name': kwargs['tool']})
-        lefts = [tool.quantity] * 6
+        lefts = [0] * 6
         for i in range(6):
-            lefts[i] = getLeft(tool, kwargs['date']+'-'+str(i+1))
+            lefts[i] = getLeft(tool, kwargs['date'] + '-' + str(i + 1))
 
         return Response(lefts)

@@ -33,7 +33,7 @@ function setInterceptors (instance) {
       if (error.response.status === 404) {
         generalStore.state.errorMsg = '잘못된 요청입니다😱'
       } else if (error.response.status >= 500) {
-        generalStore.state.errorMsg = '이런! 문제가 생겼습니다😱 잠시 후에 다시 이용해 주세요.'
+        generalStore.state.errorMsg = '문제가 생겼습니다😱 잠시 후에 다시 이용해 주세요.'
       } else {
         generalStore.state.errorMsg = error.response.data.detail
       }

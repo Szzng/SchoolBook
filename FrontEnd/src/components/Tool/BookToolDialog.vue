@@ -50,6 +50,16 @@
             color="primary"
             class="mt-3 px-3"
           ></v-text-field>
+          <v-text-field
+            v-model="password"
+            label="예약 취소용 비밀번호"
+            required
+            :rules="passwordRule"
+            type="number"
+            outlined
+            color="primary"
+            class="mt-3 px-3"
+          ></v-text-field>
           <v-card-actions>
             <v-btn
               block
@@ -76,9 +86,14 @@ export default {
     period: [],
     booker: '',
     quantity: 0,
+    password: '0000',
     bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 4) || '예약자는 4글자 이하로 적어주세요.'
+    ],
+    passwordRule: [
+      (v) => !!v || '예약 취소 시 사용할 비밀번호를 적어주세요.',
+      (v) => (v && v.length === 4) || '비밀번호는 숫자 4자리로 적어주세요.'
     ]
   }),
 
@@ -135,11 +150,12 @@ export default {
       }
       if (this.period.length && this.$refs.form.validate()) {
         const postData = {
-          'tool': this.focusTool,
-          'date': this.focusDate,
-          'period': this.period,
-          'booker': this.booker,
-          'quantity': this.quantity
+          tool: this.focusTool,
+          date: this.focusDate,
+          period: this.period,
+          booker: this.booker,
+          quantity: this.quantity,
+          password: this.password
         }
         api.BookTool(this, postData)
         this.$refs.form.reset()

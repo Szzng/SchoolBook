@@ -49,7 +49,10 @@ class ToolBookingSerializer(serializers.ModelSerializer):
             raise ValidationError({'detail': "예약자는 4글자 이하로 적어주세요."})
 
         if data['quantity'] <= 0:
-            raise ValidationError({'detail': '0보다 큰 수를 입력해주세요.'})
+            raise ValidationError({'detail': '대여 수량은 0보다 큰 수를 입력해주세요.'})
+
+        if (len(data['password']) != 4) or not data['password'].isdigit():
+            raise ValidationError({'detail': '4자리의 숫자로 이루어진 비밀번호를 입력해주세요.'})
 
         try:
             dt.datetime.strptime(data['date'], '%Y-%m-%d')

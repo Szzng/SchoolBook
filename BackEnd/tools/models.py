@@ -18,6 +18,7 @@ class ToolBooking(models.Model):
     period = models.PositiveSmallIntegerField()
     booker = models.CharField(max_length=10)
     quantity = models.PositiveSmallIntegerField()
+    password = models.CharField(max_length=4, default='0000')
 
     def __str__(self):
         return self.booker + "(" + str(self.quantity) + "대)"
