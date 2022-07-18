@@ -2,7 +2,6 @@ from random import randint
 
 from django.test import TestCase
 from faker import Faker
-import json
 from Tests.Factories.Toolfactory import ToolFactory
 from accounts.models import School
 from tools.models import Tool
@@ -113,7 +112,7 @@ class ToolTestCase(TestCase):
 
     def test_tool_올바른_학교_링크로_접속하지_않은_사용자는_교구를_수정할_수_없다(self):
         tool = ToolFactory(school=self.school, name=self.testName, quantity=80)
-        updateData = json.dumps({'name': tool.name, 'quantity': 10, 'place': self.testPlace})
+        updateData = {'name': tool.name, 'quantity': 10, 'place': self.testPlace}
 
         response = self.client.put(self.retrieveUpdateDestoryUrl, updateData, content_type='application/json')
 
@@ -124,7 +123,7 @@ class ToolTestCase(TestCase):
 
     def test_tool_올바른_학교_링크로_접속한_사용자는_교구를_수정할_수_있다(self):
         tool = ToolFactory(school=self.school, name=self.testName, quantity=80)
-        updateData = json.dumps({'name': tool.name, 'quantity': 10, 'place': self.testPlace})
+        updateData = {'name': tool.name, 'quantity': 10, 'place': self.testPlace}
 
         response = self.client.put(self.retrieveUpdateDestoryUrl,
                                    updateData,
@@ -231,7 +230,7 @@ class ToolTestCase(TestCase):
 
     def test_tool_교구_수량은_0_초과이어야_한다(self):
         overZero = randint(1, 100)
-        underZero = randint(-100, 1)
+        underZero = randint(-100, 0)
 
         response1 = self.client.post(self.listCreateUrl, {
             'name': self.testName,

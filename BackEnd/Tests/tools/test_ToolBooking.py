@@ -212,7 +212,7 @@ class ToolBookingTestCase(TestCase):
         self.assertEqual(rightResponse.status_code, 201)
         self.assertEqual(rightResponse.data, postData)
 
-    def test_toolBooking_대여_수량은_0_이상_잔여_수량_이하이어야_한다(self):
+    def test_toolBooking_대여_수량은_0_초과_잔여_수량_이하이어야_한다(self):
         postData = {
             'tool': self.tool.name,
             'date': self.faker.date(),
@@ -221,9 +221,9 @@ class ToolBookingTestCase(TestCase):
             'password': '0000'
         }
         standard = self.tool.quantity
-        lessQuantity = randint(-100, 1)
+        lessQuantity = randint(-100, 0)
         overQuantity = randint(standard + 1, standard + 100)
-        rightQuantity = randint(1, standard + 1)
+        rightQuantity = randint(1, standard)
 
         postData['quantity'] = lessQuantity
         wrongResponse1 = self.client.post(self.createUrl, postData,

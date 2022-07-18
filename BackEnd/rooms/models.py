@@ -28,6 +28,7 @@ class RoomBooking(models.Model):
     timetable = models.ForeignKey(EmptyTimeTable, on_delete=models.CASCADE)
     date = models.DateField()
     booker = models.CharField(max_length=20)
+    password = models.CharField(max_length=4, default='0000')
 
     def __str__(self):
         return self.booker

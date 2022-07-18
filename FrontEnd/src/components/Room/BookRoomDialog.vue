@@ -32,6 +32,16 @@
             class="mt-12 pt-2 px-3"
             :rules="bookerRule"
           ></v-text-field>
+          <v-text-field
+            v-model="password"
+            label="예약 취소용 비밀번호"
+            required
+            :rules="passwordRule"
+            type="number"
+            outlined
+            color="primary"
+            class="px-3"
+          ></v-text-field>
           <v-card-actions>
             <v-btn
               block
@@ -54,18 +64,28 @@ import { mapState } from 'vuex'
 import api from '@/api/modules/room'
 
 export default {
-  props: {
-  },
+  props: {},
   data: () => ({
     booker: '',
+    password: '0000',
     bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 4) || '예약자는 4글자 이하로 적어주세요.'
+    ],
+    passwordRule: [
+      (v) => !!v || '예약 취소 시 사용할 비밀번호를 적어주세요.',
+      (v) => (v && v.length === 4) || '비밀번호는 숫자 4자리로 적어주세요.'
     ]
   }),
 
   computed: {
-    ...mapState('roomStore', ['dialog', 'periods', 'focusDate', 'focusRoom', 'booking']),
+    ...mapState('roomStore', [
+      'dialog',
+      'periods',
+      'focusDate',
+      'focusRoom',
+      'booking'
+    ]),
     formatSelectedDate () {
       if (this.booking.start) {
         const date = this.booking.start.split('-')
@@ -87,7 +107,8 @@ export default {
           date: this.booking.start,
           period: this.booking.name,
           room: this.focusRoom,
-          booker: this.booker
+          booker: this.booker,
+          password: this.password
         }
         api.BookRoom(this, postData)
         this.$refs.form.reset()

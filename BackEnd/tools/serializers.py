@@ -56,7 +56,7 @@ class ToolBookingSerializer(serializers.ModelSerializer):
 
         try:
             dt.datetime.strptime(data['date'], '%Y-%m-%d')
-        except:
+        except ValueError:
             raise ValidationError({'detail': "날짜 형식이 올바르지 않습니다."})
 
         return data

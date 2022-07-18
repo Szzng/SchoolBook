@@ -27,9 +27,9 @@ export default {
       })
   },
 
-  DestroyRoomBooking (bookingId, room, date) {
+  DestroyRoomBooking (bookingId, password, room, date) {
     myAxios
-      .delete(Urls.room_DestroyBooking(bookingId))
+      .delete(Urls.room_DestroyBooking(bookingId), { data: {'password': password} })
       .then(response => {
         this.getRoomBookingsByDate(room, date)
         this.getAvailableEvents(room, date)

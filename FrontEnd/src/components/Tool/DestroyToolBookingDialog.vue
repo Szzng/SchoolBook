@@ -78,7 +78,12 @@ export default {
 
     destroyBooking () {
       if (this.$refs.password.validate()) {
-        api.DestroyToolBooking(this.booking.id, this.password, this.focusTool, this.focusDate)
+        api.DestroyToolBooking(
+          this.booking.id,
+          this.password,
+          this.focusTool,
+          this.focusDate
+        )
         this.dialog.destroyToolBooking = false
       }
     }
