@@ -32,7 +32,7 @@
           <v-row class="mx-10 mt-8">
             <v-text-field
               v-model="password"
-              label="예약 취소용 비밀번호"
+              label="예약 취소용 비밀번호 (숫자 4자리)"
               required
               :rules="passwordRule"
               type="number"
@@ -92,6 +92,7 @@ export default {
           this.focusRoom,
           this.focusDate
         )
+        this.$refs.password.reset()
         this.dialog.destroyRoomBooking = false
       }
     }

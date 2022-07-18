@@ -34,7 +34,7 @@
           ></v-text-field>
           <v-text-field
             v-model="password"
-            label="예약 취소용 비밀번호"
+            label="예약 취소용 비밀번호 (숫자 4자리)"
             required
             :rules="passwordRule"
             type="number"
@@ -67,7 +67,7 @@ export default {
   props: {},
   data: () => ({
     booker: '',
-    password: '0000',
+    password: '',
     bookerRule: [
       (v) => !!v || '예약자를 적어주세요.',
       (v) => (v && v.length <= 4) || '예약자는 4글자 이하로 적어주세요.'
