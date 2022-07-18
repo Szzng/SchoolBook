@@ -3,7 +3,7 @@ from rest_framework.generics import ListCreateAPIView, DestroyAPIView, RetrieveA
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-import datetime as dt
+from datetime import datetime as dt
 from accounts.decorators import assert_school_code
 from .actions import createEvents, saveTimetable
 from .models import Room, RoomBooking, FixedTimeTable, EmptyTimeTable, AvailableEvent, CreatedEvents
@@ -80,54 +80,43 @@ class TimetableRetrieve(RetrieveAPIView):
 @method_decorator(assert_school_code, name='create')
 class RoomBookingCreate(CreateAPIView):
     def create(self, request, *args, **kwargs):
-        serializer = RoomBookingCreateSerializer(data=self.request.data)
+        requestData = self.request.data.copy()
+        requestData['school'] = request.user.code
+        serializer = RoomBookingCreateSerializer(data=requestData)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        weekday = dt.datetime.strptime(data['date'], '%Y-%m-%d').weekday()
-        room = get_object_or_404(Room, **{'school': request.user, 'name': data['room']})
+        booking = RoomBooking.objects.create(
+            timetable=data['emptyTimetable'],
+            date=data['date'],
+            booker=data['booker'],
+            password=data['password']
+        )
 
-        emptyTimetable = get_object_or_404(EmptyTimeTable, **{
-            'room': room.id,
-            'weekday': weekday,
-            'period': data['period']
-        })
+        AvailableEvent.objects.filter(
+            timetable=data['emptyTimetable'],
+            start=data['date'],
+            name=str(data['period'])
+        ).delete()
 
-        try:
-            RoomBooking.objects.get(timetable=emptyTimetable, date=data['date'])
-            return Response(
-                data={'detail': '이미 예약 완료된 시간입니다.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        except:
-            booking = RoomBooking.objects.create(
-                timetable=emptyTimetable,
-                date=data['date'],
-                booker=data['booker'],
-            )
-
-            AvailableEvent.objects.filter(
-                timetable=emptyTimetable,
-                start=data['date'],
-                name=str(data['period'])
-            ).delete()
-
-        return Response(RoomBookingSerializer(booking).data)
+        return Response(status=status.HTTP_201_CREATED, data=RoomBookingSerializer(booking).data)
 
 
 @method_decorator(assert_school_code, name='retrieve')
-class RoomBookingRetrieve(RetrieveAPIView):
+class RoomBookingByDate(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
-        weekday = dt.datetime.strptime(kwargs['date'], '%Y-%m-%d').weekday()
         room = get_object_or_404(Room, **{'school': request.user, 'name': kwargs['room']})
-        timetable = FixedTimeTable.objects.filter(room=room.id, weekday=weekday).order_by('period')
-        bookings = RoomBooking.objects.filter(timetable__room_id=room.id, date=kwargs['date'])
-
         data = {1: '', 2: '', 3: '', 4: '', 5: '', 6: ''}
+
+        bookings = RoomBooking.objects.filter(timetable__room_id=room.id, date=kwargs['date'])
         for booking in bookings:
             data[booking.timetable.period] = {'id': booking.id, 'booker': booking.booker}
 
-        for period in timetable:
+        fixedTimetable = FixedTimeTable.objects.filter(
+            room=room.id,
+            weekday=dt.strptime(kwargs['date'], '%Y-%m-%d').weekday()
+        ).order_by('period')
+        for period in fixedTimetable:
             data[period.period] = {'id': 'fixed', 'booker': period.booker}
 
         return Response(data)
@@ -136,19 +125,24 @@ class RoomBookingRetrieve(RetrieveAPIView):
 @method_decorator(assert_school_code, name='destroy')
 class RoomBookingDestroy(DestroyAPIView):
     def destroy(self, request, *args, **kwargs):
-        roomBooking = RoomBooking.objects.get(id=kwargs['bookingId'])
+        booking = get_object_or_404(RoomBooking, id=kwargs['bookingId'])
+
+        if booking.password != request.data['password']:
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'detail': '잘못된 비밀번호입니다.'})
+
         AvailableEvent.objects.create(
-            timetable=roomBooking.timetable,
-            start=roomBooking.date,
-            name=roomBooking.timetable.period
+            timetable=booking.timetable,
+            start=booking.date,
+            name=booking.timetable.period
         )
-        roomBooking.delete()
+        booking.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @method_decorator(assert_school_code, name='retrieve')
-class AvailableEventByMonthRetrieve(RetrieveAPIView):
+class AvailableEventByMonth(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         room = get_object_or_404(Room, **{'school': request.user, 'name': kwargs['room']})
         year = kwargs['date'][:4]

@@ -10,9 +10,9 @@ urlpatterns = [
     path('setting/timetable/', views.TimetableUpdate.as_view()),
     path('setting/timetable/<str:room>/', views.TimetableRetrieve.as_view()),
 
-    path('events/<str:room>/<str:date>/', views.AvailableEventByMonthRetrieve.as_view()),
+    path('events/<str:room>/<str:date>/', views.AvailableEventByMonth.as_view()),
 
     path('', views.RoomBookingCreate.as_view()),
     path('<int:bookingId>/', views.RoomBookingDestroy.as_view()),
-    path('<str:room>/<str:date>/', views.RoomBookingRetrieve.as_view()),
+    path('<str:room>/<str:date>/', views.RoomBookingByDate.as_view()),
 ]

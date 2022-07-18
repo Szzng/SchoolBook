@@ -230,7 +230,7 @@ class ToolTestCase(TestCase):
 
     def test_tool_교구_수량은_0_초과이어야_한다(self):
         overZero = randint(1, 100)
-        underZero = randint(-100, 1)
+        underZero = randint(-100, 0)
 
         response1 = self.client.post(self.listCreateUrl, {
             'name': self.testName,

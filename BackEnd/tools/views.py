@@ -102,7 +102,7 @@ class ToolBookingsByDate(RetrieveAPIView):
 @method_decorator(assert_school_code, name='destroy')
 class ToolBookingDestroy(DestroyAPIView):
     def destroy(self, request, *args, **kwargs):
-        booking = ToolBooking.objects.get(id=kwargs['bookingId'])
+        booking = get_object_or_404(ToolBooking, id=kwargs['bookingId'])
 
         if booking.password != request.data['password']:
             return Response(status=status.HTTP_400_BAD_REQUEST,
