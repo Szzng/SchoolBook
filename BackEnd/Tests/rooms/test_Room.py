@@ -1,11 +1,11 @@
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from faker import Faker
 from Tests.Factories.Roomfactory import RoomFactory
 from accounts.models import School
 from rooms.models import Room, FixedTimeTable
 
 
-class RoomTestCase(TestCase):
+class RoomTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.faker = Faker('ko_KR')
@@ -31,8 +31,8 @@ class RoomTestCase(TestCase):
     def test_room_올바른_학교_링크로_접속하지_않은_사용자는_새로운_교실을_생성할_수_없다(self):
         data = {'room': self.testName, 'timetable': self.timetable}
 
-        response1 = self.client.post(self.listCreateUrl, data, content_type='application/json')
-        response2 = self.client.post(self.listCreateUrl, data, content_type='application/json',
+        response1 = self.client.post(self.listCreateUrl, data, format='json')
+        response2 = self.client.post(self.listCreateUrl, data, format='json',
                                      **{'HTTP_AUTHORIZATION': self.otherSchool.code})
 
         self.assertEqual(response1.status_code, 401)
@@ -45,7 +45,7 @@ class RoomTestCase(TestCase):
         data = {'room': self.testName, 'timetable': self.timetable}
 
         response = self.client.post(self.listCreateUrl, data,
-                                    content_type='application/json',
+                                    format='json',
                                     **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(response.status_code, 201)
@@ -86,8 +86,7 @@ class RoomTestCase(TestCase):
     def test_room_올바른_학교_링크로_접속하지_않은_사용자는_교실을_삭제할_수_없다(self):
         room = RoomFactory()
 
-        response = self.client.delete(self.destoryUrl, data={'room': room.name},
-                                      content_type='application/json')
+        response = self.client.delete(self.destoryUrl, data={'room': room.name})
 
         self.assertEqual(response.status_code, 401)
         self.assertTrue(Room.objects.filter(
@@ -99,7 +98,6 @@ class RoomTestCase(TestCase):
         room = RoomFactory()
 
         response = self.client.delete(self.destoryUrl, data={'room': room.name},
-                                      content_type='application/json',
                                       **{'HTTP_AUTHORIZATION': room.school.code})
 
         self.assertEqual(response.status_code, 204)
@@ -111,7 +109,7 @@ class RoomTestCase(TestCase):
     def test_room_올바른_학교_링크로_접속한_사용자는_기본_시간표를_수정할_수_있다(self):
         data = {'room': self.testName, 'timetable': self.timetable}
         self.client.post(self.listCreateUrl, data,
-                         content_type='application/json',
+                         format='json',
                          **{'HTTP_AUTHORIZATION': self.school.code})
         self.assertEqual(0, FixedTimeTable.objects.filter(booker='4-7').count())
 
@@ -124,7 +122,7 @@ class RoomTestCase(TestCase):
                           4: ['4-7', '', '', '', '4-7', '']
                       }}
         response = self.client.post(self.timetableUpdateUrl, updateData,
-                                    content_type='application/json',
+                                    format='json',
                                     **{'HTTP_AUTHORIZATION': self.school.code})
         self.assertEqual(response.status_code, 201)
         self.assertEqual(8, FixedTimeTable.objects.filter(booker='4-7').count())
@@ -132,7 +130,7 @@ class RoomTestCase(TestCase):
     def test_room_올바른_학교_링크로_접속한_사용자는_기본_시간표를_조회할_수_있다(self):
         data = {'room': self.testName, 'timetable': self.timetable}
         self.client.post(self.listCreateUrl, data,
-                         content_type='application/json',
+                         format='json',
                          **{'HTTP_AUTHORIZATION': self.school.code})
 
         response = self.client.get(self.timetableRetrieveUrl,
@@ -151,7 +149,7 @@ class RoomTestCase(TestCase):
 
         response = self.client.post(self.listCreateUrl,
                                     {'room': room.name, 'timetable': self.timetable},
-                                    content_type='application/json',
+                                    format='json',
                                     **{'HTTP_AUTHORIZATION': room.school.code})
 
         self.assertEqual(response.status_code, 400)
@@ -165,7 +163,7 @@ class RoomTestCase(TestCase):
 
         response = self.client.post(self.listCreateUrl,
                                     {'room': room.name, 'timetable': self.timetable},
-                                    content_type='application/json',
+                                    format='json',
                                     **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(response.status_code, 201)
@@ -176,11 +174,11 @@ class RoomTestCase(TestCase):
 
         rightResponse = self.client.post(self.listCreateUrl,
                                          {'room': name5letters, 'timetable': self.timetable},
-                                         content_type='application/json',
+                                         format='json',
                                          **{'HTTP_AUTHORIZATION': self.school.code})
         wrongResponse = self.client.post(self.listCreateUrl,
                                          {'room': nameOver5lertters, 'timetable': self.timetable},
-                                         content_type='application/json',
+                                         format='json',
                                          **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(rightResponse.status_code, 201)
@@ -194,11 +192,11 @@ class RoomTestCase(TestCase):
 
         rightResponse = self.client.post(self.listCreateUrl,
                                          {'room': nameWithOutSpecialCharacter, 'timetable': self.timetable},
-                                         content_type='application/json',
+                                         format='json',
                                          **{'HTTP_AUTHORIZATION': self.school.code})
         wrongResponse = self.client.post(self.listCreateUrl,
                                          {'room': nameWithSpecialCharacter, 'timetable': self.timetable},
-                                         content_type='application/json',
+                                         format='json',
                                          **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(rightResponse.status_code, 201)

@@ -1,11 +1,11 @@
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from faker import Faker
 from accounts.models import School, generate_school_code
 from Tests.Factories.Userfactory import UserFactory
 from django.db.utils import IntegrityError
 
 
-class RegisterTestCase(TestCase):
+class RegisterTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.UserModel = School
