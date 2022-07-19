@@ -115,8 +115,7 @@ class RoomBookingTestCase(APITestCase):
         booking = RoomBookingFactory(password='1111')
 
         response = self.client.delete(f'/api/rooms/{booking.id}/',
-                                      data={'password': '1111'},
-                                      format='json')
+                                      data={'password': '1111'})
 
         self.assertEqual(response.status_code, 401)
         self.assertTrue(RoomBooking.objects.filter(id=booking.id).exists())
@@ -126,7 +125,6 @@ class RoomBookingTestCase(APITestCase):
 
         response = self.client.delete(f'/api/rooms/{booking.id}/',
                                       data={'password': '1111'},
-                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.timetable.room.school.code})
 
         self.assertEqual(response.status_code, 400)
@@ -137,7 +135,6 @@ class RoomBookingTestCase(APITestCase):
 
         response = self.client.delete(f'/api/rooms/{booking.id}/',
                                       data={'password': '1111'},
-                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.timetable.room.school.code})
 
         self.assertEqual(response.status_code, 204)

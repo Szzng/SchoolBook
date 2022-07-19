@@ -84,9 +84,7 @@ class ToolBookingTestCase(APITestCase):
         booking = ToolBookingFactory(password='1111')
 
         response = self.client.delete(f'/api/tools/{booking.id}/',
-                                      data={'password': '1111'},
-                                      format='json')
-
+                                      data={'password': '1111'})
         self.assertEqual(response.status_code, 401)
         self.assertTrue(ToolBooking.objects.filter(id=booking.id).exists())
 
@@ -95,7 +93,6 @@ class ToolBookingTestCase(APITestCase):
 
         response = self.client.delete(f'/api/tools/{booking.id}/',
                                       data={'password': '0000'},
-                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.tool.school.code})
 
         self.assertEqual(response.status_code, 400)
@@ -106,7 +103,6 @@ class ToolBookingTestCase(APITestCase):
 
         response = self.client.delete(f'/api/tools/{booking.id}/',
                                       data={'password': '1111'},
-                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.tool.school.code})
 
         self.assertEqual(response.status_code, 204)
@@ -144,7 +140,6 @@ class ToolBookingTestCase(APITestCase):
         booking = ToolBooking.objects.get(**postData)
         self.client.delete(f'/api/tools/{booking.id}/',
                            data={'password': '0000'},
-                           format='json',
                            **{'HTTP_AUTHORIZATION': booking.tool.school.code})
         afterLefts = getLeft(self.tool, str(postData['date']) + '-' + '1')
 

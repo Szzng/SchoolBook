@@ -86,8 +86,7 @@ class RoomTestCase(APITestCase):
     def test_room_올바른_학교_링크로_접속하지_않은_사용자는_교실을_삭제할_수_없다(self):
         room = RoomFactory()
 
-        response = self.client.delete(self.destoryUrl, data={'room': room.name},
-                                      format='json')
+        response = self.client.delete(self.destoryUrl, data={'room': room.name})
 
         self.assertEqual(response.status_code, 401)
         self.assertTrue(Room.objects.filter(
@@ -99,7 +98,6 @@ class RoomTestCase(APITestCase):
         room = RoomFactory()
 
         response = self.client.delete(self.destoryUrl, data={'room': room.name},
-                                      format='json',
                                       **{'HTTP_AUTHORIZATION': room.school.code})
 
         self.assertEqual(response.status_code, 204)

@@ -114,7 +114,7 @@ class ToolTestCase(APITestCase):
         tool = ToolFactory(school=self.school, name=self.testName, quantity=80)
         updateData = {'name': tool.name, 'quantity': 10, 'place': self.testPlace}
 
-        response = self.client.put(self.retrieveUpdateDestoryUrl, updateData, format='json')
+        response = self.client.put(self.retrieveUpdateDestoryUrl, updateData)
 
         self.assertEqual(response.status_code, 401)
         self.assertNotEqual(Tool.objects.filter(school=self.school.code, name=self.testName).get().quantity, 10)
@@ -127,7 +127,6 @@ class ToolTestCase(APITestCase):
 
         response = self.client.put(self.retrieveUpdateDestoryUrl,
                                    updateData,
-                                   format='json',
                                    **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(response.status_code, 200)
