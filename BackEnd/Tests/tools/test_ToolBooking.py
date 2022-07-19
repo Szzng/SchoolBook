@@ -85,7 +85,7 @@ class ToolBookingTestCase(APITestCase):
 
         response = self.client.delete(f'/api/tools/{booking.id}/',
                                       data={'password': '1111'},
-                                      content_type='application/json')
+                                      format='json')
 
         self.assertEqual(response.status_code, 401)
         self.assertTrue(ToolBooking.objects.filter(id=booking.id).exists())
@@ -95,7 +95,7 @@ class ToolBookingTestCase(APITestCase):
 
         response = self.client.delete(f'/api/tools/{booking.id}/',
                                       data={'password': '0000'},
-                                      content_type='application/json',
+                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.tool.school.code})
 
         self.assertEqual(response.status_code, 400)
