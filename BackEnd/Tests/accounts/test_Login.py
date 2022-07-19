@@ -1,10 +1,10 @@
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from faker import Faker
 
 from accounts.models import School, generate_school_code
 
 
-class LoginTestCase(TestCase):
+class LoginTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.loginUrl = "/api/accounts/login/"

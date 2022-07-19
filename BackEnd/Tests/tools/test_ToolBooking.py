@@ -1,7 +1,7 @@
 import random
 from random import randint
 
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from faker import Faker
 
 from Tests.Factories.Toolfactory import ToolFactory, ToolBookingFactory
@@ -10,7 +10,7 @@ from tools.actions import getLeft
 from tools.models import ToolBooking
 
 
-class ToolBookingTestCase(TestCase):
+class ToolBookingTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.faker = Faker('ko_KR')
@@ -106,7 +106,7 @@ class ToolBookingTestCase(TestCase):
 
         response = self.client.delete(f'/api/tools/{booking.id}/',
                                       data={'password': '1111'},
-                                      content_type='application/json',
+                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.tool.school.code})
 
         self.assertEqual(response.status_code, 204)
@@ -144,7 +144,7 @@ class ToolBookingTestCase(TestCase):
         booking = ToolBooking.objects.get(**postData)
         self.client.delete(f'/api/tools/{booking.id}/',
                            data={'password': '0000'},
-                           content_type='application/json',
+                           format='json',
                            **{'HTTP_AUTHORIZATION': booking.tool.school.code})
         afterLefts = getLeft(self.tool, str(postData['date']) + '-' + '1')
 

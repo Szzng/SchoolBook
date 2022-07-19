@@ -1,13 +1,13 @@
 import random
 from random import randint
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from faker import Faker
 from Tests.Factories.Roomfactory import RoomFactory, RoomBookingFactory, EmptyTimeTableFactory
 from accounts.models import School
 from rooms.models import RoomBooking, AvailableEvent, Room
 
 
-class RoomBookingTestCase(TestCase):
+class RoomBookingTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.faker = Faker('ko_KR')
@@ -27,7 +27,7 @@ class RoomBookingTestCase(TestCase):
     def setUp(self):
         self.client.post("/api/rooms/setting/",
                          {'room': self.testName, 'timetable': self.timetable},
-                         content_type='application/json',
+                         format='json',
                          **{'HTTP_AUTHORIZATION': self.school.code})
 
     '''CRUD TEST'''
@@ -116,7 +116,7 @@ class RoomBookingTestCase(TestCase):
 
         response = self.client.delete(f'/api/rooms/{booking.id}/',
                                       data={'password': '1111'},
-                                      content_type='application/json')
+                                      format='json')
 
         self.assertEqual(response.status_code, 401)
         self.assertTrue(RoomBooking.objects.filter(id=booking.id).exists())
@@ -126,7 +126,7 @@ class RoomBookingTestCase(TestCase):
 
         response = self.client.delete(f'/api/rooms/{booking.id}/',
                                       data={'password': '1111'},
-                                      content_type='application/json',
+                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.timetable.room.school.code})
 
         self.assertEqual(response.status_code, 400)
@@ -137,7 +137,7 @@ class RoomBookingTestCase(TestCase):
 
         response = self.client.delete(f'/api/rooms/{booking.id}/',
                                       data={'password': '1111'},
-                                      content_type='application/json',
+                                      format='json',
                                       **{'HTTP_AUTHORIZATION': booking.timetable.room.school.code})
 
         self.assertEqual(response.status_code, 204)

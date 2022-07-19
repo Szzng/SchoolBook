@@ -1,13 +1,13 @@
 from random import randint
 
-from django.test import TestCase
+from rest_framework.test import APITestCase
 from faker import Faker
 from Tests.Factories.Toolfactory import ToolFactory
 from accounts.models import School
 from tools.models import Tool
 
 
-class ToolTestCase(TestCase):
+class ToolTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.faker = Faker('ko_KR')
@@ -127,7 +127,7 @@ class ToolTestCase(TestCase):
 
         response = self.client.put(self.retrieveUpdateDestoryUrl,
                                    updateData,
-                                   content_type='application/json',
+                                   format='json',
                                    **{'HTTP_AUTHORIZATION': self.school.code})
 
         self.assertEqual(response.status_code, 200)
