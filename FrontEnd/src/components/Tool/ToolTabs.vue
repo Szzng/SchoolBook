@@ -1,9 +1,8 @@
 <template>
   <div class="pt-2">
-    <v-container v-if="tools.length > 0">
-      <v-row class="fill-height mx-12 mt-10">
-        <v-col cols="12">
-          <v-tabs v-model="activeTab" centered grow color="success">
+    <v-sheet class="mx-12" v-if="tools.length > 0">
+      <v-row class="fill-height mx-10 mt-16 mb-8">
+          <v-tabs v-model="activeTab" centered grow color="success" class="mx-12">
             <v-tabs-slider></v-tabs-slider>
             <v-tab
               class="success--text"
@@ -18,17 +17,19 @@
               {{ tool.name }}
             </v-tab>
           </v-tabs>
-        </v-col>
       </v-row>
-    </v-container>
+
+      <router-view />
+
+    </v-sheet>
 
     <v-container v-else class="mt-16">
       <v-card class="mt-10" flat>
         <v-row align="center" justify="center">
           <v-card-title style="font-size: 30px">
-            <v-icon x-large class="mr-2">mdi-tablet-cellphone</v-icon>
-            등록된 물품 · 교구가 없습니다.
-            <v-icon x-large class="ml-2">mdi-tablet-cellphone</v-icon>
+            <strong> {{ $store.state.generalStore.school.name }}</strong
+            >의 등록된 물품 · 교구가 없습니다.
+            <v-icon x-large class="ml-2" color="black">mdi-tab-search</v-icon>
           </v-card-title>
 
           <v-card-title style="font-size: 30px">
@@ -41,10 +42,10 @@
             >에서 물품 · 교구를 등록하고 관리해보세요.
           </v-card-title>
         </v-row>
+        <v-img src="/static/images/empty.png" contain aspect-ratio="2.8" class="mt-16"></v-img>
       </v-card>
     </v-container>
 
-    <router-view />
   </div>
 </template>
 
@@ -73,3 +74,6 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+</style>

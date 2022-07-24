@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from accounts.decorators import assert_school_code
 from tools.actions import increaseLeft, getLeft, decreaseLeft
-from tools.models import ToolBooking, Tool
+from tools.models import ToolBooking, Tool, LeftQuantity
 from tools.serializers import ToolSerializer, ToolBookingSerializer
 
 
@@ -50,6 +50,19 @@ class ToolRetrieveUpdateDestroy(RetrieveUpdateDestroyAPIView):
         obj = get_object_or_404(queryset, **filter_kwargs)
         return obj
 
+    def update(self, request, *args, **kwargs):
+        tool = self.get_object()
+        serializer = self.get_serializer(tool, data=request.data, partial=False)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        LeftQuantity.objects.filter(tool=tool.id).update(left=tool.quantity)
+
+        if getattr(tool, '_prefetched_objects_cache', None):
+            tool._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
 
 @method_decorator(assert_school_code, name='create')
 class ToolBookingCreate(CreateAPIView):
@@ -88,7 +101,7 @@ class ToolBookingsByDate(RetrieveAPIView):
         tool = get_object_or_404(Tool, **{'school': request.user, 'name': kwargs['tool']})
         bookings = ToolBooking.objects.filter(tool=tool.id, date=kwargs['date'])
 
-        data = {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+        data = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []}
         for booking in bookings:
             data[booking.period].append({
                 'id': booking.id,
@@ -117,8 +130,8 @@ class ToolBookingDestroy(DestroyAPIView):
 class LeftQuantityRetrieve(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         tool = get_object_or_404(Tool, **{'school': request.user, 'name': kwargs['tool']})
-        lefts = [0] * 6
-        for i in range(6):
+        lefts = [0] * 7
+        for i in range(7):
             lefts[i] = getLeft(tool, kwargs['date'] + '-' + str(i + 1))
 
         return Response(lefts)

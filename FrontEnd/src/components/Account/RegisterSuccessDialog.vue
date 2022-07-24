@@ -19,7 +19,7 @@
           <v-card-title class="success--text text-center">
             <strong
               >아래 링크를 복사하여 저장·공유하세요.<br />
-              링크는 다시 확인할 수 없습니다.
+              이 링크는 다시는 확인할 수 없습니다.
             </strong>
           </v-card-title>
         </v-row>
@@ -29,7 +29,7 @@
             <v-text-field
               v-model="link"
               outlined
-              label="복사하여 저장 · 공유하세요."
+              label="복사하여 어딘가에 저장 · 공유하세요."
               hide-details
               readonly
             ></v-text-field>
@@ -72,7 +72,7 @@ export default {
       navigator.clipboard
         .writeText(this.link)
         .then(() => {
-          const msg = '학교 링크 복사 완료! 어디든지 붙여 넣으세요! (Ctrl + V)'
+          const msg = '학교 링크 복사 완료! 어디든지 붙여 넣으세요! (Ctrl + v)'
           this.$store.commit('generalStore/successMsgSetter', msg)
           this.dialog.success = true
         })

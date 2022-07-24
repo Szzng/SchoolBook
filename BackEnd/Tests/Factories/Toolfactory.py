@@ -25,7 +25,7 @@ class ToolBookingFactory(factory.django.DjangoModelFactory):
 
     tool = SubFactory(ToolFactory)
     date = factory.Faker('date_object')
-    period = factory.Faker('pyint', min_value=1, max_value=6)
+    period = factory.Faker('pyint', min_value=1, max_value=7)
     booker = factory.Faker('word')
     quantity = bookingQuantity
     password = '0000'

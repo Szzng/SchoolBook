@@ -2,7 +2,7 @@
   <div>
     <v-dialog
       v-model="dialog.bookTool"
-      max-width="500"
+      max-width="50vw"
       content-class="book-dialog"
       persistent
     >
@@ -18,7 +18,7 @@
 
         <v-form v-if="left" ref="form" lazy-validation>
           <v-row justify="center" class="mt-5">
-            <v-col cols="4" class="py-0" v-for="item in periods" :key="item">
+            <v-col cols="3" class="py-3" v-for="item in periods" :key="item">
               <v-checkbox
                 v-model="period"
                 :label="`${item}교시 (${left[item - 1]}대)`"

@@ -2,6 +2,7 @@ import myAxios from '@/api/AxiosInstanceController'
 import Urls from '@/api/urls'
 import roomStore from '@/store/modules/roomStore'
 import toolStore from '@/store/modules/toolStore'
+import generalStore from '@/store/modules/generalStore'
 
 export default {
   getTools () {
@@ -27,6 +28,7 @@ export default {
     myAxios
       .get(Urls.setting_Tool_RetrieveUpdateDestory(tool))
       .then(response => {
+        delete response.data['school']
         component.tool = response.data
         component.dialog.updateTool = true
       })
@@ -50,7 +52,8 @@ export default {
     myAxios
       .put(Urls.setting_Tool_RetrieveUpdateDestory(tool), updateData)
       .then(response => {
-        alert('수정완료')
+        generalStore.state.successMsg = '수정 완료!'
+        generalStore.state.dialog.success = true
       })
       .catch(error => {
         console.log('updateTool patch error', error)
@@ -106,7 +109,8 @@ export default {
     myAxios
       .post(Urls.setting_UpdateTimetable, postData)
       .then(response => {
-        this.getTimetable(postData.room)
+        generalStore.state.successMsg = '수정 완료!'
+        generalStore.state.dialog.success = true
       })
       .catch(error => {
         console.log('updateTimetable POST error', error)

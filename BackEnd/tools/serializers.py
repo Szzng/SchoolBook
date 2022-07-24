@@ -42,7 +42,7 @@ class ToolBookingSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         for i in data['period']:
-            if (int(i) <= 0) or (int(i) > 6):
+            if (int(i) <= 0) or (int(i) > 7):
                 raise ValidationError({'detail': "예약 교시를 확인하세요."})
 
         if len(data['booker']) > 4:

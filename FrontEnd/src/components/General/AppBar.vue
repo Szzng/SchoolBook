@@ -43,8 +43,8 @@
 
 <script>
 import { mapState } from 'vuex'
-import RegisterDialog from '@/components/General/RegisterDialog.vue'
-import LogoutDialog from '@/components/General/LogoutDialog.vue'
+import RegisterDialog from '@/components/Account/RegisterDialog.vue'
+import LogoutDialog from '@/components/Account/LogoutDialog.vue'
 
 export default {
   components: { RegisterDialog, LogoutDialog },

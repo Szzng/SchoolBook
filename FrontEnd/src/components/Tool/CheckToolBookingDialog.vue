@@ -1,114 +1,124 @@
 <template>
-  <div class="mt-16 pt-4 mr-10">
-    <v-sheet v-show="!selected" outlined min-height="520">
-      <v-card class="pl-3" flat>
-        <v-card-actions class="mb-5">
+  <div>
+    <div v-show="!selected">
+      <v-sheet height="10vh">
+        <v-toolbar flat>
           <v-spacer></v-spacer>
-          <v-card-title class="pl-0 pt-1"
+          <v-toolbar-title class="pl-0 pt-1"
             >달력에서 예약 날짜를 선택하세요.
-          </v-card-title>
+          </v-toolbar-title>
           <v-spacer></v-spacer>
-        </v-card-actions>
+        </v-toolbar>
+      </v-sheet>
 
-        <v-card
-          v-for="period in periods"
-          :key="period"
-          flat
-          class="my-0 py-0"
-          min-height="83"
-        >
-          <v-row align="center">
-            <v-col sm="12" md="3">
-              <v-card-subtitle class="pb-1 pl-6 black--text">
-                {{ period }}교시
-                <span class="accent--text">+ 잔여 대수</span>
-              </v-card-subtitle>
-            </v-col>
+      <v-sheet outlined min-height="68vh">
+        <v-row class="mx-1 mt-3">
+          <v-col cols="6" v-for="period in periods" :key="period" class="my-1">
+            <v-card flat min-height="14vh">
+              <v-row align="center" justify="center">
+                <v-col cols="3" class="px-0 text-center">
+                  <v-card-subtitle class="black--text">
+                    {{ period }}교시 <br />
+                    <span class="accent--text">+잔여 수량</span>
+                  </v-card-subtitle>
+                </v-col>
 
-            <v-col class="pa-0">
-              <v-card-text class="pa-0">
-                <v-chip-group column>
-                 <v-chip
-                    v-if="[2, 3, 4].includes(period)"
-                    :color="colors[0]"
-                    outlined
-                  >
-                    <v-avatar left>
-                      <v-icon>mdi-checkbox-marked-circle</v-icon>
-                    </v-avatar>
-                    예약자1 (OO대)
-                  </v-chip>
-                  <v-chip v-if="period == 3" :color="colors[1]" outlined>
-                    <v-avatar left>
-                      <v-icon>mdi-checkbox-marked-circle</v-icon>
-                    </v-avatar>
-                    예약자2 (OO대)
-                  </v-chip>
-                </v-chip-group>
-              </v-card-text>
-            </v-col>
-          </v-row>
-          <v-divider class="my-3 ml-3 mr-7"></v-divider>
-        </v-card>
-      </v-card>
-    </v-sheet>
+                <v-col cols="9" class="px-3 pt-0">
+                  <v-chip-group column>
+                    <v-chip
+                      v-if="[2, 3, 4, 5, 6, 7].includes(period)"
+                      :color="colors[0]"
+                      outlined
+                    >
+                      <v-avatar left>
+                        <v-icon>mdi-checkbox-marked-circle</v-icon>
+                      </v-avatar>
+                      예약자1 (O대)
+                    </v-chip>
+                    <v-chip
+                      v-if="[3, 4, 5].includes(period)"
+                      :color="colors[1]"
+                      outlined
+                    >
+                      <v-avatar left>
+                        <v-icon>mdi-checkbox-marked-circle</v-icon>
+                      </v-avatar>
+                      예약자2 (O대)
+                    </v-chip>
+                    <v-chip v-if="period == 5" :color="colors[2]" outlined>
+                      <v-avatar left>
+                        <v-icon>mdi-checkbox-marked-circle</v-icon>
+                      </v-avatar>
+                      예약자3 (O대)
+                    </v-chip>
+                  </v-chip-group>
+                </v-col>
+              </v-row>
+              <v-divider class="mx-5 mt-2"></v-divider>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-sheet>
+    </div>
 
-    <v-sheet v-show="selected" outlined min-height="520">
-      <v-card class="pl-3" flat>
-        <v-card-actions class="mb-5">
+    <div v-show="selected">
+      <v-sheet height="10vh">
+        <v-toolbar flat>
+          <v-btn disabled text x-large class="pl-3 mt-2">
+            {{ focusTool }}
+          </v-btn>
+
           <v-spacer></v-spacer>
-          <v-card-title class="pl-0 pt-1"
+
+          <v-toolbar-title class="pl-0 pt-1"
             >{{ formatSelectedDate }}
-            <v-card-subtitle class="accent--text ma-0 pa-0 pl-1 pt-2">
-              {{ focusTool }}</v-card-subtitle
-            >
-          </v-card-title>
+          </v-toolbar-title>
+
           <v-spacer></v-spacer>
+
           <v-btn color="primary" class="pr-0 mr-2" @click="bookTool">
             예약
             <v-icon left class="ml-0"> mdi-clock-plus-outline </v-icon>
           </v-btn>
-        </v-card-actions>
+        </v-toolbar>
+      </v-sheet>
 
-        <v-card
-          v-for="period in periods"
-          :key="period"
-          flat
-          class="my-0 py-0"
-          min-height="83"
-        >
-          <v-row align="center">
-            <v-col sm="12" md="3">
-              <v-card-subtitle class="pb-1 pl-6 black--text">
-                {{ period }}교시
-                <span class="accent--text">+ {{ left[period - 1] }}대</span>
-              </v-card-subtitle>
-            </v-col>
+      <v-sheet outlined min-height="68vh">
+        <v-row class="mx-1 mt-3">
+          <v-col cols="6" v-for="period in periods" :key="period" class="my-1">
+            <v-card flat min-height="14vh">
+              <v-row align="center" justify="center">
+                <v-col cols="3" class="px-0 text-center">
+                  <v-card-subtitle class="black--text">
+                    {{ period }}교시 <br />
+                    <span class="accent--text">+{{ left[period - 1] }}대</span>
+                  </v-card-subtitle>
+                </v-col>
 
-            <v-col class="pa-0">
-              <v-card-text class="pa-0">
-                <v-chip-group column>
-                  <v-chip
-                    v-for="(booking, i) in toolBookingLists[period]"
-                    :key="i"
-                    :color="colors[period - 1]"
-                    outlined
-                    class="mb-0"
-                    @click="assertDestroyBooking(booking)"
-                  >
-                    <v-avatar left>
-                      <v-icon>mdi-checkbox-marked-circle</v-icon>
-                    </v-avatar>
-                    {{ booking.booker }} ({{ booking.quantity }}대)
-                  </v-chip>
-                </v-chip-group>
-              </v-card-text>
-            </v-col>
-          </v-row>
-          <v-divider class="my-3 ml-3 mr-7"></v-divider>
-        </v-card>
-      </v-card>
-    </v-sheet>
+                <v-col cols="9" class="px-3 pt-0">
+                  <v-chip-group column>
+                    <v-chip
+                      v-for="(booking, i) in toolBookingLists[period]"
+                      :key="i"
+                      :color="colors[i]"
+                      outlined
+                      class="mb-0"
+                      @click="assertDestroyBooking(booking)"
+                    >
+                      <v-avatar left>
+                        <v-icon>mdi-checkbox-marked-circle</v-icon>
+                      </v-avatar>
+                      {{ booking.booker }} ({{ booking.quantity }}대)
+                    </v-chip>
+                  </v-chip-group>
+                </v-col>
+              </v-row>
+              <v-divider class="mx-5 mt-2"></v-divider>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-sheet>
+    </div>
 
     <BookToolDialog />
     <DestroyToolBookingDialog :booking="bookingToDestory" />

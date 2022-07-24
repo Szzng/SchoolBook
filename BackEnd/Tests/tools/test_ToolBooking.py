@@ -66,7 +66,7 @@ class ToolBookingTestCase(APITestCase):
     def test_toolBooking_올바른_학교_링크로_접속한_사용자는_날짜별_예약을_조회할_수_있다(self):
         toolBookings = ToolBookingFactory.create_batch(10, **{'tool': self.tool, 'date': self.date})
 
-        data = {1: [], 2: [], 3: [], 4: [], 5: [], 6: []}
+        data = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7:[]}
         for booking in toolBookings:
             data[booking.period].append({
                 'id': booking.id,
@@ -148,8 +148,8 @@ class ToolBookingTestCase(APITestCase):
     def test_toolBooking_날짜별_예약_가능한_잔여_수량을_확인할_수_있다(self):
         response = self.client.get(self.leftRetrieveUrl, **{'HTTP_AUTHORIZATION': self.school.code})
 
-        lefts = [0] * 6
-        for i in range(6):
+        lefts = [0] * 7
+        for i in range(7):
             lefts[i] = getLeft(self.tool, str(self.date) + '-' + str(i + 1))
 
         self.assertEqual(response.status_code, 200)
@@ -157,7 +157,7 @@ class ToolBookingTestCase(APITestCase):
 
     '''Validation TEST'''
 
-    def test_toolBooking_period는_1_이상_6_이하의_수이다(self):
+    def test_toolBooking_period는_1_이상_7_이하의_수이다(self):
         postData = {
             'tool': self.tool.name,
             'date': self.faker.date(),
@@ -166,8 +166,8 @@ class ToolBookingTestCase(APITestCase):
             'password': '0000'
         }
 
-        wrongPeriod = ['1', '3', '7']
-        rightPeriod = ['1', '2', '4', '6']
+        wrongPeriod = ['1', '3', '8']
+        rightPeriod = ['1', '2', '4', '7']
 
         postData['period'] = wrongPeriod
         wrongResponse = self.client.post(self.createUrl, postData,

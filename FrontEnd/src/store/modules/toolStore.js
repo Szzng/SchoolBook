@@ -8,13 +8,13 @@ const toolStore = {
       updateTool: false,
       destroyTool: false
     },
-    periods: [1, 2, 3, 4, 5, 6],
+    periods: [1, 2, 3, 4, 5, 6, 7],
     tools: [],
     focusDate: '',
     focusTool: '',
     toolBookingLists: {},
     left: [],
-    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green']
+    colors: ['red', 'indigo', 'deep-purple', 'pink', 'orange', 'green', 'cyan']
   },
   mutations: {
     focusDateSetter (state, date) {

@@ -77,13 +77,16 @@
         >
           <v-card outlined class="py-3 px-2">
             <v-row justify="center" align="center">
-              <v-card-title style="font-size: 20px; font-weight: bolder">
+              <v-card-title class="pb-0" style="font-size: 20px;">
                 <v-icon class="mx-0 mr-2" size="30" color="accent"
                   >mdi-desktop-mac</v-icon
                 >
 
                 {{ tool.name }}</v-card-title
               >
+            </v-row>
+            <v-row justify="center" align="center">
+            <v-card-title>{{tool.quantity}}대 | {{tool.place}}</v-card-title>
             </v-row>
             <v-row justify="center" align="center" class="mb-3 mt-5">
               <v-btn

@@ -74,7 +74,7 @@
             class="mt-4 mb-3 black--text text-center font-weight-bold"
             style="font-size: 18px"
           >
-            관련된 모든 예약에 영향을 미칠 수 있습니다. <br />
+            이미 존재하는 예약의 수량은 수정되지 않습니다.<br />
             정말 수정하시겠어요?
           </v-row>
         </v-card-text>

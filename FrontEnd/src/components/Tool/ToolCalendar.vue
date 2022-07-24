@@ -1,20 +1,12 @@
 <template>
   <div>
-    <v-row class="fill-height ml-5">
-      <v-col sm="12" md="5">
-        <v-sheet height="80" class="pr-3">
+    <v-row class="fill-height">
+      <v-col sm="12" md="4">
+        <v-sheet height="10vh">
           <v-toolbar flat>
-            <v-btn outlined color="grey darken-1" @click="setToday">
-              Today
-            </v-btn>
-            <v-spacer></v-spacer>
+            <v-spacer></v-spacer><v-spacer></v-spacer><v-spacer></v-spacer>
 
-            <v-btn
-              fab
-              text
-              small
-              color="grey darken-2"
-              @click="$refs.calendar.prev()"
+            <v-btn fab text small color="grey darken-2" @click="prev"
               ><v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
 
@@ -25,23 +17,19 @@
               {{ initCalendarTitle }}
             </v-toolbar-title>
 
-            <v-btn
-              fab
-              text
-              small
-              color="grey darken-2"
-              @click="$refs.calendar.next()"
+            <v-btn fab text small color="grey darken-2" @click="next"
               ><v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
+
             <v-spacer></v-spacer>
 
-            <v-btn disabled text x-large class="pa-0">
-              {{ focusTool }}
+            <v-btn outlined color="grey darken-2" @click="setToday">
+              Today
             </v-btn>
           </v-toolbar>
         </v-sheet>
 
-        <v-sheet height="520" class="pr-8 ml-2">
+        <v-sheet height="68vh" class="ml-2">
           <v-calendar
             ref="calendar"
             v-model="$store.state.toolStore.focusDate"
@@ -53,7 +41,7 @@
         </v-sheet>
       </v-col>
 
-      <v-col sm="12" md="7">
+      <v-col sm="12" md="8">
         <CheckToolBookingDialog />
       </v-col>
     </v-row>
@@ -74,7 +62,7 @@ export default {
   }),
 
   computed: {
-    ...mapState('toolStore', ['dialog', 'focusTool'])
+    ...mapState('toolStore', ['dialog', 'focusDate', 'focusTool'])
   },
 
   async created () {
@@ -83,13 +71,23 @@ export default {
   },
 
   methods: {
-    checkToolBooking ({ date }) {
-      this.$store.commit('toolStore/focusDateSetter', date)
-      api.getToolBookingsByDate(this.focusTool, date)
+    checkToolBooking () {
+      api.getToolBookingsByDate(this.focusTool, this.focusDate)
+    },
+    prev () {
+      this.$refs.calendar.prev()
+      this.checkToolBooking()
+    },
+    next () {
+      this.$refs.calendar.next()
+      this.checkToolBooking()
     },
     setToday () {
-      this.$store.commit('toolStore/focusDateSetter', '')
-      this.dialog.checkToolBooking = false
+      this.$store.commit(
+        'toolStore/focusDateSetter',
+        this.$refs.calendar.$data.times.today.date
+      )
+      this.checkToolBooking()
     }
   }
 }
